@@ -1,0 +1,13 @@
+{
+    "name": "italia/spid-wordpress",
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/simevo/spid-php2"
+        }
+    ],
+    "require": {
+        "italia/spid-php2": "dev-wip/class-wrapper",
+        "squizlabs/php_codesniffer": "^3.3"
+    }
+}
