@@ -1,0 +1,133 @@
+---
+# tasks file for spid-wordpress
+
+# this part could be delegated to an nginx role from galaxy
+
+- name: install nginx and snakeoil certificates
+  apt: pkg={{ item }} state=present update_cache=true
+  with_items:
+    - nginx
+    - ssl-cert
+
+- name: remove symlink to default nginx configuration
+  file:
+   path: "/etc/nginx/sites-enabled/default"
+   state: absent
+
+- name: install the nginx configuration
+  template:
+    src=wordpress.conf
+    dest=/etc/nginx/sites-enabled/wordpress.conf
+    owner=root
+    group=root
+    mode=0644
+
+- name: restart nginx service
+  command: systemctl restart nginx
+
+- name: ensure that nginx is started and enabled
+  service: name=nginx
+           state=started
+           enabled=yes
+
+# end nginx part
+
+- name: install wordpress preprequisites
+  apt: pkg={{ item }} state=present update_cache=true
+  with_items:
+    - wordpress
+    - git
+    - composer
+    - php7.0-fpm
+    - mysql-server
+
+- name: Add self IP address to the hosts file
+  lineinfile:
+    dest: /etc/hosts
+    line: "127.0.0.1 {{ spid_wordpress_hostname }}"
+    state: present
+
+- name: make sure the directory exists
+  file:
+    path: "{{ spid_wordpress_dir }}"
+    state: directory
+    group: www-data
+    mode: 0755
+
+- name: get the spid-wordpress repo
+  git:
+    repo: "https://github.com/simevo/spid-wordpress.git"
+    dest: "{{ spid_wordpress_dir }}"
+
+- name: install php dependencies with composer
+  composer:
+    command: install
+    working_dir: "{{ spid_wordpress_dir }}"
+
+- name: generate the SP certificate
+  command: openssl req -x509 -nodes -sha256 -days 365 -newkey rsa:2048 -subj "/C=IT/ST=Italy/L=Rome/O=wordpress/CN={{ spid_wordpress_hostname }}" -keyout {{ spid_wordpress_dir }}/wp.key -out {{ spid_wordpress_dir }}/wp.crt
+  args:
+    creates: "{{ spid_wordpress_dir }}/wp.crt"
+
+- name: make sure www-data can read the key
+  file:
+    path: "{{ spid_wordpress_dir }}/wp.key"
+    state: file
+    group: www-data
+
+- name: add softlink to plugin
+  file:
+    src: "{{ spid_wordpress_dir }}"
+    dest: /var/lib/wordpress/wp-content/plugins/spid-wordpress
+    state: link
+
+- name: make sure the blogs.dir directory exists
+  file:
+    path: /var/lib/wordpress/wp-content/blogs.dir
+    state: directory
+    owner: www-data
+    group: www-data
+    mode: 0755
+
+- name: create wp database
+  mysql_db:
+    name: wp
+    state: present
+
+- name: create wp mysql user with a random password
+  mysql_user:
+    name: wp
+    password: "{{ lookup('password', 'credentials/wp_mysql length=32') }}"
+    priv: "wp.*:ALL"
+
+- name: retrieve salt
+  uri:
+    url: https://api.wordpress.org/secret-key/1.1/salt/
+    return_content: yes
+  register: salt
+
+- name: configures database if not yet configured
+  template:
+    force=no
+    src=config.php
+    dest=/etc/wordpress/config-default.php
+    owner=root
+    group=www-data
+    mode=0640
+
+- name: Check that the WP config file is reachable
+  uri:
+    validate_certs: no
+    url: "https://{{ spid_wordpress_hostname }}/wp-config.php"
+    status: 200, 302
+
+- name: Finalize installation
+  uri:
+    validate_certs: no
+    url: "https://{{ spid_wordpress_hostname }}/wp-admin/install.php?step=2"
+    method: POST
+    status_code: 200
+    body_format: raw
+    body: weblog_title=test1&user_name=test2&admin_password=test3&pass1-text=test3&admin_password2=test3&pw_weak=on&admin_email=paolo.greppi%40simevo.com&blog_public=0&Submit=Install+WordPress&language=
+    headers:
+      Content-Type: application/x-www-form-urlencoded
