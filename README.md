@@ -10,50 +10,29 @@ Compatibile con:
 
 ## Getting Started
 
-In questa guida si è scelto di installare WordPress per mezzo del pacchetto nativo.
-
 Testato su: Debian 9.4 (stretch) amd64
 
 ### Prerequisiti
 
 ```
-sudo apt install wordpress nginx
+sudo apt install composer make openssl php-curl php-zip php-xml
+```
+con PHP <= 7.1 (es. Debian 9.4 stretch o precedenti), anche:
+```
+apt install php-mcrypt
 ```
 
-### Configuring and Installing
+### Installazione e configurazione
 
-Riferimenti per la configurazione WordPress generica:
-- http://codex.wordpress.org/Editing_wp-config.php
+### Manuale
 
-Riferimenti per la configurazione del pacchetto WordPress nativo di Debian:
-- https://wiki.debian.org/WordPress
-- https://salsa.debian.org/debian/wordpress/blob/master/debian/README.debian
+Installare e configurare wordpress nel modo preferito.
 
-Configurare WordPress nel file `/etc/wordpress/config-default.php` a partire da `/usr/share/wordpress/wp-config-sample.php`
-Questo file dovrebbe essere leggibile solo da www-data e protetto in scrittura.
+Clonare questo repo in `/var/lib/wordpress/wp-content/plugins/spid-wordpress` quindi lanciare `composer install` da quella directory
 
-Configurazione nginx:
-```
-server_name: "{{ wordpress_hostname }}"
-root: "/usr/share/wordpress"
-index: "index.php"
-  gzip_static on;
-  add_header Cache-Control "no-cache";
-  etag on;
-  rewrite_log on;
-  location ~ ^(?!\/api\/).+\.php$ {
-    include snippets/fastcgi-php.conf;
-    fastcgi_pass unix:/var/run/php/php7.0-fpm.sock;
-  }
-  location ~ ^/wp-content/(.*)$ {
-    /srv/www/wp-content/%{HTTP_HOST}/$1
-  }
-  Alias /wp-content /var/lib/wordpress/wp-content
-```
+### Ansible
 
-Assegnare www-data come owner delle subdirectories "uploads" e "blogs.dir" 
-
-Clonare questo repo in /var/lib/wordpress/wp-content/plugins/spid-wordpress quindi lanciare `composer install` da quella directory
+Alternativamente alla procedura di installazione manuale riportata sopra, è possible installare un sito WordPress di test con questo plugin installato, tramite lo strumento di configuration management [ansible](https://www.ansible.com/). Tutte le informazioni sono nella directory [ansible/](ansible/).
 
 ### Demo
 

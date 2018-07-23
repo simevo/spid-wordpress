@@ -1,1 +1,4 @@
 vendor
+wp.crt
+wp.key
+*_metadata.xml
