@@ -4,7 +4,7 @@
 
 Compatibile con:
 - Wordpress 4.7.5 - 4.9.7 (TODO)
-- PHP 7.0 e 7.2
+- PHP 7.0 e 7.2 (TODO)
 - single-site o multi-site (TODO)
 - installazione WordPress manuale, [composer](https://packagist.org/packages/johnpbloch/wordpress) oppure pacchetto nativo.
 
@@ -12,27 +12,45 @@ Compatibile con:
 
 Testato su: amd64 Debian 9.5 (stretch, current stable) con PHP 7.0.
 
-### Prerequisiti
+### Installazione e configurazione
+
+Prima di usare questo pacchetto, è necessario:
+
+1. Installare i prerequisiti:
 
 ```sh
 sudo apt install composer make openssl php-curl php-zip php-xml
 ```
 
-### Installazione e configurazione
+2. Installare le dipendenze con `composer install`
 
-### Manuale
+3. Generare chiave e certificato del Service Provider (SP)
+
+4. Scaricare e verificare i metadata degli Identity Provider (IdP) nella directory [idp_metadata/](idp_metadata/)
+
+4. Scaricare il metadata del SP (Service Provider) da https://wp.example.com/wp-login.php?sso=spid&metadata e registrarlo coll'IdP
+
+**NOTA**: durante il test, si raccomanda l'udo dell'Identity Provider di test [spid-testenv2](https://github.com/italia/spid-testenv2).
+
+### Installazione manuale
 
 Installare e configurare wordpress nel modo preferito.
 
-Clonare questo repo in `/var/lib/wordpress/wp-content/plugins/spid-wordpress` quindi lanciare `composer install` da quella directory
+Clonare questo repo in `/var/lib/wordpress/wp-content/plugins/spid-wordpress` quindi completare i passi 1-4.
 
-### Ansible
+### Installazione con ansible
 
 Alternativamente alla procedura di installazione manuale riportata sopra, è possible installare un sito WordPress di test con questo plugin installato, tramite lo strumento di configuration management [ansible](https://www.ansible.com/). Tutte le informazioni sono nella directory [ansible/](ansible/).
 
-### Demo
+Il ruolo ansible effettua i passi 1-3, resta a carico dell'utente il passo 4 (metadata IdP).
 
-TODO
+### Uso
+
+Visitare: https://wp.simevo.com/wp-login.php e cliccare sul bottone SPID (TODO: al momento, sul bottone `Accedi con SPID usando testenv2 come IdP`)
+
+Questo screencast mostra cosa dovrebbe succedere se tutto funziona:
+
+![img](images/screencast.gif)
 
 ## Troubleshooting
 

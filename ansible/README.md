@@ -31,3 +31,5 @@ ansible-playbook -i ansible/hosts ansible/site.yml
 ```
 
 Verifica dell'installazione: visitare [https://wp.simevo.com](https://wp.simevo.com).
+
+Accesso all'UI amministrativa di wordpress [https://wp.simevo.com/wp-admin](https://wp.simevo.com/wp-admin) con utente `test2`, password `test3`.

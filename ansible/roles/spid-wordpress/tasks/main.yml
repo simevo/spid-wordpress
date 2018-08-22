@@ -50,6 +50,7 @@
     path: "{{ spid_wordpress_dir }}/wp.key"
     state: file
     group: www-data
+    mode: 0640
 
 - name: add softlink to plugin
   file:
