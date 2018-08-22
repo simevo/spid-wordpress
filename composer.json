@@ -1,13 +1,20 @@
 {
     "name": "italia/spid-wordpress",
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/simevo/spid-php2"
-        }
-    ],
+    "description": "SPID (Sistema Pubblico di Identità Digitale) Wordpress plugin",
+    "type": "library",
+    "license": "AGPL-3.0",
+    "authors": [{
+        "name": "Paolo Greppi",
+        "email": "paolo.greppi@libpf.com"
+    }],
+    "repositories": [{
+        "type": "vcs",
+        "url": "https://github.com/italia/spid-php-lib"
+    }],
     "require": {
-        "italia/spid-php2": "dev-wip/class-wrapper",
+        "italia/spid-php-lib": "dev-master"
+    },
+    "require-dev": {
         "squizlabs/php_codesniffer": "^3.3"
     }
 }
