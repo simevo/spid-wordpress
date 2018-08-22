@@ -18,7 +18,7 @@ Prima di iniziare:
 - effettuare il provisioning dell'[host](https://docs.ansible.com/ansible/devel/reference_appendices/glossary.html#term-host) su cui si vuole installare il testenv (che può essere una macchina fisica, una macchina virtuale o un container), con il sistema operativo **Debian 9.4 (stretch)**
 
 - assicurarsi che sull'host:
-  - python, python-mysqldb e apt-utils siano installati (sono richiesti da ansible)
+  - sudo, python, python-mysqldb e apt-utils siano installati (sono richiesti da ansible)
 
 - assicurarsi che il controller (il computer da cui si intende controllare l'host):
   - abbia ansible 2.2 o posteriori installato

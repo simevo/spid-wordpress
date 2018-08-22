@@ -1,0 +1,63 @@
+---
+# tasks file for wordpress
+
+- name: install wordpress preprequisites
+  apt: pkg={{ item }} state=present update_cache=true
+  with_items:
+    - wordpress
+    - mysql-server
+
+- name: remove apache2
+  apt: pkg={{ item }} state=absent
+  with_items:
+    - apache2
+
+- name: make sure the blogs.dir directory exists
+  file:
+    path: /var/lib/wordpress/wp-content/blogs.dir
+    state: directory
+    group: www-data
+    mode: 0755
+
+- name: create wp database
+  mysql_db:
+    name: wp
+    state: present
+
+- name: create wp mysql user with a random password
+  mysql_user:
+    name: wp
+    password: "{{ lookup('password', 'credentials/wp_mysql length=32') }}"
+    priv: "wp.*:ALL"
+
+- name: retrieve salt
+  uri:
+    url: https://api.wordpress.org/secret-key/1.1/salt/
+    return_content: yes
+  register: salt
+
+- name: configures database if not yet configured
+  template:
+    force=no
+    src=config.php
+    dest=/etc/wordpress/config-default.php
+    owner=root
+    group=www-data
+    mode=0640
+
+- name: Check that the WP config file is reachable
+  uri:
+    validate_certs: no
+    url: "https://{{ spid_wordpress_hostname }}/wp-config.php"
+    status: 200, 302
+
+- name: Finalize installation
+  uri:
+    validate_certs: no
+    url: "https://{{ spid_wordpress_hostname }}/wp-admin/install.php?step=2"
+    method: POST
+    status_code: 200
+    body_format: raw
+    body: weblog_title=test1&user_name=test2&admin_password=test3&pass1-text=test3&admin_password2=test3&pw_weak=on&admin_email=paolo.greppi%40simevo.com&blog_public=0&Submit=Install+WordPress&language=
+    headers:
+      Content-Type: application/x-www-form-urlencoded
