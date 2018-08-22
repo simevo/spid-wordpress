@@ -1,6 +1,3 @@
 vendor
-wp.crt
-wp.key
-idp_metadata
 ansible/credentials
 .directory
