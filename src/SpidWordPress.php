@@ -18,8 +18,8 @@ class SpidWordPress
 
     public function actionInit()
     {
-        $base = "https://wp.simevo.com";
-        $home = "/srv/spid-wordpress";
+        $base = get_home_url();
+        $home = "wp-content/plugins/spid-wordpress/example";
         $settings = [
             'sp_entityid' => $base,
             'sp_key_file' => "$home/wp.key",
