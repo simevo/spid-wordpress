@@ -15,7 +15,7 @@ Il file di configurazione WordPress sarà `/etc/wordpress/config-default.php`.
 
 Prima di iniziare:
 
-- effettuare il provisioning dell'[host](https://docs.ansible.com/ansible/devel/reference_appendices/glossary.html#term-host) su cui si vuole installare il testenv (che può essere una macchina fisica, una macchina virtuale o un container), con il sistema operativo **Debian 9.4 (stretch)**
+- effettuare il provisioning dell'[host](https://docs.ansible.com/ansible/devel/reference_appendices/glossary.html#term-host) su cui si vuole installare il testenv (che può essere una macchina fisica, una macchina virtuale o un container), con il sistema operativo **Debian 9.5 (stretch, current stable)**
 
 - assicurarsi che sull'host:
   - sudo, python, python-mysqldb e apt-utils siano installati (sono richiesti da ansible)

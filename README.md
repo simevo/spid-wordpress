@@ -26,23 +26,27 @@ sudo apt install composer make openssl php-curl php-zip php-xml
 
 3. Generare chiave e certificato del Service Provider (SP)
 
-4. Scaricare e verificare i metadata degli Identity Provider (IdP) nella directory [idp_metadata/](idp_metadata/)
+4. Scaricare e verificare i metadata degli Identity Provider (IdP) nella directory [idp_metadata/](idp_metadata/); un tool per automatizzare questa operazione per gli IdP in produzione è incluso in spid-php-lib, esempio di utilizzo:
 
-4. Scaricare il metadata del SP (Service Provider) da https://wp.example.com/wp-login.php?sso=spid&metadata e registrarlo coll'IdP
+```sh
+./vendor/italia/spid-php-lib/bin/download_idp_metadata.php /srv/spid-wordpress/idp_metadata
+```
 
-**NOTA**: durante il test, si raccomanda l'udo dell'Identity Provider di test [spid-testenv2](https://github.com/italia/spid-testenv2).
+5. Scaricare il metadata del SP (Service Provider) da https://wp.example.com/wp-login.php?sso=spid&metadata e registrarlo coll'IdP
+
+**NOTA**: durante il test, si raccomanda l'uso dell'Identity Provider di test [spid-testenv2](https://github.com/italia/spid-testenv2).
 
 ### Installazione manuale
 
 Installare e configurare wordpress nel modo preferito.
 
-Clonare questo repo in `/var/lib/wordpress/wp-content/plugins/spid-wordpress` quindi completare i passi 1-4.
+Clonare questo repo in `/var/lib/wordpress/wp-content/plugins/spid-wordpress` quindi completare i passi 1-5.
 
 ### Installazione con ansible
 
 Alternativamente alla procedura di installazione manuale riportata sopra, è possible installare un sito WordPress di test con questo plugin installato, tramite lo strumento di configuration management [ansible](https://www.ansible.com/). Tutte le informazioni sono nella directory [ansible/](ansible/).
 
-Il ruolo ansible effettua i passi 1-3, resta a carico dell'utente il passo 4 (metadata IdP).
+Il ruolo ansible effettua i passi 1-3, restano a carico dell'utente i passi 4-5 (registrazione metadata IdP con SP e registrazione metadata SP con IdP).
 
 ### Uso
 
