@@ -48,9 +48,31 @@ Alternativamente alla procedura di installazione manuale riportata sopra, è pos
 
 Il ruolo ansible effettua i passi 1-3, restano a carico dell'utente i passi 4-5 (registrazione metadata IdP con SP e registrazione metadata SP con IdP).
 
+### Installazione con docker-compose
+
+Based on the [official docker wordpress image](https://docs.docker.com/compose/wordpress).
+
+To start up:
+```
+composer install --no-dev
+cd docker
+cp .env.example .env
+make
+docker-compose up --build
+```
+
+Then in a separate shell:
+```sh
+make post
+```
+
+To remove the containers and default network, but preserve the database: `docker-compose down`
+
+To remove all: `docker-compose down --volumes`
+
 ### Uso
 
-Visitare: https://wp.simevo.com/wp-login.php e cliccare sul bottone SPID (TODO: al momento, sul bottone `Accedi con SPID usando testenv2 come IdP`)
+Visitare: https://wp.example.com/wp-login.php e cliccare sul bottone SPID (TODO: al momento, sul bottone `Accedi con SPID usando testenv2 come IdP`)
 
 Questo screencast mostra cosa dovrebbe succedere se tutto funziona:
 

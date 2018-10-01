@@ -19,7 +19,8 @@ class SpidWordPress
     public function actionInit()
     {
         $base = get_home_url();
-        $home = "wp-content/plugins/spid-wordpress/example";
+        $home = "wp-content/plugins/spid-wordpress/docker";
+
         $settings = [
             'sp_entityid' => $base,
             'sp_key_file' => "$home/wp.key",
@@ -69,15 +70,15 @@ class SpidWordPress
                 // SSO endpoint
                 // shortname of IdP, same as the name of corresponding IdP metadata file, without .xml
                 $idpName = $_GET['idp'];
-                // return url, optional
-                $returnTo = '';
                 // index of assertion consumer service as per the SP metadata
                 $assertId = 0;
                 // index of attribute consuming service as per the SP metadata
                 $attrId = 0;
                 // SPID level (1, 2 or 3)
                 $spidLevel = 1;
-                $this->auth->login($idpName, $assertId, $attrId, '', $spidLevel);
+                // return url, optional
+                $returnTo = null;
+                $this->auth->login($idpName, $assertId, $attrId, $spidLevel, $returnTo);
             } elseif (isset($_GET['slo'])) {
                 // SLO endpoint
                 // TODO
