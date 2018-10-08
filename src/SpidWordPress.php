@@ -1,5 +1,7 @@
 <?php
 
+require_once dirname(__FILE__) . '/admin/SpidWordPressAdmin.php';
+
 class SpidWordPress
 {
 
@@ -44,6 +46,8 @@ class SpidWordPress
         // https://codex.wordpress.org/Plugin_API/Filter_Reference/authenticate
         // after wp_authenticate_username_password runs:
         add_filter('authenticate', array( $this, 'filterAuthenticate' ), 21, 3);
+
+        $this->define_admin_hooks();
     }
 
     public function filterLoginMessage($message)
@@ -102,5 +106,9 @@ class SpidWordPress
             // ignore
         }
         return $user;
+    }
+
+    private function define_admin_hooks() {
+        $plugin_admin = new SpidWordpressAdmin();   
     }
 }
