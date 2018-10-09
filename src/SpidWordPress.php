@@ -52,9 +52,11 @@ class SpidWordPress
 
     public function filterLoginMessage($message)
     {
+        $sp_sso = get_option('sp_sso', 'spid');
+        $sp_idp = get_option('sp_idp', 'testenv2');
         $query_args  = array(
-            'sso' => 'spid',
-            'idp' => 'testenv2'
+            'sso' => $sp_sso,
+            'idp' => $sp_idp
         );
         echo '<div><a class="button" href="' .
             esc_url(add_query_arg($query_args, wp_login_url())) .
