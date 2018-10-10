@@ -1,6 +1,6 @@
 <?php
 
-require_once dirname(__FILE__) . '/admin/SpidWordPressAdmin.php';
+require_once dirname(__FILE__) . '/admin/SpidWordpressAdmin.php';
 
 class SpidWordPress
 {
