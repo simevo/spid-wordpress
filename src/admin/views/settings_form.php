@@ -15,9 +15,11 @@ $sp_idp = get_option('sp_idp', 'testenv2');
 
 ?>
 <div class="wrap">
+
+	<img src="<?php echo plugins_url( 'img/spid-logo-b-lb.png', __FILE__ ); ?>"  width="500" height="98" border="0" />
+
 	<h2>SPID opzioni</h2>
 	
-
 	<form action="" method="post">
 		<table class="form-table">
 			<tr>
