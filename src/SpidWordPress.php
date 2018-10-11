@@ -28,7 +28,7 @@ class SpidWordPress
         $this->options = $this->getOptions();
 
         $sp_attributeconsumingservice = $this->findActiveAttributes($this->options);
-        
+
         $settings = [
             'sp_entityid' => $base,
             'sp_key_file' => "$home/wp.key",
@@ -151,7 +151,7 @@ class SpidWordPress
     public function findActiveAttributes($options){
         $activeAttributes = [];
         foreach ($options['sp_attributes'] as $key => $value) {
-            if($value=='on')$activeAttributes[] = $key;
+            if($value=='on')$activeAttributes[] = substr ( $key , 3 );
         }
         return $activeAttributes;
     }
