@@ -33,7 +33,7 @@ class SpidWordPress
         $this->options = $this->getOptions();
 
         $sp_attributeconsumingservice = $this->findActiveAttributes($this->options);
-        
+
         $settings = [
             'sp_entityid' => $base,
             'sp_key_file' => "$home/wp.key",
@@ -92,7 +92,7 @@ class SpidWordPress
                 // index of attribute consuming service as per the SP metadata
                 $attrId = 0;
                 // SPID level (1, 2 or 3)
-                $spidLevel = 1;
+                $spidLevel = get_option('sp_livello', '1');
                 // return url, optional
                 $returnTo = null;
                 $this->auth->login($idpName, $assertId, $attrId, $spidLevel, $returnTo);
