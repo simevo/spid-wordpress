@@ -8,7 +8,6 @@ if (array_key_exists('save_options', $_POST)) {
     update_option('sp_sso', $_POST['sp_sso']);
     update_option('sp_idp', $_POST['sp_idp']);
     update_option('sp_livello', $_POST['sp_livello']);
-    update_option('sp_spidCode', $_POST['sp_spidCode']);
     update_option('sp_name', $_POST['sp_name']);
     update_option('sp_familyName', $_POST['sp_familyName']);
     update_option('sp_placeOfBirth', $_POST['sp_placeOfBirth']);
@@ -21,7 +20,6 @@ if (array_key_exists('save_options', $_POST)) {
     update_option('sp_ivaCode', $_POST['sp_ivaCode']);
     update_option('sp_idCard', $_POST['sp_idCard']);
     update_option('sp_mobilePhone', $_POST['sp_mobilePhone']);
-    update_option('sp_email', $_POST['sp_email']);
     update_option('sp_address', $_POST['sp_address']);
     update_option('sp_expirationDate', $_POST['sp_expirationDate']);
     update_option('sp_digitalAddress', $_POST['sp_digitalAddress']);
@@ -31,7 +29,6 @@ $sp_org_name         = get_option('sp_org_name', 'nessuno');
 $sp_sso              = get_option('sp_sso', 'spid');
 $sp_idp              = get_option('sp_idp', 'testenv2');
 $sp_livello          = get_option('sp_livello', '1');
-$sp_spidCode         = get_option('sp_spidCode', '');
 $sp_name             = get_option('sp_name', '');
 $sp_familyName       = get_option('sp_familyName', '');
 $sp_placeOfBirth     = get_option('sp_placeOfBirth', '');
@@ -44,7 +41,6 @@ $sp_fiscalNumber     = get_option('sp_fiscalNumber', '');
 $sp_ivaCode          = get_option('sp_ivaCode', '');
 $sp_idCard           = get_option('sp_idCard', '');
 $sp_mobilePhone      = get_option('sp_mobilePhone', '');
-$sp_email            = get_option('sp_email', '');
 $sp_address          = get_option('sp_address', '');
 $sp_expirationDate   = get_option('sp_expirationDate', '');
 $sp_digitalAddress   = get_option('sp_digitalAddress', '');
@@ -88,23 +84,23 @@ $sp_digitalAddress   = get_option('sp_digitalAddress', '');
 				    	<table>
 				    		<tr>
 				    			<td>
-									<label for="sp_spidCode">
-										<input name="sp_spidCode" type="checkbox" <?php if($sp_spidCode)echo"checked";?> id="sp_spidCode">
-										Codice identificativo 
-									</label>
-								</td>
-								<td>
 									<label for="sp_name">
 										<input name="sp_name" type="checkbox" <?php if($sp_name)echo"checked";?>  id="sp_name">
 										Nome
 									</label>
 								</td>
-							</tr>
-							<tr>
-				    			<td>
+								<td>
 									<label for="sp_familyName">
 										<input name="sp_familyName" type="checkbox" <?php if($sp_familyName)echo"checked";?>  id="sp_familyName">
 										Cognome
+									</label>
+								</td>
+							</tr>
+							<tr>
+				    			<td>
+									<label for="sp_expirationDate">
+										<input name="sp_expirationDate" type="checkbox" <?php if($sp_expirationDate)echo"checked";?>  id="sp_expirationDate">
+										Data di scadenza identità
 									</label>
 								</td>
 								<td>
@@ -178,9 +174,9 @@ $sp_digitalAddress   = get_option('sp_digitalAddress', '');
 									</label>
 								</td>
 								<td>
-									<label for="sp_email">
-										<input name="sp_email" type="checkbox" <?php if($sp_email)echo"checked";?>  id="sp_email">
-										Indirizzo di posta elettronica 
+									<label for="sp_digitalAddress">
+										<input name="sp_digitalAddress" type="checkbox" <?php if($sp_digitalAddress)echo"checked";?>  id="sp_digitalAddress">
+										Domicilio digitale
 									</label>
 								</td>
 							</tr>
@@ -192,22 +188,10 @@ $sp_digitalAddress   = get_option('sp_digitalAddress', '');
 									</label>
 								</td>
 								<td>
-									<label for="sp_expirationDate">
-										<input name="sp_expirationDate" type="checkbox" <?php if($sp_expirationDate)echo"checked";?>  id="sp_expirationDate">
-										Data di scadenza identità
-									</label>
+									
 								</td>
 							</tr>
-							<tr>
-				    			<td>
-									<label for="sp_digitalAddress">
-										<input name="sp_digitalAddress" type="checkbox" <?php if($sp_digitalAddress)echo"checked";?>  id="sp_digitalAddress">
-										Domicilio digitale
-									</label>
-								</td>
-								<td>
-								</td>
-							</tr>
+
 						</table>
 						<p class="description">(Legenda)</p>
 					</fieldset> 

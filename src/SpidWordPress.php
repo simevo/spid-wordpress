@@ -23,12 +23,17 @@ class SpidWordPress
     public function actionInit()
     {
         $base = get_home_url();
+
         $home = "wp-content/plugins/spid-wordpress/docker";
+
+        // the following are mandatory attributes for any WordPress install of the plugin
+        update_option('sp_spidCode', 'on');
+        update_option('sp_email', 'on');
 
         $this->options = $this->getOptions();
 
         $sp_attributeconsumingservice = $this->findActiveAttributes($this->options);
-
+        
         $settings = [
             'sp_entityid' => $base,
             'sp_key_file' => "$home/wp.key",
