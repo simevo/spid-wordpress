@@ -11,6 +11,8 @@ class SpidWordPress
 
     public $options;
 
+    public $idp_files_in_metadata_folder;
+
     public static function getInstance()
     {
         if (! isset(self::$instance)) {
@@ -45,9 +47,11 @@ class SpidWordPress
             'sp_org_name' => 'test',
             'sp_org_display_name' => 'Test',
             'idp_metadata_folder' => "$home/idp_metadata/",
-            'sp_attributeconsumingservice' => [$sp_attributeconsumingservice]
+            'sp_attributeconsumingservice' => [$sp_attributeconsumingservice],
             ];
         $this->auth = new Italia\Spid\Sp($settings);
+
+        $this-> $idp_files_in_metadata_folder = $this->getAllIpdsFromFiles($settings['idp_metadata_folder']);
 
         // https://codex.wordpress.org/Plugin_API/Filter_Reference/login_message
         add_filter('login_message', array( $this, 'filterLoginMessage' ));
@@ -57,6 +61,8 @@ class SpidWordPress
         add_filter('authenticate', array( $this, 'filterAuthenticate' ), 21, 3);
 
         $this->define_admin_hooks();
+
+
 
     }
 
@@ -159,5 +165,10 @@ class SpidWordPress
             if($value=='on')$activeAttributes[] = substr ( $key , 3 );
         }
         return $activeAttributes;
+    }
+
+
+    public function getAllIpdsFromFiles($folder){     
+        return array_filter( scandir($folder), function($filename) { return substr($filename, -4) == '.xml'; });
     }
 }
