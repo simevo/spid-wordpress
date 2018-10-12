@@ -51,8 +51,6 @@ class SpidWordPress
             ];
         $this->auth = new Italia\Spid\Sp($settings);
 
-        $this-> $idp_files_in_metadata_folder = $this->getAllIpdsFromFiles($settings['idp_metadata_folder']);
-
         // https://codex.wordpress.org/Plugin_API/Filter_Reference/login_message
         add_filter('login_message', array( $this, 'filterLoginMessage' ));
         
@@ -167,8 +165,4 @@ class SpidWordPress
         return $activeAttributes;
     }
 
-
-    public function getAllIpdsFromFiles($folder){     
-        return array_filter( scandir($folder), function($filename) { return substr($filename, -4) == '.xml'; });
-    }
 }
