@@ -110,18 +110,41 @@ class SpidWordPress
                     error_log('not authenticated');
                 }
                 $attributes  = $this->auth->getAttributes();
+                /*
                 foreach ($attributes as $key => $attr) {
                     echo $key . ' - ' . $attr . '<br>';
                 }
-                // TODO create WP user if missing ...
-                $user = get_user_by('id', $user_id);
+                */
+
+                if (empty( $attributes)) {
+                    return new WP_Error('spid_wordpress_no_attributes', 'No attributes were present in SPID response.');
+                }
+                $existing_user = get_user_by('user_login', $attributes['spidCode']);
+                if ( $existing_user ) {
+                    do_action('spid_wordpress_existing_user_authenticated', $existing_user, $attributes);
+                    return $existing_user;
+                }
+                $user_args = array();
+                $user_args['user_login'] = ! empty( $attributes['spidCode'] ) ? $attributes['spidCode'] : '';
+                $user_args['first_name'] = ! empty( $attributes['name'] ) ? $attributes['name'] : '';
+                $user_args['last_name'] = ! empty( $attributes['familyName'] ) ? $attributes['familyName'] : '';
+                $user_args['email'] = ! empty( $attributes['email'] ) ? $attributes['email'] : '';
+                $user_args['role'] = 'default_role';
+                $user_args['user_pass'] = wp_generate_password(); // ??
+        
+                $user_args = apply_filters('spid_wordpress_insert_user', $user_args, $attributes);
+                $user_id = wp_insert_user($user_args);
+                if (is_wp_error( $user_id)) {
+                    return $user_id;
+                }
+                $user = get_user_by( 'id', $user_id );
             } else {
-                // TODO error handling
-                error_log('wrong endpoint');
+                return new WP_Error('spid_wrong_endpoint', 'Wrong endpoint');
             }
         } else {
             // ignore
         }
+        do_action('spid_wordress_new_user_authenticated', $user, $attributes );
         return $user;
     }
 
