@@ -4,21 +4,21 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "57ec116800f6548bff77cd516858532a",
-    "content-hash": "a40b0eafaf39ca743eb9ef12096435f3",
+    "hash": "e7bed20333f325cbaa4bd88aa9622ad3",
+    "content-hash": "c7619beafa0ffd3bb37faa6d099333b8",
     "packages": [
         {
             "name": "italia/spid-php-lib",
-            "version": "v0.10",
+            "version": "v0.20",
             "source": {
                 "type": "git",
                 "url": "https://github.com/italia/spid-php-lib.git",
-                "reference": "a9b35fbbf5f3d372883e0e83458ba66b02ba015b"
+                "reference": "49c743bb668256ee4a12346b925fe8cac0785512"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/italia/spid-php-lib/zipball/a9b35fbbf5f3d372883e0e83458ba66b02ba015b",
-                "reference": "a9b35fbbf5f3d372883e0e83458ba66b02ba015b",
+                "url": "https://api.github.com/repos/italia/spid-php-lib/zipball/49c743bb668256ee4a12346b925fe8cac0785512",
+                "reference": "49c743bb668256ee4a12346b925fe8cac0785512",
                 "shasum": ""
             },
             "require": {
@@ -50,7 +50,7 @@
                 }
             ],
             "description": "PHP package for SPID authentication",
-            "time": "2018-10-04 16:25:36"
+            "time": "2018-10-12 14:03:16"
         },
         {
             "name": "robrichards/xmlseclibs",

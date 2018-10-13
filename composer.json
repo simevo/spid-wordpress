@@ -9,7 +9,7 @@
     }],
     "require": {
         "php": ">=7.0",
-        "italia/spid-php-lib": "^0.10.0"
+        "italia/spid-php-lib": "^0.20.0"
     },
     "require-dev": {
         "squizlabs/php_codesniffer": "^3.3"
