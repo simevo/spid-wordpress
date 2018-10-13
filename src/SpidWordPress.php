@@ -59,9 +59,6 @@ class SpidWordPress
         add_filter('authenticate', array( $this, 'filterAuthenticate' ), 21, 3);
 
         $this->define_admin_hooks();
-
-
-
     }
 
     public function filterLoginMessage($message)
@@ -75,7 +72,6 @@ class SpidWordPress
         echo '<div><a class="button" href="' .
             esc_url(add_query_arg($query_args, wp_login_url())) .
             '">Accedi con SPID usando testenv2 come IdP</a></div>';
-
     }
 
     public function filterAuthenticate($user, $username, $password)
@@ -116,43 +112,45 @@ class SpidWordPress
                 }
                 */
 
-                if (empty( $attributes)) {
+                if (empty($attributes)) {
                     return new WP_Error('spid_wordpress_no_attributes', 'No attributes were present in SPID response.');
                 }
                 $existing_user = get_user_by('user_login', $attributes['spidCode']);
-                if ( $existing_user ) {
+                if ($existing_user) {
                     do_action('spid_wordpress_existing_user_authenticated', $existing_user, $attributes);
                     return $existing_user;
                 }
                 $user_args = array();
-                $user_args['user_login'] = ! empty( $attributes['spidCode'] ) ? $attributes['spidCode'] : '';
-                $user_args['first_name'] = ! empty( $attributes['name'] ) ? $attributes['name'] : '';
-                $user_args['last_name'] = ! empty( $attributes['familyName'] ) ? $attributes['familyName'] : '';
-                $user_args['email'] = ! empty( $attributes['email'] ) ? $attributes['email'] : '';
+                $user_args['user_login'] = ! empty($attributes['spidCode']) ? $attributes['spidCode'] : '';
+                $user_args['first_name'] = ! empty($attributes['name']) ? $attributes['name'] : '';
+                $user_args['last_name'] = ! empty($attributes['familyName']) ? $attributes['familyName'] : '';
+                $user_args['email'] = ! empty($attributes['email']) ? $attributes['email'] : '';
                 $user_args['role'] = 'default_role';
                 $user_args['user_pass'] = wp_generate_password(); // ??
         
                 $user_args = apply_filters('spid_wordpress_insert_user', $user_args, $attributes);
                 $user_id = wp_insert_user($user_args);
-                if (is_wp_error( $user_id)) {
+                if (is_wp_error($user_id)) {
                     return $user_id;
                 }
-                $user = get_user_by( 'id', $user_id );
+                $user = get_user_by('id', $user_id);
             } else {
                 return new WP_Error('spid_wrong_endpoint', 'Wrong endpoint');
             }
         } else {
             // ignore
         }
-        do_action('spid_wordress_new_user_authenticated', $user, $attributes );
+        do_action('spid_wordress_new_user_authenticated', $user, $attributes);
         return $user;
     }
 
-    private function define_admin_hooks() {
-        $plugin_admin = new SpidWordpressAdmin();   
+    private function define_admin_hooks()
+    {
+        $plugin_admin = new SpidWordpressAdmin();
     }
 
-    public function getOptions(){
+    public function getOptions()
+    {
         $options = [];
         
         $options['sp_org_name'] = get_option('sp_org_name');
@@ -180,12 +178,14 @@ class SpidWordPress
         return $options;
     }
 
-    public function findActiveAttributes($options){
+    public function findActiveAttributes($options)
+    {
         $activeAttributes = [];
         foreach ($options['sp_attributes'] as $key => $value) {
-            if($value=='on')$activeAttributes[] = substr ( $key , 3 );
+            if ($value=='on') {
+                $activeAttributes[] = substr($key, 3);
+            }
         }
         return $activeAttributes;
     }
-
 }
