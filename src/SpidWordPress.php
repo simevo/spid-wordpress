@@ -121,14 +121,16 @@ class SpidWordPress
                     return $existing_user;
                 }
                 $user_args = array();
+                // assumes that name and familyName attributes are requested to IdP !
                 $user_args['user_login'] = ! empty($attributes['spidCode']) ? $attributes['spidCode'] : '';
                 $user_args['first_name'] = ! empty($attributes['name']) ? $attributes['name'] : '';
                 $user_args['last_name'] = ! empty($attributes['familyName']) ? $attributes['familyName'] : '';
                 $user_args['email'] = ! empty($attributes['email']) ? $attributes['email'] : '';
-                $user_args['role'] = 'default_role';
+                $user_args['role'] = get_option('default_role');
                 $user_args['user_pass'] = wp_generate_password(); // ??
         
                 $user_args = apply_filters('spid_wordpress_insert_user', $user_args, $attributes);
+                // https://developer.wordpress.org/reference/functions/wp_insert_user/
                 $user_id = wp_insert_user($user_args);
                 if (is_wp_error($user_id)) {
                     return $user_id;
