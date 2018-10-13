@@ -43,7 +43,7 @@ class SpidWordPress
             'sp_assertionconsumerservice' => [
                 $base . '/wp-login.php?sso=spid'
             ],
-            'sp_singlelogoutservice' => $base . '/wp-login.php?sso=spid&amp;slo',
+            'sp_singlelogoutservice' => [[$base . '/wp-login.php?sso=spid&amp;slo', '']],
             'sp_org_name' => 'test',
             'sp_org_display_name' => 'Test',
             'idp_metadata_folder' => "$home/idp_metadata/",
