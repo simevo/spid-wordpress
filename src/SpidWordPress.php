@@ -75,6 +75,9 @@ class SpidWordPress
         echo '<div><a class="button" href="' .
             esc_url(add_query_arg($query_args, wp_login_url())) .
             '">Accedi con SPID usando testenv2 come IdP</a></div>';
+            
+        $mapping =$this->auth->getIdpList();
+        include_once('partials/spid-button.php');
     }
 
     public function filterAuthenticate($user, $username, $password)
@@ -200,6 +203,7 @@ class SpidWordPress
         function enqueue_login_script() 
         {
             wp_enqueue_script( 'spid-smart-button-script', 'https://italia.github.io/spid-smart-button/spid-button.min.js', false );
+
         }
 
         function enqueue_login_css() 
