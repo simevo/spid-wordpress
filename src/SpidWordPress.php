@@ -59,6 +59,9 @@ class SpidWordPress
         add_filter('authenticate', array( $this, 'filterAuthenticate' ), 21, 3);
 
         $this->define_admin_hooks();
+
+        $this->spid_enqueue_scripts();
+       
     }
 
     public function filterLoginMessage($message)
@@ -128,7 +131,7 @@ class SpidWordPress
                 $user_args['user_email'] = ! empty($attributes['email']) ? $attributes['email'] : '';
                 $user_args['role'] = get_option('default_role');
                 $user_args['user_pass'] = wp_generate_password(); // ??
-        
+
                 $user_args = apply_filters('spid_wordpress_insert_user', $user_args, $attributes);
                 // https://developer.wordpress.org/reference/functions/wp_insert_user/
                 $user_id = wp_insert_user($user_args);
@@ -190,4 +193,25 @@ class SpidWordPress
         }
         return $activeAttributes;
     }
+
+    public function spid_enqueue_scripts()
+    {
+        
+        function enqueue_login_script() 
+        {
+            wp_enqueue_script( 'spid-smart-button-script', 'https://italia.github.io/spid-smart-button/spid-button.min.js', false );
+        }
+
+        function enqueue_login_css() 
+        {
+            wp_enqueue_style( 'spid-smart-button-css', 'https://italia.github.io/spid-smart-button/spid-button.min.css', false );
+        }
+
+        // enqueue scripts and css only for the login page
+        add_action( 'login_enqueue_scripts', 'enqueue_login_css', 1 );
+        add_action( 'login_enqueue_scripts', 'enqueue_login_script', 10 );
+        
+    }
+
+
 }
