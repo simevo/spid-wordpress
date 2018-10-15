@@ -125,7 +125,7 @@ class SpidWordPress
                 $user_args['user_login'] = ! empty($attributes['spidCode']) ? $attributes['spidCode'] : '';
                 $user_args['first_name'] = ! empty($attributes['name']) ? $attributes['name'] : '';
                 $user_args['last_name'] = ! empty($attributes['familyName']) ? $attributes['familyName'] : '';
-                $user_args['email'] = ! empty($attributes['email']) ? $attributes['email'] : '';
+                $user_args['user_email'] = ! empty($attributes['email']) ? $attributes['email'] : '';
                 $user_args['role'] = get_option('default_role');
                 $user_args['user_pass'] = wp_generate_password(); // ??
         
