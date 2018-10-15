@@ -9,7 +9,7 @@ var spid = SPID.init({
     lang: 'it',
     selector: '#spid-button',
     method: 'GET',
-    url: 'wp-login?sso=spid&idp={{idp}}', // to perform login with POST use: '/login-post?idp={{idp}}'
+    url: 'wp-login.php?sso=spid&idp={{idp}}', // to perform login with POST use: '/login-post?idp={{idp}}'
     mapping: {                    
         <?php 
         foreach ($mapping as $key => $value) {
