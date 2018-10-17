@@ -2,6 +2,9 @@
 
 defined('WPINC') or die;
 
+$roles = get_editable_roles();
+unset($roles['administrator']); // we don't want to create new admins automatically
+
 if (array_key_exists('save_options', $_POST)) {
     echo "<div id='setting-error-settings-updated' class='updated settings-error notice is-dismissable'><strong>Opzioni salvate</strong></div>";
     update_option('sp_org_name', $_POST['sp_org_name']);
@@ -23,6 +26,7 @@ if (array_key_exists('save_options', $_POST)) {
     update_option('sp_address', $_POST['sp_address']);
     update_option('sp_expirationDate', $_POST['sp_expirationDate']);
     update_option('sp_digitalAddress', $_POST['sp_digitalAddress']);
+    update_option('sp_role', $_POST['sp_role']);
 }
 
 $sp_org_name         = get_option('sp_org_name', 'nessuno');
@@ -44,6 +48,8 @@ $sp_mobilePhone      = get_option('sp_mobilePhone', '');
 $sp_address          = get_option('sp_address', '');
 $sp_expirationDate   = get_option('sp_expirationDate', '');
 $sp_digitalAddress   = get_option('sp_digitalAddress', '');
+$sp_role             = get_option('sp_role', 'subscriber');
+
 ?>
 <div class="wrap">
 
@@ -71,6 +77,22 @@ $sp_digitalAddress   = get_option('sp_digitalAddress', '');
 					<select name="sp_livello">
 					  <option value="1" <?php if($sp_livello==1)echo "selected";?>>1</option>
 					  <option value="2" <?php if($sp_livello==2)echo "selected";?>>2</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<th><label for="sp_livello">Ruolo da assegnare a utente</label></th>
+				<td>
+					<select name="sp_role">
+					  <?php
+					  	foreach ($roles as $key => $value) {
+					  		echo "<option value=".$key;
+					  		if($sp_role==$key)echo " selected ";
+					  		echo ">".$key."</option>";
+					  	}
+					  ?>
+					  
+					  
 					</select>
 				</td>
 			</tr>
