@@ -209,6 +209,7 @@ class SpidWordPress
         function enqueue_login_css() 
         {
             wp_enqueue_style( 'spid-smart-button-css', 'https://italia.github.io/spid-smart-button/spid-button.min.css', false );
+            wp_enqueue_style( 'general-css', plugin_dir_url( __FILE__ ).'/css/style.css', false );
         }
 
         // enqueue scripts and css only for the login page
