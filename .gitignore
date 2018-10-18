@@ -1,6 +1,17 @@
-vendor
-ansible/credentials
+# Misc
+/ansible/credentials
 .directory
+
+# MacOS
+.DS_Store
+
+# Composer
+composer.phar
+composer.lock
+/vendor/
+/wpcs/
+
+# Docker Related
 docker/spid-testenv2/users.json
 docker/spid-testenv2/config.yaml
 docker/spid-testenv2/idp.key
