@@ -1,6 +1,6 @@
 <?php
-if (!class_exists('SpidWordpressAdmin')) {
-    class SpidWordpressAdmin
+if (!class_exists('SPID_Admin')) {
+    class SPID_Admin
     {
         public function __construct()
         {

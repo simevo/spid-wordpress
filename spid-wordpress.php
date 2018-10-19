@@ -27,9 +27,49 @@ if (!defined('WPINC')) {
     die;
 }
 
-session_start();
+/**
+ * Current version.
+ * Use SemVer - https://semver.org
+ */
+define('SPID_WORDPRESS_VERSION', '1.0.0');
 
-// Load plugin
-require_once 'src/SpidWordPress.php';
+/**
+ * Plugin Directory
+ */
+$spid_path = plugin_dir_path(__FILE__);
 
-SpidWordPress::getInstance();
+/**
+ * Load core files
+ */
+require_once $spid_path . 'includes/class-spid-core.php';
+require_once $spid_path . 'admin/class-spid-admin.php';
+
+/**
+ * Load spid-php-lib Library
+ */
+require_once $spid_path . 'spid-php-lib/src/Spid/Interfaces/IdpInterface.php';
+require_once $spid_path . 'spid-php-lib/src/Spid/Interfaces/RequestInterface.php';
+require_once $spid_path . 'spid-php-lib/src/Spid/Interfaces/ResponseInterface.php';
+require_once $spid_path . 'spid-php-lib/src/Spid/Interfaces/SAMLInterface.php';
+
+require_once $spid_path . 'spid-php-lib/src/Spid/Saml/Idp.php';
+require_once $spid_path . 'spid-php-lib/src/Spid/Saml/Settings.php';
+require_once $spid_path . 'spid-php-lib/src/Spid/Saml/SignatureUtils.php';
+
+require_once $spid_path . 'spid-php-lib/src/Spid/Saml/In/BaseResponse.php';
+require_once $spid_path . 'spid-php-lib/src/Spid/Saml/In/LogoutRequest.php';
+require_once $spid_path . 'spid-php-lib/src/Spid/Saml/In/LogoutResponse.php';
+require_once $spid_path . 'spid-php-lib/src/Spid/Saml/In/Response.php';
+
+require_once $spid_path . 'spid-php-lib/src/Spid/Saml/Out/Base.php';
+require_once $spid_path . 'spid-php-lib/src/Spid/Saml/Out/AuthnRequest.php';
+require_once $spid_path . 'spid-php-lib/src/Spid/Saml/Out/LogoutRequest.php';
+require_once $spid_path . 'spid-php-lib/src/Spid/Saml/Out/LogoutResponse.php';
+
+
+require_once $spid_path . 'spid-php-lib/src/Spid/Saml.php';
+require_once $spid_path . 'spid-php-lib/src/Spid/Session.php';
+
+require_once $spid_path . 'spid-php-lib/src/Sp.php';
+
+SPID_Core::getInstance();
