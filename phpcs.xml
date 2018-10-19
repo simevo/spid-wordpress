@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<ruleset name="SPID WordPress PHPCS">
+	<description>TODO</description>
+
+	<rule ref="SPIDWP-Default" />
+</ruleset>
