@@ -88,7 +88,7 @@ class SPID_Core
             '">Accedi con SPID usando testenv2 come IdP</a></div>';
 
         $mapping = $this->auth->getIdpList();
-        include_once plugin_dir_path(__DIR__) . 'templates/spid-button.php';
+        include_once SPID_WORDPRESS_PATH . 'templates/spid-button.php';
     }
 
     public function filterAuthenticate($user, $username, $password)
