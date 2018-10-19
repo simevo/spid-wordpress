@@ -1,8 +1,0 @@
----
-
-spid_wordpress_hostname: 'wp.simevo.com'
-
-spid_wordpress_dir: '/srv/spid-wordpress'
-
-spid_wordpress_location: '/wp'
-

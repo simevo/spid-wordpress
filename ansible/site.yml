@@ -1,9 +1,0 @@
----
-- hosts: wp
-  remote_user: root
-  vars_files:
-    - spid-wordpress_vars.yml
-  roles:
-    - nginx
-    - wordpress
-    - spid-wordpress
