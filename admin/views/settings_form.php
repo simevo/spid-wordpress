@@ -60,6 +60,10 @@ $sp_role = get_option('sp_role', 'subscriber');
 	<form action="" method="post">
 		<table class="form-table">
 			<tr>
+				<th><label>Metadata del servizio</label></th>
+				<td><a href="/wp-login.php?sso=spid&metadata" target="_blank">SP metadata</a></td>
+			</tr>
+			<tr>
 				<th><label for="sp_org_name">Nome del Service Provider</label></th>
 				<td><input name="sp_org_name" class="large-text" value="<?php echo $sp_org_name; ?>" class="regular-text"></td>
 			</tr>
