@@ -79,16 +79,6 @@ class SPID_Core
 
     public function filterLoginMessage($message)
     {
-        $options = $this->options;
-
-        $query_args = array(
-            'sso' => $options['sp_sso'],
-            'idp' => $options['sp_idp']
-        );
-        echo '<div><a class="button" href="' .
-            esc_url(add_query_arg($query_args, wp_login_url())) .
-            '">Accedi con SPID usando testenv2 come IdP</a></div>';
-
         $mapping = $this->auth->getIdpList();
         include_once SPID_WORDPRESS_PATH . 'templates/spid-button.php';
     }

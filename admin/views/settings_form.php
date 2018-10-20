@@ -116,7 +116,7 @@ $sp_emailAddress = get_option('sp_emailAddress', 'test@example.com');
 				<td><input name="sp_sso" class="large-text" value="<?php echo $sp_sso; ?>" class="regular-text"></td>
 			</tr>
 			<tr>
-				<th><label for="sp_idp">Identity Provider</label></th>
+				<th><label for="sp_idp">Name of the test Identity Provider</label></th>
 				<td><input name="sp_idp" class="large-text" value="<?php echo $sp_idp; ?>" class="regular-text"></td>
 			</tr>
 			<tr>
