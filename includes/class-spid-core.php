@@ -233,5 +233,9 @@ class SPID_Core
 
     }
 
+    public function configure(string $countryName, string $stateName, string $localityName, string $commonName, string $emailAddress)
+    {
+        return $this->auth->configure($countryName, $stateName, $localityName, $commonName, $emailAddress);
+    }
 
 }

@@ -5,6 +5,14 @@ defined('WPINC') or die;
 $roles = get_editable_roles();
 unset($roles['administrator']); // we don't want to create new admins automatically
 
+if (array_key_exists('config', $_POST)) {
+	echo "<div id='setting-error-settings-updated' class='updated settings-error notice is-dismissable'><strong>Plugin configurato !</strong></div>";
+	SPID_Core::getInstance()->configure('IT', $_POST['sp_stateName'], $_POST['sp_localityName'], $_POST['commonName'], $_POST['sp_emailAddress']);
+	update_option('sp_stateName', $_POST['sp_stateName']);
+	update_option('sp_localityName', $_POST['sp_localityName']);
+	update_option('sp_emailAddress', $_POST['sp_emailAddress']);
+}
+
 if (array_key_exists('save_options', $_POST)) {
 	echo "<div id='setting-error-settings-updated' class='updated settings-error notice is-dismissable'><strong>Opzioni salvate</strong></div>";
 	update_option('sp_org_name', $_POST['sp_org_name']);
@@ -51,20 +59,50 @@ $sp_address = get_option('sp_address', '');
 $sp_expirationDate = get_option('sp_expirationDate', '');
 $sp_digitalAddress = get_option('sp_digitalAddress', '');
 $sp_role = get_option('sp_role', 'subscriber');
+$sp_stateName = get_option('sp_stateName', 'Roma');
+$sp_localityName = get_option('sp_localityName', 'Ostia');
+$sp_emailAddress = get_option('sp_emailAddress', 'test@example.com');
 
 ?>
 <div class="wrap">
 
 	<img src="<?php echo plugins_url('public/images/spid-logo-b-lb.png', dirname(__DIR__)); ?>"  width="500" height="98" border="0" />
 
-	<h2>SPID opzioni</h2>
-	
+	<h2>SPID configurazione</h2>
+
 	<form action="" method="post">
 		<table class="form-table">
 			<tr>
 				<th><label>Metadata del servizio</label></th>
 				<td><a href="/wp-login.php?sso=spid&metadata" target="_blank">SP metadata</a></td>
 			</tr>
+			<tr>
+				<th><label for="sp_stateName">Provincia (nome per esteso)</label></th>
+				<td><input name="sp_stateName" class="large-text" value="<?php echo $sp_stateName; ?>"></td>
+			</tr>
+			<tr>
+				<th><label for="sp_localityName">Città</label></th>
+				<td><input name="sp_localityName" class="large-text" value="<?php echo $sp_localityName; ?>"></td>
+			</tr>
+			</tr>
+			<tr>
+				<th><label for="sp_emailAddress">Indirizzo email dell'ente o del referente tecnico</label></th>
+				<td><input name="sp_emailAddress" class="large-text" type="email" value="<?php echo $sp_emailAddress; ?>"></td>
+			</tr>
+		</table>
+    <input hidden name="commonName" class="large-text" value="<?php echo parse_url(get_home_url(), PHP_URL_HOST); ?>">
+		
+		<p class="submit">
+			<input type="submit" value="Configura" name="config" class="button button-primary"/>
+		</p>
+	</form>
+
+	<hr/>
+	
+	<h2>SPID opzioni</h2>
+
+	<form action="" method="post">
+		<table class="form-table">
 			<tr>
 				<th><label for="sp_org_name">Nome breve del Service Provider</label></th>
 				<td><input name="sp_org_name" class="large-text" value="<?php echo $sp_org_name; ?>" class="regular-text"></td>
