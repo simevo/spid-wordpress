@@ -5,6 +5,8 @@ if (!defined('WPINC')) {
     die;
 }
 
+require_once dirname(__FILE__) . '/../spid-php-lib/vendor/autoload.php';
+
 class SPID_Core
 {
 
