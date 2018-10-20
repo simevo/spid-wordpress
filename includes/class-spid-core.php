@@ -176,6 +176,7 @@ class SPID_Core
         $options = [];
 
         $options['sp_org_name'] = get_option('sp_org_name');
+        $options['sp_org_display_name'] = get_option('sp_org_display_name');
         $options['sp_sso'] = get_option('sp_sso', 'spid');
         $options['sp_idp'] = get_option('sp_idp', 'testenv2');
         $options['sp_livello'] = get_option('sp_livello');

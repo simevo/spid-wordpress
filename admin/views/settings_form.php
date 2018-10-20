@@ -8,6 +8,7 @@ unset($roles['administrator']); // we don't want to create new admins automatica
 if (array_key_exists('save_options', $_POST)) {
 	echo "<div id='setting-error-settings-updated' class='updated settings-error notice is-dismissable'><strong>Opzioni salvate</strong></div>";
 	update_option('sp_org_name', $_POST['sp_org_name']);
+	update_option('sp_org_display_name', $_POST['sp_org_display_name']);
 	update_option('sp_sso', $_POST['sp_sso']);
 	update_option('sp_idp', $_POST['sp_idp']);
 	update_option('sp_livello', $_POST['sp_livello']);
@@ -30,6 +31,7 @@ if (array_key_exists('save_options', $_POST)) {
 }
 
 $sp_org_name = get_option('sp_org_name', 'nessuno');
+$sp_org_display_name = get_option('sp_org_display_name', 'nessuno');
 $sp_sso = get_option('sp_sso', 'spid');
 $sp_idp = get_option('sp_idp', 'testenv2');
 $sp_livello = get_option('sp_livello', '1');
@@ -64,8 +66,12 @@ $sp_role = get_option('sp_role', 'subscriber');
 				<td><a href="/wp-login.php?sso=spid&metadata" target="_blank">SP metadata</a></td>
 			</tr>
 			<tr>
-				<th><label for="sp_org_name">Nome del Service Provider</label></th>
+				<th><label for="sp_org_name">Nome breve del Service Provider</label></th>
 				<td><input name="sp_org_name" class="large-text" value="<?php echo $sp_org_name; ?>" class="regular-text"></td>
+			</tr>
+			<tr>
+				<th><label for="sp_org_display_name">Descrizione del Service Provider</label></th>
+				<td><input name="sp_org_display_name" class="large-text" value="<?php echo $sp_org_display_name; ?>" class="regular-text"></td>
 			</tr>
 			<tr>
 				<th><label for="sp_sso">SSO</label></th>
