@@ -4,22 +4,28 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "e7bed20333f325cbaa4bd88aa9622ad3",
-    "content-hash": "c7619beafa0ffd3bb37faa6d099333b8",
+    "hash": "c5182559096cf5c02d7430b4c53993ea",
+    "content-hash": "ca79d02351a05cd9dd9cd9acac6bc304",
     "packages": [
         {
             "name": "italia/spid-php-lib",
-            "version": "v0.20",
+            "version": "dev-feature/issue-65-certs",
             "source": {
                 "type": "git",
                 "url": "https://github.com/italia/spid-php-lib.git",
-                "reference": "49c743bb668256ee4a12346b925fe8cac0785512"
+                "reference": "0b58ecd32b4909ff207f2a47b3dcac8b7507b2fb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/italia/spid-php-lib/zipball/49c743bb668256ee4a12346b925fe8cac0785512",
-                "reference": "49c743bb668256ee4a12346b925fe8cac0785512",
+                "url": "https://api.github.com/repos/italia/spid-php-lib/zipball/0b58ecd32b4909ff207f2a47b3dcac8b7507b2fb",
+                "reference": "0b58ecd32b4909ff207f2a47b3dcac8b7507b2fb",
                 "shasum": ""
+            },
+            "archive": {
+                "exclude": [
+                    "/example",
+                    "/tests"
+                ]
             },
             "require": {
                 "php": "^7.0",
@@ -35,7 +41,6 @@
                     "Italia\\Spid\\": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "BSD-3-Clause"
             ],
@@ -50,7 +55,11 @@
                 }
             ],
             "description": "PHP package for SPID authentication",
-            "time": "2018-10-12 14:03:16"
+            "support": {
+                "source": "https://github.com/italia/spid-php-lib/tree/feature/issue-65-certs",
+                "issues": "https://github.com/italia/spid-php-lib/issues"
+            },
+            "time": "2018-10-20 13:46:29"
         },
         {
             "name": "robrichards/xmlseclibs",
@@ -144,9 +153,18 @@
             "time": "2018-09-23 23:08:17"
         }
     ],
-    "aliases": [],
+    "aliases": [
+        {
+            "alias": "0.30.0",
+            "alias_normalized": "0.30.0.0",
+            "version": "dev-feature/issue-65-certs",
+            "package": "italia/spid-php-lib"
+        }
+    ],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "italia/spid-php-lib": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {

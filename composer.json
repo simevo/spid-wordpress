@@ -7,9 +7,15 @@
         "name": "Paolo Greppi",
         "email": "paolo.greppi@libpf.com"
     }],
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/italia/spid-php-lib"
+        }
+    ],
     "require": {
         "php": ">=7.0",
-        "italia/spid-php-lib": "^0.20.0"
+        "italia/spid-php-lib": "dev-feature/issue-65-certs#0b58ecd32b4909ff207f2a47b3dcac8b7507b2fb as 0.30.0"
     },
     "require-dev": {
         "squizlabs/php_codesniffer": "^3.3"
