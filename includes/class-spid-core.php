@@ -39,7 +39,7 @@ class SPID_Core
     {
         $base = get_home_url();
 
-        $home = "wp-content/plugins/spid-wordpress/docker";
+        $home = dirname(__FILE__) . "/../docker";
 
         // the following are mandatory attributes for any WordPress install of the plugin
         update_option('sp_spidCode', 'on');
