@@ -55,8 +55,8 @@ class SPID_Core
                 $base . '/wp-login.php?sso=spid'
             ],
             'sp_singlelogoutservice' => [[$base . '/wp-login.php?sso=spid&amp;slo', '']],
-            'sp_org_name' => 'test',
-            'sp_org_display_name' => 'Test',
+            'sp_org_name' => $this->options['sp_org_name'],
+            'sp_org_display_name' => $this->options['sp_org_display_name'],
             'idp_metadata_folder' => "$home/idp_metadata/",
             'sp_attributeconsumingservice' => [$sp_attributeconsumingservice],
         ];
@@ -174,6 +174,7 @@ class SPID_Core
         $options = [];
 
         $options['sp_org_name'] = get_option('sp_org_name');
+        $options['sp_org_display_name'] = get_option('sp_org_display_name');
         $options['sp_sso'] = get_option('sp_sso', 'spid');
         $options['sp_idp'] = get_option('sp_idp', 'testenv2');
         $options['sp_livello'] = get_option('sp_livello');
