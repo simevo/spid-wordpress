@@ -109,6 +109,14 @@ if (!class_exists('SPID_Admin')) {
                 'spid_settings_section' // Section
             );
 
+            add_settings_field(
+                'sp_livello', // ID
+                'SPID Level', // Title
+                array($this, 'sp_livello_callback'), // Callback
+                'spid-setting-admin', // Page
+                'spid_settings_section' // Section
+            );
+
             /**
              * SPID Button Settings
              */
@@ -191,6 +199,18 @@ if (!class_exists('SPID_Admin')) {
             );
         }
 
+        public function sp_livello_callback()
+        {
+            printf(
+                '<select name="spid_general[sp_livello]" id="sp_livello" value="%s"/>
+                <option selected disabled>Choose here</option>
+                <option value="1">1</option>
+				<option value="2">2</option>
+                </select>',
+                isset($this->spid_options_general['sp_livello']) ? esc_attr($this->spid_options_general['sp_livello']) : ''
+            );
+        }
+
         /**
          * SPID Button Settings
          */
@@ -210,6 +230,7 @@ if (!class_exists('SPID_Admin')) {
         public function sanitize($input)
         {
             $new_input = array();
+
             if (isset($input['sp_org_name']))
                 $new_input['sp_org_name'] = sanitize_text_field($input['sp_org_name']);
 
@@ -218,6 +239,9 @@ if (!class_exists('SPID_Admin')) {
 
             if (isset($input['sp_idp']))
                 $new_input['sp_idp'] = sanitize_text_field($input['sp_idp']);
+
+            if (isset($input['sp_livello']))
+                $new_input['sp_livello'] = sanitize_text_field($input['sp_livello']);
 
             return $new_input;
         }
