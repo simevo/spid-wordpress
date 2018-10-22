@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * @category Description
+ * @package  SPID_WordPress
+ * @author   Paolo Greppi simevo s.r.l. <email@emailgoeshere.com>
+ * @license  GNU Affero General Public License v3.0
+ * @link     https://github.com/simevo/spid-wordpress
+ * @since    1.0.0
+ */
+
 // If this file is called directly, abort.
 if (!defined('WPINC')) {
     die;
@@ -25,19 +34,12 @@ class SPID_Core
         return self::$instance;
     }
 
-    /**
-     * Define WC Constants.
-     */
-    private function define_constants()
-    {
-        $this->define('SPID_ABSPATH', dirname(WC_PLUGIN_FILE) . '/');
-    }
-
     public function actionInit()
     {
         $base = get_home_url();
 
-        $home = "wp-content/plugins/spid-wordpress/docker";
+        // Path to key and crt file.
+        $home = "";
 
         // the following are mandatory attributes for any WordPress install of the plugin
         update_option('sp_spidCode', 'on');
@@ -122,11 +124,6 @@ class SPID_Core
                     error_log('not authenticated');
                 }
                 $attributes = $this->auth->getAttributes();
-                /*
-                foreach ($attributes as $key => $attr) {
-                    echo $key . ' - ' . $attr . '<br>';
-                }
-                 */
 
                 if (empty($attributes)) {
                     return new WP_Error('spid_wordpress_no_attributes', 'No attributes were present in SPID response.');
@@ -171,8 +168,6 @@ class SPID_Core
 
     public function getOptions()
     {
-        $options = [];
-
         $options['sp_org_name'] = get_option('sp_org_name');
         $options['sp_org_display_name'] = get_option('sp_org_display_name');
         $options['sp_sso'] = get_option('sp_sso', 'spid');
@@ -216,7 +211,6 @@ class SPID_Core
         function enqueue_login_script()
         {
             wp_enqueue_script('spid-smart-button-script', 'https://italia.github.io/spid-smart-button/spid-button.min.js', false);
-
         }
 
         function enqueue_login_css()

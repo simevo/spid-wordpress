@@ -28,6 +28,16 @@ if (!defined('WPINC')) {
 }
 
 /**
+ * Translations
+ *
+ */
+function spid_wordpress_textdomain()
+{
+    load_plugin_textdomain('spid-wordpress', false, basename(dirname(__FILE__)) . '/languages/');
+}
+add_action('plugins_loaded', 'spid_wordpress_textdomain');
+
+/**
  * Global constants
  */
 define('SPID_WORDPRESS_VERSION', '1.0.0');

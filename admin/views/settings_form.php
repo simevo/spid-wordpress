@@ -53,9 +53,9 @@ $sp_role = get_option('sp_role', 'subscriber');
 ?>
 <div class="wrap">
 
-	<img src="<?php echo plugins_url('public/images/spid-logo-b-lb.png', dirname(__DIR__)); ?>"  width="500" height="98" border="0" />
+	<img src="<?php echo plugins_url('public/images/spid.png', dirname(__DIR__)); ?>"  width="500" height="98" border="0" />
 
-	<h2>SPID opzioni</h2>
+	<h2><?php __('SPID Options', 'spid-wordpress'); ?></h2>
 	
 	<form action="" method="post">
 		<table class="form-table">
