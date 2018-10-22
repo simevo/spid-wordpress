@@ -10,6 +10,12 @@ class SignatureUtils
 {
     public static function signXml($xml, $settings) : string
     {
+        if (!is_readable($settings['sp_key_file'])) {
+            throw new \Exception('Your SP key file is not readable. Please check file permissions.');
+        }
+        if (!is_readable($settings['sp_cert_file'])) {
+            throw new \Exception('Your SP certificate file is not readable. Please check file permissions.');
+        }
         $key = file_get_contents($settings['sp_key_file']);
         $key = openssl_get_privatekey($key, "");
         $cert = file_get_contents($settings['sp_cert_file']);
@@ -46,6 +52,9 @@ class SignatureUtils
 
     public static function signUrl($samlRequest, $relayState, $signatureAlgo, $keyFile)
     {
+        if (!is_readable($keyFile)) {
+            throw new \Exception('Your SP key file is not readable. Please check file permissions.');
+        }
         $key = file_get_contents($keyFile);
         $key = openssl_get_privatekey($key, "");
 
@@ -61,11 +70,16 @@ class SignatureUtils
 
     public static function validateXmlSignature($xml, $cert) : bool
     {
-        if (is_null($xml)) return true;
+        if (is_null($xml)) {
+            return true;
+        }
         $dom = clone $xml->ownerDocument;
 
         $certFingerprint = Settings::cleanOpenSsl($cert, true);
-        $signCertFingerprint = Settings::cleanOpenSsl($dom->getElementsByTagName('X509Certificate')->item(0)->nodeValue, true); 
+        $signCertFingerprint = Settings::cleanOpenSsl(
+            $dom->getElementsByTagName('X509Certificate')->item(0)->nodeValue,
+            true
+        );
         if ($signCertFingerprint != $certFingerprint) {
             return false;
         }

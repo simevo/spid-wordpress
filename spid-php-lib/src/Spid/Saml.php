@@ -10,9 +10,9 @@ use Italia\Spid\Spid\Interfaces\SAMLInterface;
 
 class Saml implements SAMLInterface
 {
-    var $settings;
-    var $idps = []; // contains filename -> Idp object array
-    var $session; // Session object
+    public $settings;
+    private $idps = []; // contains filename -> Idp object array
+    private $session; // Session object
 
     public function __construct(array $settings)
     {
@@ -22,7 +22,9 @@ class Saml implements SAMLInterface
 
     public function loadIdpFromFile(string $filename)
     {
-        if (empty($filename)) return null;
+        if (empty($filename)) {
+            return null;
+        }
         if (array_key_exists($filename, $this->idps)) {
             return $this->idps[$filename];
         }
@@ -37,7 +39,7 @@ class Saml implements SAMLInterface
 
         if (is_array($files)) {
             $mapping = array();
-            foreach($files as $filename) {
+            foreach ($files as $filename) {
                 $idp = $this->loadIdpFromFile($filename);
                 
                 $mapping[basename($filename, ".xml")] = $idp->metadata['idpEntityId'];
@@ -54,6 +56,11 @@ class Saml implements SAMLInterface
 
     public function getSPMetadata(): string
     {
+        if (!is_readable($this->settings['sp_cert_file'])) {
+            return <<<XML
+            <error>Your SP certificate file is not readable. Please check file permissions.</error>
+XML;
+        }
         $entityID = $this->settings['sp_entityid'];
         $id = preg_replace('/[^a-z0-9_-]/', '_', $entityID);
         $cert = Settings::cleanOpenSsl($this->settings['sp_cert_file']);
@@ -72,7 +79,7 @@ class Saml implements SAMLInterface
         </md:KeyDescriptor>
 XML;
         foreach ($sloLocationArray as $slo) {
-            $location = $slo[0]; 
+            $location = $slo[0];
             $binding = $slo[1];
             if (strcasecmp($binding, "POST") === 0 || strcasecmp($binding, "") === 0) {
                 $binding = Settings::BINDING_POST;
@@ -127,8 +134,14 @@ XML;
         return SignatureUtils::signXml($xml, $this->settings);
     }
 
-    public function login(string $idpName, int $assertId, int $attrId, $level = 1, string $redirectTo = null, $shouldRedirect = true)
-    {
+    public function login(
+        string $idpName,
+        int $assertId,
+        int $attrId,
+        $level = 1,
+        string $redirectTo = null,
+        $shouldRedirect = true
+    ) {
         $args = func_get_args();
         return $this->baseLogin(Settings::BINDING_REDIRECT, ...$args);
     }
@@ -139,8 +152,15 @@ XML;
         return $this->baseLogin(Settings::BINDING_POST, ...$args);
     }
 
-    private function baseLogin($binding = Settings::BINDING_REDIRECT, $idpName, $assertId, $attrId, $level = 1, $redirectTo = null, $shouldRedirect = true)
-    {
+    private function baseLogin(
+        $binding,
+        $idpName,
+        $assertId,
+        $attrId,
+        $level = 1,
+        $redirectTo = null,
+        $shouldRedirect = true
+    ) {
         if ($this->isAuthenticated()) {
             return false;
         }
@@ -162,7 +182,9 @@ XML;
     public function isAuthenticated() : bool
     {
         $selectedIdp = $_SESSION['idpName'] ?? $_SESSION['spidSession']->idp ?? null;
-        if (is_null($selectedIdp)) return false;
+        if (is_null($selectedIdp)) {
+            return false;
+        }
         $idp = $this->loadIdpFromFile($_SESSION['idpName'] ?? $_SESSION['spidSession']->idp);
         $response = new BaseResponse($this);
         if (!empty($idp) && !$response->validate($idp->metadata['idpCertValue'])) {
@@ -191,7 +213,7 @@ XML;
         return $this->baseLogout(Settings::BINDING_POST, ...$args);
     }
 
-    private function baseLogout($binding = Settings::BINDING_REDIRECT, $slo, $redirectTo = null, $shouldRedirect = true)
+    private function baseLogout($binding, $slo, $redirectTo = null, $shouldRedirect = true)
     {
         if (!$this->isAuthenticated()) {
             return false;
@@ -202,7 +224,54 @@ XML;
 
     public function getAttributes() : array
     {
-        if ($this->isAuthenticated() === false) return array();
+        if ($this->isAuthenticated() === false) {
+            return array();
+        }
         return $this->session->attributes;
+    }
+    
+    public function isConfigured() : bool
+    {
+        if (!is_readable($this->settings['sp_key_file'])) {
+            return false;
+        }
+        if (!is_readable($this->settings['sp_cert_file'])) {
+            return false;
+        }
+        $key = file_get_contents($this->settings['sp_key_file']);
+        if (!openssl_get_privatekey($key)) {
+            return false;
+        }
+        $cert = file_get_contents($this->settings['sp_cert_file']);
+        if (!openssl_get_publickey($cert)) {
+            return false;
+        }
+        return true;
+    }
+
+    public function configure(string $countryName, string $stateName, string $localityName, string $commonName, string $emailAddress)
+    {
+        $numberofdays = 3652 * 2;
+        $privkey = openssl_pkey_new(array(
+            "private_key_bits" => 2048,
+            "private_key_type" => OPENSSL_KEYTYPE_RSA,
+        ));
+        $dn = array(
+            "countryName" => $countryName,
+            "stateOrProvinceName" => $stateName,
+            "localityName" => $localityName,
+            "organizationName" => $orgName = $this->settings['sp_org_name'],
+            "organizationalUnitName" => $this->settings['sp_org_display_name'],
+            "commonName" => $commonName,
+            "emailAddress" => $emailAddress
+        );
+        $csr = openssl_csr_new($dn, $privkey, array('digest_alg' => 'sha256'));
+        $myserial = (int) hexdec(bin2hex(openssl_random_pseudo_bytes(8)));
+        $configArgs = array("digest_alg" => "sha256");
+        $sscert = openssl_csr_sign($csr, null, $privkey, $numberofdays, $configArgs, $myserial);
+        openssl_x509_export($sscert, $publickey);
+        openssl_pkey_export($privkey, $privatekey);
+        file_put_contents($this->settings['sp_key_file'], $privatekey);
+        file_put_contents($this->settings['sp_cert_file'], $publickey);
     }
 }
