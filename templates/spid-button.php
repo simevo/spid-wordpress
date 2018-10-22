@@ -1,6 +1,6 @@
 <div id='spid-button' aria-live="polite">
     <noscript>
-        To use the Spid Smart Button, please enable javascript!
+        <?php _e('To use the SPID Smart Button, please enable javascript.', 'spid-wordpress'); ?>
     </noscript>
 </div>
 
@@ -27,7 +27,7 @@ var spid = SPID.init({
     extraProviders: [           
         {
             "protocols": ["SAML"],
-            "entityName": "Testenv",
+            "entityName": "Test",
             "logo": "spid-idp-dummy.svg",
             "entityID": "http://localhost:8088",
             "active": true
