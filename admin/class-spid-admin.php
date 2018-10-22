@@ -101,6 +101,14 @@ if (!class_exists('SPID_Admin')) {
                 'spid_settings_section' // Section
             );
 
+            add_settings_field(
+                'sp_idp', // ID
+                'Identity Provider', // Title
+                array($this, 'sp_idp_callback'), // Callback
+                'spid-setting-admin', // Page
+                'spid_settings_section' // Section
+            );
+
             /**
              * SPID Button Settings
              */
@@ -142,19 +150,22 @@ if (!class_exists('SPID_Admin')) {
             );
 
             add_settings_field(
-                'spid_help',
-                'Help',
-                array($this, 'spid_help_callback'),
-                'spid-setting-help',
-                'setting_section_id'
+                'spid_help', // ID
+                'Help', // Title
+                array($this, 'spid_help_callback'), // Callback
+                'spid-setting-help', // Page
+                'setting_section_id' // Section
             );
         }
-
 
         public function print_section_info()
         {
             echo 'Info here.';
         }
+
+        /**
+         * General Settings
+         */
 
         public function sp_org_name_callback()
         {
@@ -172,12 +183,26 @@ if (!class_exists('SPID_Admin')) {
             );
         }
 
-        public function spid_help_callback()
+        public function sp_idp_callback()
+        {
+            printf(
+                '<input type="text" id="sp_idp" name="spid_general[sp_idp]" value="%s" />',
+                isset($this->spid_options_general['sp_idp']) ? esc_attr($this->spid_options_general['sp_idp']) : ''
+            );
+        }
+
+        /**
+         * SPID Button Settings
+         */
+        public function spid_button_callback()
         {
             echo 'Info here.';
         }
 
-        public function spid_button_callback()
+        /**
+         * Help Page
+         */
+        public function spid_help_callback()
         {
             echo 'Info here.';
         }
@@ -190,6 +215,9 @@ if (!class_exists('SPID_Admin')) {
 
             if (isset($input['sp_sso']))
                 $new_input['sp_sso'] = sanitize_text_field($input['sp_sso']);
+
+            if (isset($input['sp_idp']))
+                $new_input['sp_idp'] = sanitize_text_field($input['sp_idp']);
 
             return $new_input;
         }
