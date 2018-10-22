@@ -2,10 +2,10 @@
 Contributors: vskylabv
 Donate link: https://github.com/simevo/spid-wordpress
 Tags: spid, italy
-Requires at least: 4.5
+Requires at least: 4.9
 Tested up to: 4.9.8
-License: 
-License URI: 
+License: APGL-3.0
+License URI: https://www.gnu.org/licenses/agpl-3.0.en.html
 
 Autenticazione attraverso un Identity Provider SPID (Sistema Pubblico di Identità Digitale)
 

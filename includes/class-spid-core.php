@@ -1,8 +1,11 @@
 <?php
 
-require_once dirname(__FILE__) . '/admin/SpidWordpressAdmin.php';
+// If this file is called directly, abort.
+if (!defined('WPINC')) {
+    die;
+}
 
-class SpidWordPress
+class SPID_Core
 {
 
     private static $instance;
@@ -15,11 +18,19 @@ class SpidWordPress
 
     public static function getInstance()
     {
-        if (! isset(self::$instance)) {
-            self::$instance = new SpidWordPress;
-            add_action('init', array( self::$instance, 'actionInit' ));
+        if (!isset(self::$instance)) {
+            self::$instance = new SPID_Core;
+            add_action('init', array(self::$instance, 'actionInit'));
         }
         return self::$instance;
+    }
+
+    /**
+     * Define WC Constants.
+     */
+    private function define_constants()
+    {
+        $this->define('SPID_ABSPATH', dirname(WC_PLUGIN_FILE) . '/');
     }
 
     public function actionInit()
@@ -48,41 +59,40 @@ class SpidWordPress
             'sp_org_display_name' => 'Test',
             'idp_metadata_folder' => "$home/idp_metadata/",
             'sp_attributeconsumingservice' => [$sp_attributeconsumingservice],
-            ];
+        ];
         $this->auth = new Italia\Spid\Sp($settings);
 
         // https://codex.wordpress.org/Plugin_API/Filter_Reference/login_message
-        add_filter('login_message', array( $this, 'filterLoginMessage' ));
+        add_filter('login_message', array($this, 'filterLoginMessage'));
         
         // https://codex.wordpress.org/Plugin_API/Filter_Reference/authenticate
         // after wp_authenticate_username_password runs:
-        add_filter('authenticate', array( $this, 'filterAuthenticate' ), 21, 3);
+        add_filter('authenticate', array($this, 'filterAuthenticate'), 21, 3);
 
         $this->define_admin_hooks();
 
         $this->spid_enqueue_scripts();
-       
+
     }
 
     public function filterLoginMessage($message)
     {
         $options = $this->options;
- 
-        $query_args  = array(
+
+        $query_args = array(
             'sso' => $options['sp_sso'],
             'idp' => $options['sp_idp']
         );
         echo '<div><a class="button" href="' .
             esc_url(add_query_arg($query_args, wp_login_url())) .
             '">Accedi con SPID usando testenv2 come IdP</a></div>';
-            
-        $mapping =$this->auth->getIdpList();
-        include_once('partials/spid-button.php');
+
+        $mapping = $this->auth->getIdpList();
+        include_once SPID_WORDPRESS_PATH . 'templates/spid-button.php';
     }
 
     public function filterAuthenticate($user, $username, $password)
     {
-
         if (isset($_GET['sso']) && ($_GET['sso'] == 'spid')) {
             if (isset($_GET['metadata'])) {
                 // metadata endpoint
@@ -105,18 +115,18 @@ class SpidWordPress
             } elseif (isset($_GET['slo'])) {
                 // SLO endpoint
                 // TODO
-            } elseif (! empty($_POST['SAMLResponse'])) {
+            } elseif (!empty($_POST['SAMLResponse'])) {
                 // assertion consuming service endpoint
-                if (! $this->auth->isAuthenticated()) {
+                if (!$this->auth->isAuthenticated()) {
                     // TODO error handling
                     error_log('not authenticated');
                 }
-                $attributes  = $this->auth->getAttributes();
+                $attributes = $this->auth->getAttributes();
                 /*
                 foreach ($attributes as $key => $attr) {
                     echo $key . ' - ' . $attr . '<br>';
                 }
-                */
+                 */
 
                 if (empty($attributes)) {
                     return new WP_Error('spid_wordpress_no_attributes', 'No attributes were present in SPID response.');
@@ -128,10 +138,10 @@ class SpidWordPress
                 }
                 $user_args = array();
                 // assumes that name and familyName attributes are requested to IdP !
-                $user_args['user_login'] = ! empty($attributes['spidCode']) ? $attributes['spidCode'] : '';
-                $user_args['first_name'] = ! empty($attributes['name']) ? $attributes['name'] : '';
-                $user_args['last_name'] = ! empty($attributes['familyName']) ? $attributes['familyName'] : '';
-                $user_args['user_email'] = ! empty($attributes['email']) ? $attributes['email'] : '';
+                $user_args['user_login'] = !empty($attributes['spidCode']) ? $attributes['spidCode'] : '';
+                $user_args['first_name'] = !empty($attributes['name']) ? $attributes['name'] : '';
+                $user_args['last_name'] = !empty($attributes['familyName']) ? $attributes['familyName'] : '';
+                $user_args['user_email'] = !empty($attributes['email']) ? $attributes['email'] : '';
                 $user_args['role'] = get_option('sp_role', get_option('default_role'));
                 $user_args['user_pass'] = wp_generate_password(); // ??
 
@@ -156,13 +166,13 @@ class SpidWordPress
 
     private function define_admin_hooks()
     {
-        $plugin_admin = new SpidWordpressAdmin();
+        $plugin_admin = new SPID_Admin();
     }
 
     public function getOptions()
     {
         $options = [];
-        
+
         $options['sp_org_name'] = get_option('sp_org_name');
         $options['sp_sso'] = get_option('sp_sso', 'spid');
         $options['sp_idp'] = get_option('sp_idp', 'testenv2');
@@ -184,7 +194,7 @@ class SpidWordPress
         $options['sp_attributes']['sp_address'] = get_option('sp_address');
         $options['sp_attributes']['sp_expirationDate'] = get_option('sp_expirationDate');
         $options['sp_attributes']['sp_digitalAddress'] = get_option('sp_digitalAddress');
-        
+
         return $options;
     }
 
@@ -192,7 +202,7 @@ class SpidWordPress
     {
         $activeAttributes = [];
         foreach ($options['sp_attributes'] as $key => $value) {
-            if ($value=='on') {
+            if ($value == 'on') {
                 $activeAttributes[] = substr($key, 3);
             }
         }
@@ -201,23 +211,23 @@ class SpidWordPress
 
     public function spid_enqueue_scripts()
     {
-        
-        function enqueue_login_script() 
+
+        function enqueue_login_script()
         {
-            wp_enqueue_script( 'spid-smart-button-script', 'https://italia.github.io/spid-smart-button/spid-button.min.js', false );
+            wp_enqueue_script('spid-smart-button-script', 'https://italia.github.io/spid-smart-button/spid-button.min.js', false);
 
         }
 
-        function enqueue_login_css() 
+        function enqueue_login_css()
         {
-            wp_enqueue_style( 'spid-smart-button-css', 'https://italia.github.io/spid-smart-button/spid-button.min.css', false );
-            wp_enqueue_style( 'general-css', plugin_dir_url( __FILE__ ).'/css/style.css', false );
+            wp_enqueue_style('spid-smart-button-css', 'https://italia.github.io/spid-smart-button/spid-button.min.css', false);
+            wp_enqueue_style('general-css', plugin_dir_url(__FILE__) . '/css/style.css', false);
         }
 
         // enqueue scripts and css only for the login page
-        add_action( 'login_enqueue_scripts', 'enqueue_login_css', 1 );
-        add_action( 'login_enqueue_scripts', 'enqueue_login_script', 10 );
-        
+        add_action('login_enqueue_scripts', 'enqueue_login_css', 1);
+        add_action('login_enqueue_scripts', 'enqueue_login_script', 10);
+
     }
 
 
