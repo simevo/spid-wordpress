@@ -55,24 +55,24 @@ $sp_role = get_option('sp_role', 'subscriber');
 
 	<img src="<?php echo plugins_url('public/images/spid.png', dirname(__DIR__)); ?>"  width="500" height="98" border="0" />
 
-	<h2><?php __('SPID Options', 'spid-wordpress'); ?></h2>
+	<h2><?php _e('SPID Options', 'spid-wordpress'); ?></h2>
 	
 	<form action="" method="post">
 		<table class="form-table">
 			<tr>
-				<th><label for="sp_org_name">Nome del Service Provider</label></th>
-				<td><input name="sp_org_name" class="large-text" value="<?php echo $sp_org_name; ?>" class="regular-text"></td>
+				<th><label for="sp_org_name"><?php _e('Name of Service Provider', 'spid-wordpress'); ?></label></th>
+				<td><input name="sp_org_name" class="large-text" value="<?php echo esc_textarea($sp_org_name); ?>" class="regular-text"></td>
 			</tr>
 			<tr>
 				<th><label for="sp_sso">SSO</label></th>
-				<td><input name="sp_sso" class="large-text" value="<?php echo $sp_sso; ?>" class="regular-text"></td>
+				<td><input name="sp_sso" class="large-text" value="<?php echo esc_textarea($sp_sso); ?>" class="regular-text"></td>
 			</tr>
 			<tr>
-				<th><label for="sp_idp">Identity Provider</label></th>
+				<th><label for="sp_idp"><?php _e('Identity Provider', 'spid-wordpress'); ?></label></th>
 				<td><input name="sp_idp" class="large-text" value="<?php echo $sp_idp; ?>" class="regular-text"></td>
 			</tr>
 			<tr>
-				<th><label for="sp_livello">Livello SPID</label></th>
+				<th><label for="sp_livello"><?php _e('SPID Level', 'spid-wordpress'); ?></label></th>
 				<td>
 					<select name="sp_livello">
 					  <option value="1" <?php if ($sp_livello == 1) echo "selected"; ?>>1</option>
@@ -97,24 +97,24 @@ $sp_role = get_option('sp_role', 'subscriber');
 				</td>
 			</tr>
 			<tr>
-				<th>Attributi</th>
+				<th><?php _e('Attributes', 'spid-wordpress'); ?></th>
 				<td>
 					<fieldset>
 				    	<legend class="screen-reader-text">
-				    		<span>Attributi</span>
+				    		<span><?php _e('Attributes', 'spid-wordpress'); ?></span>
 				    	</legend>
 				    	<table>
 				    		<tr>
 				    			<td>
 									<label for="sp_name">
 										<input name="sp_name" type="checkbox" <?php if ($sp_name) echo "checked"; ?>  id="sp_name">
-										Nome
+										<?php _e('Name', 'spid-wordpress'); ?>
 									</label>
 								</td>
 								<td>
 									<label for="sp_familyName">
 										<input name="sp_familyName" type="checkbox" <?php if ($sp_familyName) echo "checked"; ?>  id="sp_familyName">
-										Cognome
+										<?php _e('Family Name', 'spid-wordpress'); ?>
 									</label>
 								</td>
 							</tr>
@@ -128,7 +128,7 @@ $sp_role = get_option('sp_role', 'subscriber');
 								<td>
 									<label for="sp_placeOfBirth">
 										<input name="sp_placeOfBirth" type="checkbox" <?php if ($sp_placeOfBirth) echo "checked"; ?>  id="sp_placeOfBirth">
-										Luogo di nascita
+										<?php _e('Place of Birth', 'spid-wordpress'); ?>
 									</label>
 								</td>
 							</tr>
@@ -142,7 +142,7 @@ $sp_role = get_option('sp_role', 'subscriber');
 								<td>
 									<label for="sp_dateOfBirth">
 										<input name="sp_dateOfBirth" type="checkbox" <?php if ($sp_dateOfBirth) echo "checked"; ?>  id="sp_dateOfBirth">
-										Data di nascita
+										<?php _e('Day of birth', 'spid-wordpress'); ?>
 									</label>
 								</td>
 							</tr>
@@ -150,13 +150,13 @@ $sp_role = get_option('sp_role', 'subscriber');
 				    			<td>
 									<label for="sp_gender">
 										<input name="sp_gender" type="checkbox" <?php if ($sp_gender) echo "checked"; ?>  id="sp_gender">
-										Sesso
+										<?php _e('Gender', 'spid-wordpress'); ?>
 									</label>
 								</td>
 								<td>
 									<label for="sp_companyName">
 										<input name="sp_companyName" type="checkbox" <?php if ($sp_companyName) echo "checked"; ?>  id="sp_companyName">
-										Ragione o denominazione sociale 
+										<?php _e('Company Name', 'spid-wordpress'); ?>
 									</label>
 								</td>
 							</tr>
@@ -170,7 +170,7 @@ $sp_role = get_option('sp_role', 'subscriber');
 								<td>
 									<label for="sp_fiscalNumber">
 										<input name="sp_fiscalNumber" type="checkbox" <?php if ($sp_fiscalNumber) echo "checked"; ?>  id="sp_fiscalNumber">
-										Codice fiscale
+										<?php _e('Fiscal Number', 'spid-wordpress'); ?>
 									</label>
 								</td>
 							</tr>
@@ -178,7 +178,7 @@ $sp_role = get_option('sp_role', 'subscriber');
 				    			<td>
 									<label for="sp_ivaCode">
 										<input name="sp_ivaCode" type="checkbox" <?php if ($sp_ivaCode) echo "checked"; ?>  id="sp_ivaCode">
-										Partita IVA
+										<?php _e('IVA Code', 'spid-wordpress'); ?>
 									</label>
 								</td>
 								<td>
@@ -192,7 +192,7 @@ $sp_role = get_option('sp_role', 'subscriber');
 				    			<td>
 									<label for="sp_mobilePhone">
 										<input name="sp_mobilePhone" type="checkbox" <?php if ($sp_mobilePhone) echo "checked"; ?>  id="sp_mobilePhone">
-										Numero di telefono mobile 
+										N<?php _e('Mobile Phone Number', 'spid-wordpress'); ?>
 									</label>
 								</td>
 								<td>
