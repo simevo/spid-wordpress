@@ -8,14 +8,13 @@
         "email": "paolo.greppi@libpf.com"
     }],
     "require": {
-
+        "dealerdirect/phpcodesniffer-composer-installer": "^0.4.3"
     },
     "require-dev": {
         "squizlabs/php_codesniffer": "*",
         "wp-coding-standards/wpcs": "*",
         "phpunit/phpunit": "6.*",
-        "wimg/php-compatibility": "^9.0",
-        "dealerdirect/phpcodesniffer-composer-installer": "^0.4.3"
+        "phpcompatibility/phpcompatibility-wp": "^2.0"
     },
     "scripts": {
         "test": [
