@@ -23,27 +23,25 @@
  */
 
 // If this file is called directly, abort.
-if (!defined('WPINC')) {
-    die;
+if ( ! defined( 'WPINC' ) ) {
+	die;
 }
 
 /**
  * Translations
- *
  */
-function spid_wordpress_textdomain()
-{
-    load_plugin_textdomain('spid-wordpress', false, basename(dirname(__FILE__)) . '/languages/');
+function spid_wordpress_textdomain() {
+	load_plugin_textdomain( 'spid-wordpress', false, basename( dirname( __FILE__ ) ) . '/languages/' );
 }
-add_action('plugins_loaded', 'spid_wordpress_textdomain');
+add_action( 'plugins_loaded', 'spid_wordpress_textdomain' );
 
 /**
  * Global constants
  */
-define('SPID_WORDPRESS_VERSION', '1.0.0');
-define('SPID_WORDPRESS_URL', plugin_dir_url(__FILE__));
-define('SPID_WORDPRESS_PATH', dirname(__FILE__) . '/');
-define('SPID_WORDPRESS_INC', SPID_WORDPRESS_PATH . 'includes/');
+define( 'SPID_WORDPRESS_VERSION', '1.0.0' );
+define( 'SPID_WORDPRESS_URL', plugin_dir_url( __FILE__ ) );
+define( 'SPID_WORDPRESS_PATH', dirname( __FILE__ ) . '/' );
+define( 'SPID_WORDPRESS_INC', SPID_WORDPRESS_PATH . 'includes/' );
 
 /**
  * Load core files
@@ -81,10 +79,13 @@ require_once SPID_WORDPRESS_PATH . 'spid-php-lib/src/Sp.php';
 
 SPID_Core::getInstance();
 
+/**
+ * Add Settings Link to Plugin Page
+ */
 function plugin_add_settings_link( $links ) {
-    $settings_link = '<a href="admin.php?page=spid_opzioni">' . __( 'Settings' ) . '</a>';
-    array_push( $links, $settings_link );
-  	return $links;
+	$settings_link = '<a href="admin.php?page=spid_opzioni">' . __( 'Settings' ) . '</a>';
+	array_push( $links, $settings_link );
+	return $links;
 }
 $plugin = plugin_basename( __FILE__ );
 add_filter( "plugin_action_links_$plugin", 'plugin_add_settings_link' );
