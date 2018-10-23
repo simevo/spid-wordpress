@@ -80,3 +80,11 @@ require_once SPID_WORDPRESS_PATH . 'spid-php-lib/src/Spid/Session.php';
 require_once SPID_WORDPRESS_PATH . 'spid-php-lib/src/Sp.php';
 
 SPID_Core::getInstance();
+
+function plugin_add_settings_link( $links ) {
+    $settings_link = '<a href="admin.php?page=spid_opzioni">' . __( 'Settings' ) . '</a>';
+    array_push( $links, $settings_link );
+  	return $links;
+}
+$plugin = plugin_basename( __FILE__ );
+add_filter( "plugin_action_links_$plugin", 'plugin_add_settings_link' );
