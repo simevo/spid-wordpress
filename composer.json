@@ -8,6 +8,7 @@
         "email": "paolo.greppi@libpf.com"
     }],
     "require": {
+        "italia/spid-php-lib": "^0.20.0",
         "dealerdirect/phpcodesniffer-composer-installer": "^0.4.3"
     },
     "require-dev": {

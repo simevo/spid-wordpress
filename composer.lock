@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e9ce91fbc2ff81cfe45c5a2561f2c7f9",
+    "content-hash": "02b9e55253e87af4d979515e45a3118d",
     "packages": [
         {
             "name": "dealerdirect/phpcodesniffer-composer-installer",
@@ -73,6 +73,89 @@
                 "tests"
             ],
             "time": "2017-12-06T16:27:17+00:00"
+        },
+        {
+            "name": "italia/spid-php-lib",
+            "version": "v0.20",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/italia/spid-php-lib.git",
+                "reference": "49c743bb668256ee4a12346b925fe8cac0785512"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/italia/spid-php-lib/zipball/49c743bb668256ee4a12346b925fe8cac0785512",
+                "reference": "49c743bb668256ee4a12346b925fe8cac0785512",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.0",
+                "robrichards/xmlseclibs": "^3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^6.5",
+                "squizlabs/php_codesniffer": "^3.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Italia\\Spid\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Lorenzo Cattaneo",
+                    "email": "development@lorenzocattaneo.com"
+                },
+                {
+                    "name": "Paolo Greppi",
+                    "email": "paolo.greppi@libpf.com"
+                }
+            ],
+            "description": "PHP package for SPID authentication",
+            "time": "2018-10-12T14:03:16+00:00"
+        },
+        {
+            "name": "robrichards/xmlseclibs",
+            "version": "3.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/robrichards/xmlseclibs.git",
+                "reference": "1f4de0c0d121922aafd8c62c2a9f5e528830cf38"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/robrichards/xmlseclibs/zipball/1f4de0c0d121922aafd8c62c2a9f5e528830cf38",
+                "reference": "1f4de0c0d121922aafd8c62c2a9f5e528830cf38",
+                "shasum": ""
+            },
+            "require": {
+                "ext-openssl": "*",
+                "php": ">= 5.4"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "RobRichards\\XMLSecLibs\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "description": "A PHP library for XML Security",
+            "homepage": "https://github.com/robrichards/xmlseclibs",
+            "keywords": [
+                "security",
+                "signature",
+                "xml",
+                "xmldsig"
+            ],
+            "time": "2018-09-27T13:24:13+00:00"
         },
         {
             "name": "squizlabs/php_codesniffer",
