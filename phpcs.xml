@@ -1,6 +1,56 @@
 <?xml version="1.0"?>
 <ruleset name="SPID WordPress PHPCS">
 	<description>TODO</description>
+	<rule ref="WordPress" />
+	<config name="installed_paths" value="vendor/wp-coding-standards/wpcs"/>
 
-	<rule ref="SPIDWP-Default" />
+	<exclude-pattern>vendor/*</exclude-pattern>
+	<exclude-pattern>spid-php-lib/*</exclude-pattern>
+	<exclude-pattern>*.min.js</exclude-pattern>
+	<exclude-pattern>*.min.css</exclude-pattern>
+
+	<config name="minimum_supported_wp_version" value="4.9"/>
+
+	<rule ref="Squiz.Strings.DoubleQuoteUsage"/>
+		<rule ref="Squiz.Strings.DoubleQuoteUsage.ContainsVar">
+			<severity>0</severity>
+	</rule>
+
+	<rule ref="Generic.WhiteSpace.ScopeIndent">
+		<properties>
+			<property name="exact" value="false"/>
+			<property name="indent" value="4"/>
+			<property name="tabIndent" value="true"/>
+			<property name="ignoreIndentationTokens" type="array" value="T_HEREDOC,T_NOWDOC,T_INLINE_HTML"/>
+		</properties>
+	</rule>
+
+	<rule ref="Generic.WhiteSpace.DisallowSpaceIndent"/>
+	<rule ref="WordPress.WhiteSpace.PrecisionAlignment"/>
+
+	<!-- Check for correct usage of the WP i18n functions. -->
+	<rule ref="WordPress.WP.I18n"/>
+
+	<!-- Check for correct spelling of WordPress. -->
+	<rule ref="WordPress.WP.CapitalPDangit"/>
+
+	<!-- Covers rule: When embedding multi-line PHP snippets within a HTML block, the
+		 PHP open and close tags must be on a line by themselves. -->
+	<rule ref="Squiz.PHP.EmbeddedPhp"/>
+	<rule ref="Squiz.PHP.EmbeddedPhp.SpacingBefore">
+		<severity>0</severity>
+	</rule>
+	<rule ref="Squiz.PHP.EmbeddedPhp.Indent">
+		<severity>0</severity>
+	</rule>
+	<rule ref="Squiz.PHP.EmbeddedPhp.OpenTagIndent">
+		<severity>0</severity>
+	</rule>
+	<rule ref="Squiz.PHP.EmbeddedPhp.SpacingAfter">
+		<severity>0</severity>
+	</rule>
+
+	<!-- Covers rule: Never use shorthand PHP start tags. Always use full PHP tags. -->
+	<rule ref="Generic.PHP.DisallowShortOpenTag"/>
+	<rule ref="Generic.PHP.DisallowAlternativePHPTags"/>
 </ruleset>
