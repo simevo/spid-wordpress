@@ -1,4 +1,14 @@
 <?php
+/**
+ * Summary goes here.
+ *
+ * @package  SPID_WordPress
+ * @author   Paolo Greppi simevo s.r.l. <email@emailgoeshere.com>
+ * @license  GNU Affero General Public License v3.0
+ * @link     https://github.com/simevo/spid-wordpress
+ * @since    1.0.0
+ */
+
 if ( ! class_exists( 'SPID_Admin' ) ) {
 	class SPID_Admin {
 
@@ -25,10 +35,10 @@ if ( ! class_exists( 'SPID_Admin' ) ) {
 
 			?>
 			<div class="wrap">
-			<h1>SPID Options</h1>
+			<h1><?php _esc_attr_e( 'SPID Options', 'spid-wordpress' ); ?></h1>
 			<h2 class="nav-tab-wrapper">
 				<a 
-					href="<?php echo admin_url( 'admin.php?page=spid_opzioni' ); ?>"
+					href="<?php echo esc_url( admin_url( 'admin.php?page=spid_opzioni' ) ); ?>"
 					class="nav-tab
 					<?php
 					if ( ! isset( $_GET['action'] ) || isset( $_GET['action'] ) && 'button' != $_GET['action'] && 'help' != $_GET['action'] ) {
@@ -85,96 +95,96 @@ if ( ! class_exists( 'SPID_Admin' ) ) {
 			 * General Settings
 			 */
 			register_setting(
-				'spid_general', // Option group
-				'spid_general', // Option name
-				array( $this, 'sanitize' ) // Sanitize
+				'spid_general', // Option Group.
+				'spid_general', // Option Name.
+				array( $this, 'sanitize' ) // Sanitize.
 			);
 
 			add_settings_section(
-				'spid_settings_section', // ID
-				'Options', // Title
-				array( $this, 'print_section_info' ), // Callback
-				'spid-setting-admin' // Page
+				'spid_settings_section', // ID.
+				'Options', // Title.
+				array( $this, 'print_section_info' ), // Callback.
+				'spid-setting-admin' // Page.
 			);
 
 			add_settings_field(
-				'sp_org_name', // ID
-				'Name of Service Provider', // Title
-				array( $this, 'sp_org_name_callback' ), // Callback
-				'spid-setting-admin', // Page
-				'spid_settings_section' // Section
+				'sp_org_name', // ID.
+				'Name of Service Provider', // Title.
+				array( $this, 'sp_org_name_callback' ), // Callback.
+				'spid-setting-admin', // Page.
+				'spid_settings_section' // Section.
 			);
 
 			add_settings_field(
-				'sp_sso', // ID
-				'SSO', // Title
-				array( $this, 'sp_sso_callback' ), // Callback
-				'spid-setting-admin', // Page
-				'spid_settings_section' // Section
+				'sp_sso', // ID.
+				'SSO', // Title.
+				array( $this, 'sp_sso_callback' ), // Callback.
+				'spid-setting-admin', // Page.
+				'spid_settings_section' // Section.
 			);
 
 			add_settings_field(
-				'sp_idp', // ID
-				'Identity Provider', // Title
-				array( $this, 'sp_idp_callback' ), // Callback
-				'spid-setting-admin', // Page
-				'spid_settings_section' // Section
+				'sp_idp', // ID.
+				'Identity Provider', // Title.
+				array( $this, 'sp_idp_callback' ), // Callback.
+				'spid-setting-admin', // Page.
+				'spid_settings_section' // Section.
 			);
 
 			add_settings_field(
-				'sp_livello', // ID
-				'SPID Level', // Title
-				array( $this, 'sp_livello_callback' ), // Callback
-				'spid-setting-admin', // Page
-				'spid_settings_section' // Section
+				'sp_livello', // ID.
+				'SPID Level', // Title.
+				array( $this, 'sp_livello_callback' ), // Callback.
+				'spid-setting-admin', // Page.
+				'spid_settings_section' // Section.
 			);
 
 			/**
 			 * SPID Button Settings
 			 */
 			register_setting(
-				'spid_button', // Option group
-				'spid_button', // Option name
-				array( $this, 'sanitize' ) // Sanitize
+				'spid_button', // Option Group.
+				'spid_button', // Option Name.
+				array( $this, 'sanitize' ) // Sanitize.
 			);
 
 			add_settings_section(
-				'spid_button_setting', // ID
-				'Button Settings', // Title
-				array( $this, 'print_section_info' ), // Callback
-				'spid-setting-button' // Page
+				'spid_button_setting', // ID.
+				'Button Settings', // Title.
+				array( $this, 'print_section_info' ), // Callback.
+				'spid-setting-button' // Page.
 			);
 
 			add_settings_field(
-				'spid_button', // ID
-				'SPID Button Layout', // Title
-				array( $this, 'spid_button_callback' ), // Callback
-				'spid-setting-button', // Page
-				'spid_button_setting' // Section
+				'spid_button', // ID.
+				'SPID Button Layout', // Title.
+				array( $this, 'spid_button_callback' ), // Callback.
+				'spid-setting-button', // Page.
+				'spid_button_setting' // Section.
 			);
 
 			/**
 			 * Help Screen
 			 */
 			register_setting(
-				'spid_help', // Option group
-				'spid_help', // Option name
-				array( $this, 'sanitize' ) // Sanitize
+				'spid_help', // Option Group.
+				'spid_help', // Option Name.
+				array( $this, 'sanitize' ) // Sanitize.
 			);
 
 			add_settings_section(
-				'setting_section_id', // ID
-				'Help', // Title
-				array( $this, 'print_section_info' ), // Callback
-				'spid-setting-help' // Page
+				'setting_section_id', // ID.
+				'Help', // Title.
+				array( $this, 'print_section_info' ), // Callback.
+				'spid-setting-help' // Page.
 			);
 
 			add_settings_field(
-				'spid_help', // ID
-				'Help', // Title
-				array( $this, 'spid_help_callback' ), // Callback
-				'spid-setting-help', // Page
-				'setting_section_id' // Section
+				'spid_help', // ID.
+				'Help', // Title.
+				array( $this, 'spid_help_callback' ), // Callback.
+				'spid-setting-help', // Page.
+				'setting_section_id' // Section.
 			);
 		}
 
@@ -185,7 +195,6 @@ if ( ! class_exists( 'SPID_Admin' ) ) {
 		/**
 		 * General Settings
 		 */
-
 		public function sp_org_name_callback() {
 			printf(
 				'<input type="text" id="sp_org_name" name="spid_general[sp_org_name]" value="%s" />',

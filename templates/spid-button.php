@@ -1,6 +1,18 @@
+<?php
+/**
+ * The SPID button template.
+ *
+ * @package  SPID_WordPress
+ * @author   Paolo Greppi simevo s.r.l. <email@emailgoeshere.com>
+ * @license  GNU Affero General Public License v3.0
+ * @link     https://github.com/simevo/spid-wordpress
+ * @since    1.0.0
+ */
+
+?>
 <div id='spid-button' aria-live="polite">
 	<noscript>
-		<?php _e( 'To use the SPID Smart Button, please enable javascript.', 'spid-wordpress' ); ?>
+		<?php _esc_attr_e( 'To use the SPID Smart Button, please enable javascript.', 'spid-wordpress' ); ?>
 	</noscript>
 </div>
 
