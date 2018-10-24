@@ -1,0 +1,16 @@
+language: php
+
+php:
+  - 7.0
+  - 7.1
+  - 7.2
+
+cache:
+  directories:
+    - $HOME/.composer/cache
+
+before_script:
+  - composer install --no-interaction
+
+script:
+  - find . | grep -v spid-php-lib | grep -v vendor | grep 'php$' | sed 's/\(.*\)/php .\/vendor\/bin\/phpcs -v --standard=PHPCompatibilityWP \1/g' > phpcs.sh && sh phpcs.sh 
