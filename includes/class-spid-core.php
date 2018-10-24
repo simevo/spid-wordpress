@@ -1,7 +1,7 @@
 <?php
-
 /**
- * @category Description
+ * Summary goes here.
+ *
  * @package  SPID_WordPress
  * @author   Paolo Greppi simevo s.r.l. <email@emailgoeshere.com>
  * @license  GNU Affero General Public License v3.0
@@ -39,7 +39,7 @@ class SPID_Core {
 		// Path to key and crt file.
 		$home = '';
 
-		// the following are mandatory attributes for any WordPress install of the plugin
+		// The following are mandatory attributes for any WordPress install of the plugin.
 		update_option( 'sp_spidCode', 'on' );
 		update_option( 'sp_email', 'on' );
 
@@ -66,7 +66,7 @@ class SPID_Core {
 		add_filter( 'login_message', array( $this, 'filterLoginMessage' ) );
 
 		// https://codex.wordpress.org/Plugin_API/Filter_Reference/authenticate
-		// after wp_authenticate_username_password runs:
+		// After wp_authenticate_username_password runs.
 		add_filter( 'authenticate', array( $this, 'filterAuthenticate' ), 21, 3 );
 
 		$this->define_admin_hooks();
@@ -93,21 +93,22 @@ class SPID_Core {
 	public function filterAuthenticate( $user, $username, $password ) {
 		if ( isset( $_GET['sso'] ) && ( $_GET['sso'] == 'spid' ) ) {
 			if ( isset( $_GET['metadata'] ) ) {
-				// metadata endpoint
+				// Metadata endpoint.
 				header( 'Content-type: text/xml' );
-				echo $this->auth->getSPMetadata();
+				$smpmetadata = $this->auth->getSPMetadata();
+				echo esc_attr( $smpmetadata );
 				die;
 			} elseif ( isset( $_GET['idp'] ) ) {
 				// SSO endpoint
 				// shortname of IdP, same as the name of corresponding IdP metadata file, without .xml
 				$idpName = $_GET['idp'];
-				// index of assertion consumer service as per the SP metadata
+				// index of assertion consumer service as per the SP metadata.
 				$assertId = 0;
-				// index of attribute consuming service as per the SP metadata
+				// index of attribute consuming service as per the SP metadata.
 				$attrId = 0;
-				// SPID level (1, 2 or 3)
+				// SPID level (1, 2 or 3).
 				$spidLevel = get_option( 'sp_livello', '1' );
-				// return url, optional
+				// return url, optional.
 				$returnTo = null;
 				$this->auth->login( $idpName, $assertId, $attrId, $spidLevel, $returnTo );
 			} elseif ( isset( $_GET['slo'] ) ) {
@@ -150,7 +151,7 @@ class SPID_Core {
 				return new WP_Error( 'spid_wrong_endpoint', 'Wrong endpoint' );
 			}
 		} else {
-			// ignore
+			// Ignore.
 		}
 		do_action( 'spid_wordress_new_user_authenticated', $user, $attributes );
 		return $user;
@@ -188,13 +189,13 @@ class SPID_Core {
 	}
 
 	public function findActiveAttributes( $options ) {
-		$activeAttributes = [];
+		$active_attributes = [];
 		foreach ( $options['sp_attributes'] as $key => $value ) {
 			if ( $value == 'on' ) {
-				$activeAttributes[] = substr( $key, 3 );
+				$active_attributes[] = substr( $key, 3 );
 			}
 		}
-		return $activeAttributes;
+		return $active_attributes;
 	}
 
 	public function spid_enqueue_scripts() {
@@ -208,7 +209,7 @@ class SPID_Core {
 			wp_enqueue_style( 'general-css', plugin_dir_url( __FILE__ ) . '/css/style.css', false );
 		}
 
-		// enqueue scripts and css only for the login page
+		// Enqueue scripts and css only for the login page.
 		add_action( 'login_enqueue_scripts', 'enqueue_login_css', 1 );
 		add_action( 'login_enqueue_scripts', 'enqueue_login_script', 10 );
 
