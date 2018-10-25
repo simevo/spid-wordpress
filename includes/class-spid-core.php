@@ -16,13 +16,9 @@ if ( ! defined( 'WPINC' ) ) {
 
 class SPID_Core {
 
-
 	private static $instance;
-
 	private $auth = null;
-
 	public $options;
-
 	public $idp_files_in_metadata_folder;
 
 	public static function getInstance() {
@@ -198,21 +194,25 @@ class SPID_Core {
 		return $active_attributes;
 	}
 
+	/**
+	 * Enqueue scripts and CSS. Loads in login and wp-admin only.
+	 *
+	 * @return void
+	 */
 	public function spid_enqueue_scripts() {
 
 		function enqueue_login_script() {
-			wp_enqueue_script( 'spid-smart-button-script', 'https://italia.github.io/spid-smart-button/spid-button.min.js', false );
+			wp_enqueue_script( 'spid-smart-button-script', 'https://italia.github.io/spid-smart-button/spid-button.min.js', true, '1.0.0' );
 		}
-
-		function enqueue_login_css() {
-			wp_enqueue_style( 'spid-smart-button-css', 'https://italia.github.io/spid-smart-button/spid-button.min.css', false );
-			wp_enqueue_style( 'general-css', plugin_dir_url( __FILE__ ) . '/css/style.css', false );
-		}
-
-		// Enqueue scripts and css only for the login page.
-		add_action( 'login_enqueue_scripts', 'enqueue_login_css', 1 );
 		add_action( 'login_enqueue_scripts', 'enqueue_login_script', 10 );
 
+		function load_spid_css() {
+			wp_register_style( 'custom_wp_admin_css', SPID_WORDPRESS_URL . 'public/css/style.css', true, '1.0.0' );
+			wp_enqueue_style( 'custom_wp_admin_css' );
+			wp_enqueue_style( 'spid_smart_button', 'https://italia.github.io/spid-smart-button/spid-button.min.css', true, '1.0.0' );
+		}
+		add_action( 'admin_enqueue_scripts', 'load_spid_css', 10 );
+		add_action( 'login_enqueue_scripts', 'load_spid_css', 10 );
 	}
 
 }
