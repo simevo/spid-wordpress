@@ -13,8 +13,8 @@ if ( ! class_exists( 'SPID_Admin' ) ) {
 	class SPID_Admin {
 
 		private $spid_options_general;
+		private $spid_options_metadata;
 		private $spid_options_button;
-		private $spid_options_help;
 
 		public function __construct() {
 			add_action( 'admin_menu', array( $this, 'spid_settings_menu' ) );
@@ -27,26 +27,38 @@ if ( ! class_exists( 'SPID_Admin' ) ) {
 
 		function spid_admin_options() {
 			$this->spid_options_general = get_option( 'spid_general' );
-			$this->spid_options_button  = get_option( 'spid_button' );
-			$this->spid_options_help    = get_option( 'spid_help' );
+			$this->spid_options_metadata  = get_option( 'spid_metadata' );
+			$this->spid_options_button    = get_option( 'spid_button' );
 
-			$button_Screen = ( isset( $_GET['action'] ) && 'button' == $_GET['action'] ) ? true : false;
-			$help_Screen   = ( isset( $_GET['action'] ) && 'help' == $_GET['action'] ) ? true : false;
+			$metadata_Screen = ( isset( $_GET['action'] ) && 'metadata' == $_GET['action'] ) ? true : false;
+			$button_Screen   = ( isset( $_GET['action'] ) && 'button' == $_GET['action'] ) ? true : false;
 
 			?>
 			<div class="wrap">
-			<h1><?php _esc_attr_e( 'SPID Options', 'spid-wordpress' ); ?></h1>
+			<div class="spid-logo" style="text-align:center;">
+				<img src="<?php echo  SPID_WORDPRESS_URL . 'public/images/spid.png'; ?>" style="width: 800px; margin: 3% 0 0;">
+			</div>
+			<h1><?php esc_attr_e( 'SPID Options', 'spid-wordpress' ); ?></h1>
 			<h2 class="nav-tab-wrapper">
 				<a 
 					href="<?php echo esc_url( admin_url( 'admin.php?page=spid_opzioni' ) ); ?>"
 					class="nav-tab
 					<?php
-					if ( ! isset( $_GET['action'] ) || isset( $_GET['action'] ) && 'button' != $_GET['action'] && 'help' != $_GET['action'] ) {
+					if ( ! isset( $_GET['action'] ) || isset( $_GET['action'] ) && 'metadata' != $_GET['action'] && 'button' != $_GET['action'] ) {
 						echo ' nav-tab-active';}
 					?>
 					">
 					<?php esc_html_e( 'General' ); ?>
 				</a>
+				<a 
+					href="<?php echo esc_url( add_query_arg( array( 'action' => 'metadata' ), admin_url( 'admin.php?page=spid_opzioni' ) ) ); ?>" 
+					class="nav-tab
+					<?php
+					if ( $metadata_Screen ) {
+						echo ' nav-tab-active';}
+					?>
+					">
+					<?php esc_html_e( 'Metadata' ); ?></a> 
 				<a 
 					href="<?php echo esc_url( add_query_arg( array( 'action' => 'button' ), admin_url( 'admin.php?page=spid_opzioni' ) ) ); ?>" 
 					class="nav-tab
@@ -55,28 +67,19 @@ if ( ! class_exists( 'SPID_Admin' ) ) {
 						echo ' nav-tab-active';}
 					?>
 					">
-					<?php esc_html_e( 'SPID Button' ); ?></a> 
-				<a 
-					href="<?php echo esc_url( add_query_arg( array( 'action' => 'help' ), admin_url( 'admin.php?page=spid_opzioni' ) ) ); ?>" 
-					class="nav-tab
-					<?php
-					if ( $help_Screen ) {
-						echo ' nav-tab-active';}
-					?>
-					">
-					<?php esc_html_e( 'Help' ); ?>
+					<?php esc_html_e( 'SPID Button' ); ?>
 				</a>        
 			</h2>
 	
 			<form method="post" action="options.php">
 			<?php
-			if ( $button_Screen ) {
+			if ( $metadata_Screen ) {
+				settings_fields( 'spid_metadata' );
+				do_settings_sections( 'spid-setting-metadata' );
+				submit_button();
+			} elseif ( $button_Screen ) {
 				settings_fields( 'spid_button' );
 				do_settings_sections( 'spid-setting-button' );
-				submit_button();
-			} elseif ( $help_Screen ) {
-				settings_fields( 'spid_help' );
-				do_settings_sections( 'spid-setting-help' );
 				submit_button();
 			} else {
 				settings_fields( 'spid_general' );
@@ -103,32 +106,8 @@ if ( ! class_exists( 'SPID_Admin' ) ) {
 			add_settings_section(
 				'spid_settings_section', // ID.
 				'Options', // Title.
-				array( $this, 'print_section_info' ), // Callback.
+				array( $this, 'general_section_info' ), // Callback.
 				'spid-setting-admin' // Page.
-			);
-
-			add_settings_field(
-				'sp_org_name', // ID.
-				'Name of Service Provider', // Title.
-				array( $this, 'sp_org_name_callback' ), // Callback.
-				'spid-setting-admin', // Page.
-				'spid_settings_section' // Section.
-			);
-
-			add_settings_field(
-				'sp_sso', // ID.
-				'SSO', // Title.
-				array( $this, 'sp_sso_callback' ), // Callback.
-				'spid-setting-admin', // Page.
-				'spid_settings_section' // Section.
-			);
-
-			add_settings_field(
-				'sp_idp', // ID.
-				'Identity Provider', // Title.
-				array( $this, 'sp_idp_callback' ), // Callback.
-				'spid-setting-admin', // Page.
-				'spid_settings_section' // Section.
 			);
 
 			add_settings_field(
@@ -139,8 +118,48 @@ if ( ! class_exists( 'SPID_Admin' ) ) {
 				'spid_settings_section' // Section.
 			);
 
+			add_settings_field(
+				'sp_role', // ID.
+				'Role on registration with SPID', // Title.
+				array( $this, 'sp_role_callback' ), // Callback.
+				'spid-setting-admin', // Page.
+				'spid_settings_section' // Section.
+			);
+
+			add_settings_field(
+				'sp_idp', // ID.
+				'Name of the test Identity Provider', // Title.
+				array( $this, 'sp_idp_callback' ), // Callback.
+				'spid-setting-admin', // Page.
+				'spid_settings_section' // Section.
+			);
+
 			/**
-			 * SPID Button Settings
+			 * Metadata Settings
+			 */
+			register_setting(
+				'spid_metadata', // Option Group.
+				'spid_metadata', // Option Name.
+				array( $this, 'sanitize' ) // Sanitize.
+			);
+
+			add_settings_section(
+				'spid_metadata_setting', // ID.
+				'Metadata', // Title.
+				array( $this, 'metadata_section_info' ), // Callback.
+				'spid-setting-metadata' // Page.
+			);
+
+			add_settings_field(
+				'sp_org_name', // ID.
+				'Organization Name', // Title.
+				array( $this, 'spid_metadata_callback' ), // Callback.
+				'spid-setting-metadata', // Page.
+				'spid_button_metadata' // Section.
+			);
+
+			/**
+			 * SPID Button
 			 */
 			register_setting(
 				'spid_button', // Option Group.
@@ -149,72 +168,41 @@ if ( ! class_exists( 'SPID_Admin' ) ) {
 			);
 
 			add_settings_section(
-				'spid_button_setting', // ID.
-				'Button Settings', // Title.
-				array( $this, 'print_section_info' ), // Callback.
+				'setting_section_id', // ID.
+				'Configurazione di SPID Button', // Title.
+				array( $this, 'button_section_info' ), // Callback.
 				'spid-setting-button' // Page.
 			);
 
 			add_settings_field(
 				'spid_button', // ID.
-				'SPID Button Layout', // Title.
 				array( $this, 'spid_button_callback' ), // Callback.
 				'spid-setting-button', // Page.
-				'spid_button_setting' // Section.
-			);
-
-			/**
-			 * Help Screen
-			 */
-			register_setting(
-				'spid_help', // Option Group.
-				'spid_help', // Option Name.
-				array( $this, 'sanitize' ) // Sanitize.
-			);
-
-			add_settings_section(
-				'setting_section_id', // ID.
-				'Help', // Title.
-				array( $this, 'print_section_info' ), // Callback.
-				'spid-setting-help' // Page.
-			);
-
-			add_settings_field(
-				'spid_help', // ID.
-				'Help', // Title.
-				array( $this, 'spid_help_callback' ), // Callback.
-				'spid-setting-help', // Page.
 				'setting_section_id' // Section.
 			);
 		}
 
-		public function print_section_info() {
-			echo 'Info here.';
+		/**
+		 * Description of each tab.
+		 *
+		 * @return print description
+		 */
+		public function general_section_info() {
+			echo 'Configura il plug-in e salva le impostazioni. Questi parametri sono liberi e non modificano in nessun modo i Metadata.';
 		}
+
+		public function metadata_section_info() {
+			echo 'Attenzione: una volta cambiati uno di questi settaggi si dovrà ridistribuire il metadata del SP a tutti gli IdP, dal _metadata link_';
+		}
+
+		public function button_section_info() {
+			echo '';
+		}
+
 
 		/**
 		 * General Settings
 		 */
-		public function sp_org_name_callback() {
-			printf(
-				'<input type="text" id="sp_org_name" name="spid_general[sp_org_name]" value="%s" />',
-				isset( $this->spid_options_general['sp_org_name'] ) ? esc_attr( $this->spid_options_general['sp_org_name'] ) : ''
-			);
-		}
-
-		public function sp_sso_callback() {
-			printf(
-				'<input type="text" id="sp_sso" name="spid_general[sp_sso]" value="%s" />',
-				isset( $this->spid_options_general['sp_sso'] ) ? esc_attr( $this->spid_options_general['sp_sso'] ) : ''
-			);
-		}
-
-		public function sp_idp_callback() {
-			printf(
-				'<input type="text" id="sp_idp" name="spid_general[sp_idp]" value="%s" />',
-				isset( $this->spid_options_general['sp_idp'] ) ? esc_attr( $this->spid_options_general['sp_idp'] ) : ''
-			);
-		}
 
 		public function sp_livello_callback() {
 			printf(
@@ -227,37 +215,59 @@ if ( ! class_exists( 'SPID_Admin' ) ) {
 			);
 		}
 
+		public function sp_role_callback() {
+			printf(
+				'<select name="spid_general[sp_role]" id="sp_role" value="%s"/>
+                <option selected disabled>Choose here</option>
+                <option value="admin">Admin</option>
+				<option value="registered">Registered</option>
+                </select>',
+				isset( $this->spid_options_general['sp_role'] ) ? esc_attr( $this->spid_options_general['sp_role'] ) : ''
+			);
+		}
+
+		public function sp_idp_callback() {
+			printf(
+				'<input type="text" id="sp_idp" name="spid_general[sp_idp]" value="%s" />',
+				isset( $this->spid_options_general['sp_idp'] ) ? esc_attr( $this->spid_options_general['sp_idp'] ) : ''
+			);
+		}
+
+
 		/**
-		 * SPID Button Settings
+		 * Metadata Settings
 		 */
-		public function spid_button_callback() {
-			echo 'Info here.';
+		public function metadata_callback() {
+			echo 'Attenzione: una volta cambiati uno di questi settaggi si dovrà ridistribuire il metadata del SP a tutti gli IdP, dal _metadata link_.';
+		}
+
+		public function sp_org_name_callback() {
+			printf(
+				'<input type="text" id="sp_org_name" name="spid_metadata[sp_org_name]" value="%s" />',
+				isset( $this->spid_options_general['sp_org_name'] ) ? esc_attr( $this->spid_options_general['sp_org_name'] ) : ''
+			);
 		}
 
 		/**
-		 * Help Page
+		 * Button Settings
 		 */
-		public function spid_help_callback() {
-			echo 'Info here.';
+		public function spid_button_callback() {
+			echo '';
 		}
 
 		public function sanitize( $input ) {
 			$new_input = array();
 
-			if ( isset( $input['sp_org_name'] ) ) {
-				$new_input['sp_org_name'] = sanitize_text_field( $input['sp_org_name'] );
+			if ( isset( $input['sp_livello'] ) ) {
+				$new_input['sp_livello'] = sanitize_text_field( $input['sp_livello'] );
 			}
-
-			if ( isset( $input['sp_sso'] ) ) {
-				$new_input['sp_sso'] = sanitize_text_field( $input['sp_sso'] );
+			
+			if ( isset( $input['sp_role'] ) ) {
+				$new_input['sp_role'] = sanitize_text_field( $input['sp_role'] );
 			}
 
 			if ( isset( $input['sp_idp'] ) ) {
 				$new_input['sp_idp'] = sanitize_text_field( $input['sp_idp'] );
-			}
-
-			if ( isset( $input['sp_livello'] ) ) {
-				$new_input['sp_livello'] = sanitize_text_field( $input['sp_livello'] );
 			}
 
 			return $new_input;
