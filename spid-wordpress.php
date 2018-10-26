@@ -52,30 +52,7 @@ require_once SPID_WORDPRESS_PATH . 'admin/class-spid-admin.php';
 /**
  * Load spid-php-lib Library
  */
-require_once SPID_WORDPRESS_PATH . 'spid-php-lib/src/Spid/Interfaces/IdpInterface.php';
-require_once SPID_WORDPRESS_PATH . 'spid-php-lib/src/Spid/Interfaces/RequestInterface.php';
-require_once SPID_WORDPRESS_PATH . 'spid-php-lib/src/Spid/Interfaces/ResponseInterface.php';
-require_once SPID_WORDPRESS_PATH . 'spid-php-lib/src/Spid/Interfaces/SAMLInterface.php';
-
-require_once SPID_WORDPRESS_PATH . 'spid-php-lib/src/Spid/Saml/Idp.php';
-require_once SPID_WORDPRESS_PATH . 'spid-php-lib/src/Spid/Saml/Settings.php';
-require_once SPID_WORDPRESS_PATH . 'spid-php-lib/src/Spid/Saml/SignatureUtils.php';
-
-require_once SPID_WORDPRESS_PATH . 'spid-php-lib/src/Spid/Saml/In/BaseResponse.php';
-require_once SPID_WORDPRESS_PATH . 'spid-php-lib/src/Spid/Saml/In/LogoutRequest.php';
-require_once SPID_WORDPRESS_PATH . 'spid-php-lib/src/Spid/Saml/In/LogoutResponse.php';
-require_once SPID_WORDPRESS_PATH . 'spid-php-lib/src/Spid/Saml/In/Response.php';
-
-require_once SPID_WORDPRESS_PATH . 'spid-php-lib/src/Spid/Saml/Out/Base.php';
-require_once SPID_WORDPRESS_PATH . 'spid-php-lib/src/Spid/Saml/Out/AuthnRequest.php';
-require_once SPID_WORDPRESS_PATH . 'spid-php-lib/src/Spid/Saml/Out/LogoutRequest.php';
-require_once SPID_WORDPRESS_PATH . 'spid-php-lib/src/Spid/Saml/Out/LogoutResponse.php';
-
-
-require_once SPID_WORDPRESS_PATH . 'spid-php-lib/src/Spid/Saml.php';
-require_once SPID_WORDPRESS_PATH . 'spid-php-lib/src/Spid/Session.php';
-
-require_once SPID_WORDPRESS_PATH . 'spid-php-lib/src/Sp.php';
+require_once SPID_WORDPRESS_PATH . 'spid-php-lib/vendor/autoload.php';
 
 SPID_Core::getInstance();
 
