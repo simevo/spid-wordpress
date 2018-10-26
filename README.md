@@ -97,24 +97,9 @@ SELECT * FROM wp_options WHERE option_name='active_plugins';
 UPDATE wp_options SET option_value = '' WHERE option_name = 'active_plugins';
 ```
 
-## Testing
+## Sviluppo
 
-### Tests manuali
-
-TODO
-
-### Linting
-
-Questo progetto segue le linee guida [PSR-2: Coding Style Guide](https://www.php-fig.org/psr/psr-2/).
-
-Verificare che il codice sia pulito con:
-```sh
-./vendor/bin/phpcs --standard=PSR2 xxx.php
-```
-
-## Contributing
-
-Per contribuire a questo repo si prega di usare il [git-flow workflow](https://danielkummer.github.io/git-flow-cheatsheet/).
+Per maggiori informazioni su come contribuire allo sviluppo di questo plugin, vedi il file [README-DEV.md (en)](/README-DEV.md).
 
 ## Authors
 
