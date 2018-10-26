@@ -38,7 +38,7 @@ if ( ! class_exists( 'SPID_Admin' ) ) {
 			<div class="spid-logo" style="text-align:center;">
 				<img src="<?php echo  SPID_WORDPRESS_URL . 'public/images/spid.png'; ?>" style="width: 800px; margin: 3% 0 0;">
 			</div>
-			<h1><?php esc_attr_e( 'SPID Options', 'spid-wordpress' ); ?></h1>
+			<h1><?php esc_attr_e( 'SPID Wordpress Plug-in Options', 'spid-wordpress' ); ?></h1>
 			<h2 class="nav-tab-wrapper">
 				<a 
 					href="<?php echo esc_url( admin_url( 'admin.php?page=spid_opzioni' ) ); ?>"
