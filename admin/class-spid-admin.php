@@ -41,8 +41,8 @@ if ( ! class_exists( 'SPID_Admin' ) ) {
 
 			?>
 			<div class="wrap">
-			<div class="spid-logo" style="text-align:center;">
-				<img src="<?php echo  SPID_WORDPRESS_URL . 'public/images/spid.png'; ?>" style="width: 600px; margin: 3% 0 0;">
+			<div class="spid-logo">
+				<img src="<?php echo  SPID_WORDPRESS_URL . 'public/images/spid.png'; ?>" style="width: 400px; margin: 3% 0 0;">
 			</div>
 			<h1><?php esc_attr_e( 'SPID Wordpress Plug-in Options', 'spid-wordpress' ); ?></h1>
 			<h2 class="nav-tab-wrapper">
@@ -120,7 +120,15 @@ if ( ! class_exists( 'SPID_Admin' ) ) {
 			} elseif ( $certificati_Screen ) {
 				settings_fields( 'spid_certificati' );
 				do_settings_sections( 'spid-setting-certificati' );
-				submit_button();				
+				submit_button();	
+			} elseif ( $import_Screen ) {
+				settings_fields( 'spid_import' );
+				do_settings_sections( 'spid-setting-import' );
+				submit_button();
+			} elseif ( $aiuto_Screen ) {
+				settings_fields( 'spid_aiuto' );
+				do_settings_sections( 'spid-setting-aiuto' );
+				submit_button();												
 			} else {
 				settings_fields( 'spid_general' );
 				do_settings_sections( 'spid-setting-admin' );
@@ -232,16 +240,60 @@ if ( ! class_exists( 'SPID_Admin' ) ) {
 			add_settings_section(
 				'setting_section_id', // ID.
 				'Configurazione certificati', // Title.
-				array( $this, 'button_section_info' ), // Callback.
+				array( $this, 'certificati_section_info' ), // Callback.
 				'spid-setting-certificati' // Page.
 			);
 
 			add_settings_field(
 				'spid_certificati', // ID.
-				array( $this, 'spid_button_callback' ), // Callback.
-				'spid-setting-button', // Page.
+				array( $this, 'spid_certificati_callback' ), // Callback.
+				'spid-setting-certificati', // Page.
 				'setting_section_id' // Section.
-			);			
+			);
+			/**
+			 * SPID Import
+			 */
+			register_setting(
+				'spid_import', // Option Group.
+				'spid_import', // Option Name.
+				array( $this, 'sanitize' ) // Sanitize.
+			);
+
+			add_settings_section(
+				'setting_section_id', // ID.
+				'Importazione e esportazione della configurazione', // Title.
+				array( $this, 'import_section_info' ), // Callback.
+				'spid-setting-import' // Page.
+			);
+
+			add_settings_field(
+				'spid_import', // ID.
+				array( $this, 'spid_import_callback' ), // Callback.
+				'spid-setting-certificati', // Page.
+				'setting_section_id' // Section.
+			);
+			/**
+			 * SPID Aiuto
+			 */
+			register_setting(
+				'spid_aiuto', // Option Group.
+				'spid_aiuto', // Option Name.
+				array( $this, 'sanitize' ) // Sanitize.
+			);
+
+			add_settings_section(
+				'setting_section_id', // ID.
+				'Aiuto', // Title.
+				array( $this, 'aiuto_section_info' ), // Callback.
+				'spid-setting-aiuto' // Page.
+			);
+
+			add_settings_field(
+				'spid_aiuto', // ID.
+				array( $this, 'spid_aiuto_callback' ), // Callback.
+				'spid-setting-aiuto', // Page.
+				'setting_section_id' // Section.
+			);									
 		}
 
 		/**
@@ -264,11 +316,16 @@ Questi parametri non modificano in nessun modo il metadata (link) quindi puoi co
 		public function certificati_section_info() {
 			echo 'In questa tab puoi modificare i dati dei certificati...';
 		}
+		public function import_section_info() {
+			echo 'In questa tab puoi importare salvare le configurazioni...';
+		}
+		public function aiuto_section_info() {
+			echo 'Help bla bla...';
+		}	
 
 		/**
 		 * General Settings
 		 */
-
 		public function sp_livello_callback() {
 			printf(
 				'<select name="spid_general[sp_livello]" id="sp_livello" value="%s"/>
@@ -337,5 +394,19 @@ Questi parametri non modificano in nessun modo il metadata (link) quindi puoi co
 
 			return $new_input;
 		}
+
+		/**
+		 * Certificati Settings WIP
+		 */
+		public function certificati_callback() {
+			echo 'Attenzione: una volta cambiati uno di questi settaggi si dovrà ridistribuire il metadata del SP a tutti gli IdP, dal _metadata link_.';
+		}
+
+		public function ___sp_org_name_callback() {
+			printf(
+				'<input type="text" id="sp_org_name" name="spid_metadata[sp_org_name]" value="%s" />',
+				isset( $this->spid_options_general['sp_org_name'] ) ? esc_attr( $this->spid_options_general['sp_org_name'] ) : ''
+			);
+		}		
 	}
 }
