@@ -51,10 +51,17 @@ class SPID_Core {
 				$base . '/wp-login.php?sso=spid',
 			],
 			'sp_singlelogoutservice'       => [ [ $base . '/wp-login.php?sso=spid&amp;slo', '' ] ],
-			'sp_org_name'                  => $this->options['sp_org_name'],
-			'sp_org_display_name'          => $this->options['sp_org_display_name'],
+			'sp_org_name'                  => $this->options['sp_org_name'] ?: "myservice",
+			'sp_org_display_name'          => $this->options['sp_org_display_name'] ?: "My Service",
 			'idp_metadata_folder'          => "$home/idp_metadata/",
 			'sp_attributeconsumingservice' => [ $sp_attributeconsumingservice ],
+			'sp_key_cert_values'           => [
+				'countryName'         => 'IT',
+				'stateOrProvinceName' => $this->options['sp_stateName'] ?: "Roma",
+				'localityName'        => $this->options['sp_localityName'] ?: 'Ostia',
+				'commonName'          => parse_url( get_home_url(), PHP_URL_HOST ),
+				'emailAddress'        => $this->options['sp_emailAddress'] ?: 'test@example.com',
+			],
 		];
 		$this->auth = new Italia\Spid\Sp( $settings );
 

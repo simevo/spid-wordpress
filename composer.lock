@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "420a0a696ba9f0ef2cb09cbfeef31c17",
-    "content-hash": "02b9e55253e87af4d979515e45a3118d",
+    "hash": "95663eafa028a9297582933bd517204b",
+    "content-hash": "19660719ce00d709097009c753fa1bb5",
     "packages": [
         {
             "name": "dealerdirect/phpcodesniffer-composer-installer",
@@ -77,16 +77,16 @@
         },
         {
             "name": "italia/spid-php-lib",
-            "version": "v0.20",
+            "version": "v0.30",
             "source": {
                 "type": "git",
                 "url": "https://github.com/italia/spid-php-lib.git",
-                "reference": "49c743bb668256ee4a12346b925fe8cac0785512"
+                "reference": "aeee2324b9ff0a8de408816ecd6c5596f9e65ea9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/italia/spid-php-lib/zipball/49c743bb668256ee4a12346b925fe8cac0785512",
-                "reference": "49c743bb668256ee4a12346b925fe8cac0785512",
+                "url": "https://api.github.com/repos/italia/spid-php-lib/zipball/aeee2324b9ff0a8de408816ecd6c5596f9e65ea9",
+                "reference": "aeee2324b9ff0a8de408816ecd6c5596f9e65ea9",
                 "shasum": ""
             },
             "require": {
@@ -118,7 +118,7 @@
                 }
             ],
             "description": "PHP package for SPID authentication",
-            "time": "2018-10-12 14:03:16"
+            "time": "2018-10-26 19:22:27"
         },
         {
             "name": "robrichards/xmlseclibs",
