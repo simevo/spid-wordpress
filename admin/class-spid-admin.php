@@ -199,15 +199,41 @@ if ( ! class_exists( 'SPID_Admin' ) ) {
 				array( $this, 'metadata_section_info' ), // Callback.
 				'spid-setting-metadata' // Page.
 			);
-
+			add_settings_field(
+				'user_attributes', // ID.
+				'Seleziona gli attributi utente', // Title.
+				array( $this, 'user_attributes_callback' ), // Callback.
+				'spid-setting-metadata', // Page.
+				'spid_metadata_setting' // Section.
+			);
 			add_settings_field(
 				'sp_org_name', // ID.
 				'Organization Name', // Title.
-				array( $this, 'spid_metadata_callback' ), // Callback.
+				array( $this, 'sp_org_name_callback' ), // Callback.
 				'spid-setting-metadata', // Page.
-				'spid_button_metadata' // Section.
+				'spid_metadata_setting' // Section.
 			);
-
+			add_settings_field(
+				'sp_org_display_name', // ID.
+				'Organization Display Name', // Title.
+				array( $this, 'sp_org_display_name_callback' ), // Callback.
+				'spid-setting-metadata', // Page.
+				'spid_metadata_setting' // Section.
+			);
+			add_settings_field(
+				'sp_sso', // ID.
+				'SSO', // Title.
+				array( $this, 'sp_sso_callback' ), // Callback.
+				'spid-setting-metadata', // Page.
+				'spid_metadata_setting' // Section.
+			);
+			add_settings_field(
+				'metadata_path', // ID.
+				'Percorso al metadata', // Title.
+				array( $this, 'metadata_path_callback' ), // Callback.
+				'spid-setting-metadata', // Page.
+				'spid_metadata_setting' // Section.
+			);			
 			/**
 			 * SPID Button
 			 */
@@ -364,7 +390,15 @@ if ( ! class_exists( 'SPID_Admin' ) ) {
 		public function metadata_callback() {
 			echo 'Attenzione: una volta cambiati uno di questi settaggi si dovrà ridistribuire il metadata del SP a tutti gli IdP, dal _metadata link_.';
 		}
-
+		public function user_attributes_callback() {
+			printf(
+				'<label><input type="checkbox" name="user_attributes[]" value="nome"> Nome</label><br>
+				<label><input type="checkbox" name="user_attributes[]" value="cognome"> Cognome</label><br>
+				<label><input type="checkbox" name="user_attributes[]" value="codiceFiscale"> Codice Fiscale</label><br>
+				<label><input type="checkbox" name="user_attributes[]" value="dataDiNascita"> Data di nascita</label>',
+				isset( $this->spid_options_general['user_attributes'] ) ? esc_attr( $this->spid_options_general['user_attributes'] ) : ''
+			);
+		}
 		public function sp_org_name_callback() {
 			printf(
 				'<input type="text" id="sp_org_name" name="spid_metadata[sp_org_name]" value="%s" />',
@@ -372,6 +406,24 @@ if ( ! class_exists( 'SPID_Admin' ) ) {
 			);
 		}
 
+		public function sp_org_display_name_callback() {
+			printf(
+				'<input type="text" id="sp_org_display_name" name="spid_metadata[sp_org_display_name]" value="%s" />',
+				isset( $this->spid_options_general['sp_org_display_name'] ) ? esc_attr( $this->spid_options_general['sp_org_display_name'] ) : ''
+			);
+		}
+		public function sp_sso_callback() {
+			printf(
+				'<input type="text" id="sp_sso" name="spid_metadata[sp_sso]" value="%s" />',
+				isset( $this->spid_options_general['sp_sso'] ) ? esc_attr( $this->spid_options_general['sp_sso'] ) : ''
+			);
+		}
+		public function metadata_path_callback() {
+			printf(
+				'<input type="text" id="metadata_path" name="spid_metadata[metadata_path]" value="%s" />',
+				isset( $this->spid_options_general['metadata_path'] ) ? esc_attr( $this->spid_options_general['metadata_path'] ) : ''
+			);
+		}				
 		/**
 		 * Button Settings
 		 */
@@ -404,7 +456,7 @@ if ( ! class_exists( 'SPID_Admin' ) ) {
 			echo 'Attenzione: una volta cambiati uno di questi settaggi si dovrà ridistribuire il metadata del SP a tutti gli IdP, dal _metadata link_.';
 		}
 
-		public function sp_org_display_name_callback() {
+		public function xxxx_callback() {
 			printf(
 				'<input type="text" id="sp_org_display_name" name="spid_certificati[sp_org_display_name]" value="%s" />',
 				isset( $this->spid_options_general['sp_org_display_name'] ) ? esc_attr( $this->spid_options_general['sp_org_display_name'] ) : ''
