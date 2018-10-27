@@ -36,7 +36,7 @@ if ( ! class_exists( 'SPID_Admin' ) ) {
 			?>
 			<div class="wrap">
 			<div class="spid-logo" style="text-align:center;">
-				<img src="<?php echo  SPID_WORDPRESS_URL . 'public/images/spid.png'; ?>" style="width: 800px; margin: 3% 0 0;">
+				<img src="<?php echo  SPID_WORDPRESS_URL . 'public/images/spid.png'; ?>" style="width: 600px; margin: 3% 0 0;">
 			</div>
 			<h1><?php esc_attr_e( 'SPID Wordpress Plug-in Options', 'spid-wordpress' ); ?></h1>
 			<h2 class="nav-tab-wrapper">
@@ -48,7 +48,7 @@ if ( ! class_exists( 'SPID_Admin' ) ) {
 						echo ' nav-tab-active';}
 					?>
 					">
-					<?php esc_html_e( 'General' ); ?>
+					<?php esc_html_e( 'Plugin Configuration' ); ?>
 				</a>
 				<a 
 					href="<?php echo esc_url( add_query_arg( array( 'action' => 'metadata' ), admin_url( 'admin.php?page=spid_opzioni' ) ) ); ?>" 
@@ -68,7 +68,17 @@ if ( ! class_exists( 'SPID_Admin' ) ) {
 					?>
 					">
 					<?php esc_html_e( 'SPID Button' ); ?>
-				</a>        
+				</a> 
+				<a 
+					href="<?php echo esc_url( add_query_arg( array( 'action' => 'certificati' ), admin_url( 'admin.php?page=spid_opzioni' ) ) ); ?>" 
+					class="nav-tab
+					<?php
+					if ( $button_Screen ) {
+						echo ' nav-tab-active';}
+					?>
+					">
+					<?php esc_html_e( 'Certificati' ); ?>
+				</a>  			       
 			</h2>
 	
 			<form method="post" action="options.php">
@@ -81,6 +91,10 @@ if ( ! class_exists( 'SPID_Admin' ) ) {
 				settings_fields( 'spid_button' );
 				do_settings_sections( 'spid-setting-button' );
 				submit_button();
+			} elseif ( $cert_Screen ) {
+				settings_fields( 'spid_certificati' );
+				do_settings_sections( 'spid-setting-certificati' );
+				submit_button();				
 			} else {
 				settings_fields( 'spid_general' );
 				do_settings_sections( 'spid-setting-admin' );
@@ -180,6 +194,28 @@ if ( ! class_exists( 'SPID_Admin' ) ) {
 				'spid-setting-button', // Page.
 				'setting_section_id' // Section.
 			);
+			/**
+			 * SPID Certificati
+			 */
+			register_setting(
+				'spid_certificati', // Option Group.
+				'spid_certificati', // Option Name.
+				array( $this, 'sanitize' ) // Sanitize.
+			);
+
+			add_settings_section(
+				'setting_section_id', // ID.
+				'Configurazione certificati', // Title.
+				array( $this, 'button_section_info' ), // Callback.
+				'spid-setting-certificati' // Page.
+			);
+
+			add_settings_field(
+				'spid_certificati', // ID.
+				array( $this, 'spid_button_callback' ), // Callback.
+				'spid-setting-button', // Page.
+				'setting_section_id' // Section.
+			);			
 		}
 
 		/**
@@ -188,7 +224,8 @@ if ( ! class_exists( 'SPID_Admin' ) ) {
 		 * @return print description
 		 */
 		public function general_section_info() {
-			echo 'Configura il plug-in e salva le impostazioni. Questi parametri sono liberi e non modificano in nessun modo i Metadata.';
+			echo 'Configura il plug-in e salva le impostazioni.<br>
+Questi parametri non modificano in nessun modo il metadata (link) quindi puoi configurare e salvare le impostazioni liberamente e non sarà necessaro ridistribuire il metadata ai vari Identity Provider.';
 		}
 
 		public function metadata_section_info() {
@@ -198,7 +235,9 @@ if ( ! class_exists( 'SPID_Admin' ) ) {
 		public function button_section_info() {
 			echo '';
 		}
-
+		public function certificati_section_info() {
+			echo 'In questa tab puoi modificare i dati dei certificati...';
+		}
 
 		/**
 		 * General Settings
@@ -207,7 +246,7 @@ if ( ! class_exists( 'SPID_Admin' ) ) {
 		public function sp_livello_callback() {
 			printf(
 				'<select name="spid_general[sp_livello]" id="sp_livello" value="%s"/>
-                <option selected disabled>Choose here</option>
+                <option selected disabled>Scelgi...</option>
                 <option value="1">1</option>
 				<option value="2">2</option>
                 </select>',
@@ -218,7 +257,7 @@ if ( ! class_exists( 'SPID_Admin' ) ) {
 		public function sp_role_callback() {
 			printf(
 				'<select name="spid_general[sp_role]" id="sp_role" value="%s"/>
-                <option selected disabled>Choose here</option>
+                <option selected disabled>Scelgi...</option>
                 <option value="admin">Admin</option>
 				<option value="registered">Registered</option>
                 </select>',
