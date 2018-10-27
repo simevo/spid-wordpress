@@ -3,6 +3,7 @@
 bundle.sh export-ignore
 composer.json export-ignore
 composer.lock export-ignore
+/images export-ignore
 README.md export-ignore
 README-DEV.md export-ignore
 phpcs.xml export-ignore
