@@ -222,7 +222,7 @@ if ( ! class_exists( 'SPID_Admin' ) ) {
 			);
 			add_settings_field(
 				'sp_sso', // ID.
-				'SSO', // Title.
+				'SSO (on hold)', // Title.
 				array( $this, 'sp_sso_callback' ), // Callback.
 				'spid-setting-metadata', // Page.
 				'spid_metadata_setting' // Section.
@@ -244,7 +244,7 @@ if ( ! class_exists( 'SPID_Admin' ) ) {
 			);
 
 			add_settings_section(
-				'setting_section_id', // ID.
+				'spid_button_setting', // ID.
 				'Configurazione di SPID Button', // Title.
 				array( $this, 'button_section_info' ), // Callback.
 				'spid-setting-button' // Page.
@@ -266,18 +266,33 @@ if ( ! class_exists( 'SPID_Admin' ) ) {
 			);
 
 			add_settings_section(
-				'setting_section_id', // ID.
+				'spid_certificati_setting', // ID.
 				'Configurazione certificati', // Title.
 				array( $this, 'certificati_section_info' ), // Callback.
 				'spid-setting-certificati' // Page.
 			);
 
 			add_settings_field(
-				'spid_certificati', // ID.
-				array( $this, 'sp_org_display_name_callback' ), // Callback.
+				'sp_stateName', // ID.
+				'Provincia (nome per esteso)', // Title.
+				array( $this, 'sp_stateName_callback' ), // Callback.
 				'spid-setting-certificati', // Page.
-				'setting_section_id' // Section.
+				'spid_certificati_setting' // Section.
 			);
+			add_settings_field(
+				'sp_localityName', // ID.
+				'Città (nome per esteso)', // Title.
+				array( $this, 'sp_localityName_callback' ), // Callback.
+				'spid-setting-certificati', // Page.
+				'spid_certificati_setting' // Section.
+			);
+			add_settings_field(
+				'sp_emailAddress', // ID.
+				'Email dell\'ente o del referente tecnico', // Title.
+				array( $this, 'sp_emailAddress_callback' ), // Callback.
+				'spid-setting-certificati', // Page.
+				'spid_certificati_setting' // Section.
+			);						
 			/**
 			 * SPID Import
 			 */
@@ -297,7 +312,7 @@ if ( ! class_exists( 'SPID_Admin' ) ) {
 			add_settings_field(
 				'spid_import', // ID.
 				array( $this, 'spid_import_callback' ), // Callback.
-				'spid-setting-certificati', // Page.
+				'spid-setting-import', // Page.
 				'setting_section_id' // Section.
 			);
 			/**
@@ -414,7 +429,7 @@ if ( ! class_exists( 'SPID_Admin' ) ) {
 		}
 		public function sp_sso_callback() {
 			printf(
-				'<input type="text" id="sp_sso" name="spid_metadata[sp_sso]" value="%s" />',
+				'<input type="text" id="sp_sso" name="spid_metadata[sp_sso]" value="spid" />',
 				isset( $this->spid_options_general['sp_sso'] ) ? esc_attr( $this->spid_options_general['sp_sso'] ) : ''
 			);
 		}
@@ -455,12 +470,23 @@ if ( ! class_exists( 'SPID_Admin' ) ) {
 		public function certificati_callback() {
 			echo 'Attenzione: una volta cambiati uno di questi settaggi si dovrà ridistribuire il metadata del SP a tutti gli IdP, dal _metadata link_.';
 		}
-
-		public function xxxx_callback() {
+		public function sp_stateName_callback() {
 			printf(
-				'<input type="text" id="sp_org_display_name" name="spid_certificati[sp_org_display_name]" value="%s" />',
-				isset( $this->spid_options_general['sp_org_display_name'] ) ? esc_attr( $this->spid_options_general['sp_org_display_name'] ) : ''
+				'<input type="text" id="sp_stateName" name="spid_certificati[sp_stateName]" value="%s" />',
+				isset( $this->spid_options_general['sp_stateName'] ) ? esc_attr( $this->spid_options_general['sp_stateName'] ) : ''
 			);
-		}		
+		}
+		public function sp_localityName_callback() {
+			printf(
+				'<input type="text" id="sp_localityName" name="spid_certificati[sp_localityName]" value="%s" />',
+				isset( $this->spid_options_general['sp_localityName'] ) ? esc_attr( $this->spid_options_general['sp_localityName'] ) : ''
+			);
+		}
+		public function sp_emailAddress_callback() {
+			printf(
+				'<input type="text" id="sp_emailAddress" name="spid_certificati[sp_emailAddress]" value="%s" />',
+				isset( $this->spid_options_general['sp_emailAddress'] ) ? esc_attr( $this->spid_options_general['sp_emailAddress'] ) : ''
+			);
+		}						
 	}
 }
