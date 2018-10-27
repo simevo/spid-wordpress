@@ -32,6 +32,7 @@ if ( ! class_exists( 'SPID_Admin' ) ) {
 
 			$metadata_Screen = ( isset( $_GET['action'] ) && 'metadata' == $_GET['action'] ) ? true : false;
 			$button_Screen   = ( isset( $_GET['action'] ) && 'button' == $_GET['action'] ) ? true : false;
+			$certificati_Screen   = ( isset( $_GET['action'] ) && 'button' == $_GET['action'] ) ? true : false;
 
 			?>
 			<div class="wrap">
@@ -73,7 +74,7 @@ if ( ! class_exists( 'SPID_Admin' ) ) {
 					href="<?php echo esc_url( add_query_arg( array( 'action' => 'certificati' ), admin_url( 'admin.php?page=spid_opzioni' ) ) ); ?>" 
 					class="nav-tab
 					<?php
-					if ( $button_Screen ) {
+					if ( $metadati_Screen ) {
 						echo ' nav-tab-active';}
 					?>
 					">
