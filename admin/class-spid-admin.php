@@ -30,10 +30,14 @@ if ( ! class_exists( 'SPID_Admin' ) ) {
 			$this->spid_options_metadata  = get_option( 'spid_metadata' );
 			$this->spid_options_button    = get_option( 'spid_button' );
 			$this->spid_options_certificati    = get_option( 'spid_certificati' );
+			$this->spid_options_import    = get_option( 'spid_import' );
+			$this->spid_options_aiuto    = get_option( 'spid_aiuto' );
 
 			$metadata_Screen = ( isset( $_GET['action'] ) && 'metadata' == $_GET['action'] ) ? true : false;
 			$button_Screen   = ( isset( $_GET['action'] ) && 'button' == $_GET['action'] ) ? true : false;
 			$certificati_Screen   = ( isset( $_GET['action'] ) && 'certificati' == $_GET['action'] ) ? true : false;
+			$import_Screen   = ( isset( $_GET['action'] ) && 'import' == $_GET['action'] ) ? true : false;
+			$aiuto_Screen   = ( isset( $_GET['action'] ) && 'aiuto' == $_GET['action'] ) ? true : false;
 
 			?>
 			<div class="wrap">
@@ -46,7 +50,7 @@ if ( ! class_exists( 'SPID_Admin' ) ) {
 					href="<?php echo esc_url( admin_url( 'admin.php?page=spid_opzioni' ) ); ?>"
 					class="nav-tab
 					<?php
-					if ( ! isset( $_GET['action'] ) || isset( $_GET['action'] ) && 'metadata' != $_GET['action'] && 'button' != $_GET['action'] && 'certificati' != $_GET['action'] ) {
+					if ( ! isset( $_GET['action'] ) || isset( $_GET['action'] ) && 'metadata' != $_GET['action'] && 'button' != $_GET['action'] && 'certificati' != $_GET['action'] && 'import' != $_GET['action'] && 'aiuto' != $_GET['action'] ) {
 						echo ' nav-tab-active';}
 					?>
 					">
@@ -80,7 +84,27 @@ if ( ! class_exists( 'SPID_Admin' ) ) {
 					?>
 					">
 					<?php esc_html_e( 'Certificati' ); ?>
-				</a>  			       
+				</a>
+				<a 
+					href="<?php echo esc_url( add_query_arg( array( 'action' => 'import' ), admin_url( 'admin.php?page=spid_opzioni' ) ) ); ?>" 
+					class="nav-tab
+					<?php
+					if ( $import_Screen ) {
+						echo ' nav-tab-active';}
+					?>
+					">
+					<?php esc_html_e( 'Import' ); ?>
+				</a> 
+				<a 
+					href="<?php echo esc_url( add_query_arg( array( 'action' => 'aiuto' ), admin_url( 'admin.php?page=spid_opzioni' ) ) ); ?>" 
+					class="nav-tab
+					<?php
+					if ( $aiuto_Screen ) {
+						echo ' nav-tab-active';}
+					?>
+					">
+					<?php esc_html_e( 'Aiuto' ); ?>
+				</a> 								  			       
 			</h2>
 	
 			<form method="post" action="options.php">
