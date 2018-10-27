@@ -29,10 +29,11 @@ if ( ! class_exists( 'SPID_Admin' ) ) {
 			$this->spid_options_general = get_option( 'spid_general' );
 			$this->spid_options_metadata  = get_option( 'spid_metadata' );
 			$this->spid_options_button    = get_option( 'spid_button' );
+			$this->spid_options_certificati    = get_option( 'spid_certificati' );
 
 			$metadata_Screen = ( isset( $_GET['action'] ) && 'metadata' == $_GET['action'] ) ? true : false;
 			$button_Screen   = ( isset( $_GET['action'] ) && 'button' == $_GET['action'] ) ? true : false;
-			$certificati_Screen   = ( isset( $_GET['action'] ) && 'button' == $_GET['action'] ) ? true : false;
+			$certificati_Screen   = ( isset( $_GET['action'] ) && 'certificati' == $_GET['action'] ) ? true : false;
 
 			?>
 			<div class="wrap">
@@ -45,7 +46,7 @@ if ( ! class_exists( 'SPID_Admin' ) ) {
 					href="<?php echo esc_url( admin_url( 'admin.php?page=spid_opzioni' ) ); ?>"
 					class="nav-tab
 					<?php
-					if ( ! isset( $_GET['action'] ) || isset( $_GET['action'] ) && 'metadata' != $_GET['action'] && 'button' != $_GET['action'] ) {
+					if ( ! isset( $_GET['action'] ) || isset( $_GET['action'] ) && 'metadata' != $_GET['action'] && 'button' != $_GET['action'] && 'certificati' != $_GET['action'] ) {
 						echo ' nav-tab-active';}
 					?>
 					">
@@ -92,7 +93,7 @@ if ( ! class_exists( 'SPID_Admin' ) ) {
 				settings_fields( 'spid_button' );
 				do_settings_sections( 'spid-setting-button' );
 				submit_button();
-			} elseif ( $cert_Screen ) {
+			} elseif ( $certificati_Screen ) {
 				settings_fields( 'spid_certificati' );
 				do_settings_sections( 'spid-setting-certificati' );
 				submit_button();				
