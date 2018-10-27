@@ -15,6 +15,9 @@ if ( ! class_exists( 'SPID_Admin' ) ) {
 		private $spid_options_general;
 		private $spid_options_metadata;
 		private $spid_options_button;
+		private $spid_options_certificati;
+		private $spid_options_import;
+		private $spid_options_aiuto;
 
 		public function __construct() {
 			add_action( 'admin_menu', array( $this, 'spid_settings_menu' ) );
@@ -38,8 +41,7 @@ if ( ! class_exists( 'SPID_Admin' ) ) {
 			$certificati_Screen   = ( isset( $_GET['action'] ) && 'certificati' == $_GET['action'] ) ? true : false;
 			$import_Screen   = ( isset( $_GET['action'] ) && 'import' == $_GET['action'] ) ? true : false;
 			$aiuto_Screen   = ( isset( $_GET['action'] ) && 'aiuto' == $_GET['action'] ) ? true : false;
-
-			?>
+?>
 			<div class="wrap">
 			<div class="spid-logo">
 				<img src="<?php echo  SPID_WORDPRESS_URL . 'public/images/spid.png'; ?>" style="width: 400px; margin: 3% 0 0;">
@@ -153,7 +155,7 @@ if ( ! class_exists( 'SPID_Admin' ) ) {
 
 			add_settings_section(
 				'spid_settings_section', // ID.
-				'Options', // Title.
+				'Opzioni di configurazione', // Title.
 				array( $this, 'general_section_info' ), // Callback.
 				'spid-setting-admin' // Page.
 			);
@@ -176,7 +178,7 @@ if ( ! class_exists( 'SPID_Admin' ) ) {
 
 			add_settings_field(
 				'sp_idp', // ID.
-				'Name of the test Identity Provider', // Title.
+				'Entity ID of the test IdP', // Title.
 				array( $this, 'sp_idp_callback' ), // Callback.
 				'spid-setting-admin', // Page.
 				'spid_settings_section' // Section.
@@ -246,7 +248,7 @@ if ( ! class_exists( 'SPID_Admin' ) ) {
 
 			add_settings_field(
 				'spid_certificati', // ID.
-				array( $this, 'spid_certificati_callback' ), // Callback.
+				array( $this, 'sp_org_display_name_callback' ), // Callback.
 				'spid-setting-certificati', // Page.
 				'setting_section_id' // Section.
 			);
@@ -303,7 +305,7 @@ if ( ! class_exists( 'SPID_Admin' ) ) {
 		 */
 		public function general_section_info() {
 			echo 'Configura il plug-in e salva le impostazioni.<br>
-Questi parametri non modificano in nessun modo il metadata (link) quindi puoi configurare e salvare le impostazioni liberamente e non sarà necessaro ridistribuire il metadata ai vari Identity Provider.';
+			Questi parametri non modificano in nessun modo il metadata (link) quindi puoi configurare e salvare le impostazioni liberamente e non sarà necessaro ridistribuire il metadata ai vari Identity Provider.';
 		}
 
 		public function metadata_section_info() {
@@ -402,10 +404,10 @@ Questi parametri non modificano in nessun modo il metadata (link) quindi puoi co
 			echo 'Attenzione: una volta cambiati uno di questi settaggi si dovrà ridistribuire il metadata del SP a tutti gli IdP, dal _metadata link_.';
 		}
 
-		public function ___sp_org_name_callback() {
+		public function sp_org_display_name_callback() {
 			printf(
-				'<input type="text" id="sp_org_name" name="spid_metadata[sp_org_name]" value="%s" />',
-				isset( $this->spid_options_general['sp_org_name'] ) ? esc_attr( $this->spid_options_general['sp_org_name'] ) : ''
+				'<input type="text" id="sp_org_display_name" name="spid_certificati[sp_org_display_name]" value="%s" />',
+				isset( $this->spid_options_general['sp_org_display_name'] ) ? esc_attr( $this->spid_options_general['sp_org_display_name'] ) : ''
 			);
 		}		
 	}
