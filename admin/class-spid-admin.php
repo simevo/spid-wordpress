@@ -381,7 +381,7 @@ In quali casi ti puo\' essere utile questo tool:<br>
 		 */
 		public function IdP_list_callback() {
 			printf(
-				'<p>Seleziona quali Identity Provider utilizzare tra quelli disponibili.</p>
+				'<p class="description">Seleziona quali Identity Provider utilizzare tra quelli disponibili.</p>
 				<label><input type="checkbox" name="IdP_list[]" value="Idp 1"> Idp 1</label><br>
 				<label><input type="checkbox" name="IdP_list[]" value="Idp 2"> Idp 2</label><br>
 				<label><input type="checkbox" name="IdP_list[]" value="Idp 3"> Idp 3</label><br>
@@ -391,7 +391,7 @@ In quali casi ti puo\' essere utile questo tool:<br>
 		}		
 		public function sp_livello_callback() {
 			printf(
-				'<p>Seleziona quale livello di sicurezza intendi utilizzare per il login SPID<br>
+				'<p class="description">Seleziona quale livello di sicurezza intendi utilizzare per il login SPID<br>
 				- Il primo livello permette di accedere ai servizi online attraverso un nome utente e una password scelti dall’utente.</br>
 				- Il secondo livello permette l’accesso attraverso un nome utente e una password scelti dall’utente più la generazione di un codice temporaneo di accesso (autenticazione a due fattori).</p>
 				<select name="spid_general[sp_livello]" id="sp_livello" value="%s"/>
@@ -405,7 +405,7 @@ In quali casi ti puo\' essere utile questo tool:<br>
 
 		public function sp_role_callback() {
 			printf(
-				'<p>Scegli che ruolo assegnare di default agli utenti che si registrano sul tuo sito WordPress mediante autenticazione SPID. Una volta creato l\'utente sarà possibile per gli amministratori modificare questo dato nella sezione "utenti".</p>
+				'<p class="description">Scegli che ruolo assegnare di default agli utenti che si registrano sul tuo sito WordPress mediante autenticazione SPID. Una volta creato l\'utente sarà possibile per gli amministratori modificare questo dato nella sezione "utenti".</p>
 				<select name="spid_general[sp_role]" id="sp_role" value="%s"/>
                 <option selected disabled>Scelgi...</option>
                 <option value="admin">Admin</option>
@@ -417,7 +417,7 @@ In quali casi ti puo\' essere utile questo tool:<br>
 
 		public function sp_idp_callback() {
 			printf(
-				'<p>Inserisci l\'ID del IdP di test.</p>
+				'<p class="description">Inserisci l\'ID del IdP di test.</p>
 				<input type="text" id="sp_idp" name="spid_general[sp_idp]" value="%s" />',
 				isset( $this->spid_options_general['sp_idp'] ) ? esc_attr( $this->spid_options_general['sp_idp'] ) : ''
 			);
@@ -432,7 +432,7 @@ In quali casi ti puo\' essere utile questo tool:<br>
 		}
 		public function user_attributes_callback() {
 			printf(
-				'<p>Seleziona quali dati relativi all\'identità digitale dell\'utente ti interessa acquisire tra quelli disponibili.</p>
+				'<p class="description">Seleziona quali dati relativi all\'identità digitale dell\'utente ti interessa acquisire tra quelli disponibili.</p>
 				<label><input type="checkbox" name="user_attributes[]" value="nome"> Nome</label><br>
 				<label><input type="checkbox" name="user_attributes[]" value="cognome"> Cognome</label><br>
 				<label><input type="checkbox" name="user_attributes[]" value="codiceFiscale"> Codice Fiscale</label><br>
@@ -442,7 +442,7 @@ In quali casi ti puo\' essere utile questo tool:<br>
 		}
 		public function sp_org_name_callback() {
 			printf(
-				'<p>Inserisci il nome per esteso del proprio istituto (es. "Istituto Superiore Leonardo da Vinci" o "Comune di Torino").</p>
+				'<p class="description">Inserisci il nome per esteso del proprio istituto (es. "Istituto Superiore Leonardo da Vinci" o "Comune di Torino").</p>
 				<input type="text" id="sp_org_name" name="spid_metadata[sp_org_name]" value="%s" />',
 				isset( $this->spid_options_general['sp_org_name'] ) ? esc_attr( $this->spid_options_general['sp_org_name'] ) : ''
 			);
@@ -450,21 +450,21 @@ In quali casi ti puo\' essere utile questo tool:<br>
 
 		public function sp_org_display_name_callback() {
 			printf(
-				'<p>Inserisci il nome del proprio ente che si vuole mostare sulla maschera di Login (es. "DaVinci PA").</p>
+				'<p class="description">Inserisci il nome del proprio ente che si vuole mostare sulla maschera di Login (es. "DaVinci PA").</p>
 				<input type="text" id="sp_org_display_name" name="spid_metadata[sp_org_display_name]" value="%s" />',
 				isset( $this->spid_options_general['sp_org_display_name'] ) ? esc_attr( $this->spid_options_general['sp_org_display_name'] ) : ''
 			);
 		}
 		public function sp_sso_callback() {
 			printf(
-				'<p>Se il tuo sito offre più sistemi di Single Sign On puoi specificare quale utilizzare (di default questo campo è "spid").</p>
+				'<p class="description">Se il tuo sito offre più sistemi di Single Sign On puoi specificare quale utilizzare (di default questo campo è "spid").</p>
 				<input type="text" id="sp_sso" name="spid_metadata[sp_sso]" value="spid" />',
 				isset( $this->spid_options_general['sp_sso'] ) ? esc_attr( $this->spid_options_general['sp_sso'] ) : ''
 			);
 		}
 		public function metadata_path_callback() {
 			printf(
-				'<p>Specifica il percorso alla cartella nella quale sarà salvato il file xml del metadata.</p>
+				'<p class="description">Specifica il percorso alla cartella nella quale sarà salvato il file xml del metadata.</p>
 				<input type="text" id="metadata_path" name="spid_metadata[metadata_path]" value="%s" />',
 				isset( $this->spid_options_general['metadata_path'] ) ? esc_attr( $this->spid_options_general['metadata_path'] ) : ''
 			);
