@@ -395,7 +395,7 @@ In quali casi ti puo\' essere utile questo tool:<br>
 				- Il primo livello permette di accedere ai servizi online attraverso un nome utente e una password scelti dall’utente.</br>
 				- Il secondo livello permette l’accesso attraverso un nome utente e una password scelti dall’utente più la generazione di un codice temporaneo di accesso (autenticazione a due fattori).</p>
 				<select name="spid_general[sp_livello]" id="sp_livello" value="%s"/>
-                <option selected disabled>Scelgi...</option>
+                <option selected disabled>Scegli...</option>
                 <option value="1">1</option>
 				<option value="2">2</option>
                 </select>',
@@ -407,7 +407,7 @@ In quali casi ti puo\' essere utile questo tool:<br>
 			printf(
 				'<p class="description">Scegli che ruolo assegnare di default agli utenti che si registrano sul tuo sito WordPress mediante autenticazione SPID. Una volta creato l\'utente sarà possibile per gli amministratori modificare questo dato nella sezione "utenti".</p>
 				<select name="spid_general[sp_role]" id="sp_role" value="%s"/>
-                <option selected disabled>Scelgi...</option>
+                <option selected disabled>Scegli...</option>
                 <option value="admin">Admin</option>
 				<option value="registered">Registered</option>
                 </select>',
