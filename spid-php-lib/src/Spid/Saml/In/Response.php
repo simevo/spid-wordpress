@@ -11,7 +11,7 @@ class Response implements ResponseInterface
 
     private $saml;
 
-    public function __construct(Saml $saml) 
+    public function __construct(Saml $saml)
     {
         $this->saml = $saml;
     }
@@ -43,7 +43,7 @@ class Response implements ResponseInterface
             //check item 0, this the Issuer element child of Response
         } elseif ($xml->getElementsByTagName('Issuer')->item(0)->nodeValue != $_SESSION['idpEntityId']) {
             throw new \Exception("Invalid Issuer attribute, expected " . $_SESSION['idpEntityId'] . " but received " . $xml->getElementsByTagName('Issuer')->item(0)->nodeValue);
-        } 
+        }
         if ($hasAssertion) {
             //check item 1, this the Issuer element child of Assertion
             if ($hasAssertion && $xml->getElementsByTagName('Issuer')->item(1)->nodeValue != $_SESSION['idpEntityId']) {
@@ -94,7 +94,8 @@ class Response implements ResponseInterface
         }
 
         // Response OK
-        $_SESSION['spidSession'] = $this->spidSession($xml);
+        $session = $this->spidSession($xml);
+        $_SESSION['spidSession'] = (array)$session;
         unset($_SESSION['RequestID']);
         unset($_SESSION['idpName']);
         unset($_SESSION['idpEntityId']);

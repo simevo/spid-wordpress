@@ -29,11 +29,13 @@ class Idp implements IdpInterface
             $fileName = $xmlFile;
         } else {
             $fileName = $this->sp->settings['idp_metadata_folder'] . $xmlFile . ".xml";
-        } 
+        }
         if (!file_exists($fileName)) {
             throw new \Exception("Metadata file $fileName not found", 1);
         }
-
+        if (!is_readable($fileName)) {
+            throw new \Exception("Metadata file $fileName is not readable. Please check file permissions.", 1);
+        }
         $xml = simplexml_load_file($fileName);
 
         $xml->registerXPathNamespace('md', 'urn:oasis:names:tc:SAML:2.0:metadata');
@@ -72,9 +74,10 @@ class Idp implements IdpInterface
             $x509cert = str_replace(' ', '', $x509cert);
 
             if ($heads) {
-                $x509cert = "-----BEGIN CERTIFICATE-----\n".chunk_split($x509cert, 64, "\n")."-----END CERTIFICATE-----\n";
+                $x509cert = "-----BEGIN CERTIFICATE-----\n" .
+                    chunk_split($x509cert, 64, "\n") .
+                    "-----END CERTIFICATE-----\n";
             }
-
         }
         return $x509cert;
     }
@@ -85,7 +88,9 @@ class Idp implements IdpInterface
         $this->level = $level;
 
         $authn = new AuthnRequest($this);
-        $url = $binding == Settings::BINDING_REDIRECT ? $authn->redirectUrl($redirectTo) : $authn->httpPost($redirectTo);
+        $url = $binding == Settings::BINDING_REDIRECT ?
+            $authn->redirectUrl($redirectTo) :
+            $authn->httpPost($redirectTo);
         $_SESSION['RequestID'] = $authn->id;
         $_SESSION['idpName'] = $this->idpFileName;
         $_SESSION['idpEntityId'] = $this->metadata['idpEntityId'];
@@ -106,7 +111,9 @@ class Idp implements IdpInterface
         $this->session = $session;
 
         $logoutRequest = new LogoutRequest($this);
-        $url = ($binding == Settings::BINDING_REDIRECT) ? $logoutRequest->redirectUrl($redirectTo) : $logoutRequest->httpPost($redirectTo);
+        $url = ($binding == Settings::BINDING_REDIRECT) ?
+            $logoutRequest->redirectUrl($redirectTo) :
+            $logoutRequest->httpPost($redirectTo);
 
         $_SESSION['RequestID'] = $logoutRequest->id;
         $_SESSION['idpName'] = $this->idpFileName;
@@ -126,10 +133,13 @@ class Idp implements IdpInterface
 
     public function logoutResponse() : string
     {
-        $this->session = $session;
+        $binding = Settings::BINDING_POST;
+        $redirectTo = $this->sp->settings['sp_entityid'];
 
         $logoutResponse = new LogoutResponse($this);
-        $url = ($binding == Settings::BINDING_REDIRECT) ? $logoutResponse->redirectUrl($redirectTo) : $logoutResponse->httpPost($redirectTo);
+        $url = ($binding == Settings::BINDING_REDIRECT) ?
+            $logoutResponse->redirectUrl($redirectTo) :
+            $logoutResponse->httpPost($redirectTo);
         unset($_SESSION);
         
         if ($binding == Settings::BINDING_POST) {

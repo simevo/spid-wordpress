@@ -7,22 +7,33 @@ use Italia\Spid\Spid\Saml\In\BaseResponse;
 use Italia\Spid\Spid\Saml\Settings;
 use Italia\Spid\Spid\Saml\SignatureUtils;
 use Italia\Spid\Spid\Interfaces\SAMLInterface;
+use Italia\Spid\Spid\Session;
 
 class Saml implements SAMLInterface
 {
-    var $settings;
-    var $idps = []; // contains filename -> Idp object array
-    var $session; // Session object
+    public $settings;
+    private $idps = []; // contains filename -> Idp object array
+    private $session; // Session object
 
-    public function __construct(array $settings)
+    public function __construct(array $settings, $autoconfigure = true)
     {
         Settings::validateSettings($settings);
         $this->settings = $settings;
+
+        // Do not attemp autoconfiguration if key and cert values have not been set
+        if (!array_key_exists('sp_key_cert_values', $this->settings)) {
+            $autoconfigure = false;
+        }
+        if ($autoconfigure && !$this->isConfigured()) {
+            $this->configure();
+        }
     }
 
     public function loadIdpFromFile(string $filename)
     {
-        if (empty($filename)) return null;
+        if (empty($filename)) {
+            return null;
+        }
         if (array_key_exists($filename, $this->idps)) {
             return $this->idps[$filename];
         }
@@ -37,7 +48,7 @@ class Saml implements SAMLInterface
 
         if (is_array($files)) {
             $mapping = array();
-            foreach($files as $filename) {
+            foreach ($files as $filename) {
                 $idp = $this->loadIdpFromFile($filename);
                 
                 $mapping[basename($filename, ".xml")] = $idp->metadata['idpEntityId'];
@@ -54,6 +65,11 @@ class Saml implements SAMLInterface
 
     public function getSPMetadata(): string
     {
+        if (!is_readable($this->settings['sp_cert_file'])) {
+            return <<<XML
+            <error>Your SP certificate file is not readable. Please check file permissions.</error>
+XML;
+        }
         $entityID = $this->settings['sp_entityid'];
         $id = preg_replace('/[^a-z0-9_-]/', '_', $entityID);
         $cert = Settings::cleanOpenSsl($this->settings['sp_cert_file']);
@@ -72,7 +88,7 @@ class Saml implements SAMLInterface
         </md:KeyDescriptor>
 XML;
         foreach ($sloLocationArray as $slo) {
-            $location = $slo[0]; 
+            $location = $slo[0];
             $binding = $slo[1];
             if (strcasecmp($binding, "POST") === 0 || strcasecmp($binding, "") === 0) {
                 $binding = Settings::BINDING_POST;
@@ -127,8 +143,14 @@ XML;
         return SignatureUtils::signXml($xml, $this->settings);
     }
 
-    public function login(string $idpName, int $assertId, int $attrId, $level = 1, string $redirectTo = null, $shouldRedirect = true)
-    {
+    public function login(
+        string $idpName,
+        int $assertId,
+        int $attrId,
+        $level = 1,
+        string $redirectTo = null,
+        $shouldRedirect = true
+    ) {
         $args = func_get_args();
         return $this->baseLogin(Settings::BINDING_REDIRECT, ...$args);
     }
@@ -139,8 +161,7 @@ XML;
         return $this->baseLogin(Settings::BINDING_POST, ...$args);
     }
 
-    private function baseLogin($binding = Settings::BINDING_REDIRECT, $idpName, $assertId, $attrId, $level = 1, $redirectTo = null, $shouldRedirect = true)
-    {
+    private function baseLogin($binding, $idpName, $assertId, $attrId, $level = 1, $redirectTo = null, $shouldRedirect = true) {
         if ($this->isAuthenticated()) {
             return false;
         }
@@ -161,9 +182,11 @@ XML;
 
     public function isAuthenticated() : bool
     {
-        $selectedIdp = $_SESSION['idpName'] ?? $_SESSION['spidSession']->idp ?? null;
-        if (is_null($selectedIdp)) return false;
-        $idp = $this->loadIdpFromFile($_SESSION['idpName'] ?? $_SESSION['spidSession']->idp);
+        $selectedIdp = $_SESSION['idpName'] ?? $_SESSION['spidSession']['idp'] ?? null;
+        if (is_null($selectedIdp)) {
+            return false;
+        }
+        $idp = $this->loadIdpFromFile($selectedIdp);
         $response = new BaseResponse($this);
         if (!empty($idp) && !$response->validate($idp->metadata['idpCertValue'])) {
             return false;
@@ -173,8 +196,11 @@ XML;
             return false;
         }
         if (isset($_SESSION) && isset($_SESSION['spidSession'])) {
-            $this->session = $_SESSION['spidSession'];
-            return true;
+            $session = new Session($_SESSION['spidSession']);
+            if ($session->isValid()) {
+                $this->session = $session;
+                return true;
+            }
         }
         return false;
     }
@@ -191,7 +217,7 @@ XML;
         return $this->baseLogout(Settings::BINDING_POST, ...$args);
     }
 
-    private function baseLogout($binding = Settings::BINDING_REDIRECT, $slo, $redirectTo = null, $shouldRedirect = true)
+    private function baseLogout($binding, $slo, $redirectTo = null, $shouldRedirect = true)
     {
         if (!$this->isAuthenticated()) {
             return false;
@@ -202,7 +228,50 @@ XML;
 
     public function getAttributes() : array
     {
-        if ($this->isAuthenticated() === false) return array();
-        return $this->session->attributes;
+        if ($this->isAuthenticated() === false) {
+            return array();
+        }
+        return isset($this->session->attributes) && is_array($this->session->attributes) ? $this->session->attributes : array();
+    }
+    
+    // returns true if the SP certificates are found where the settings says they are, and they are valid
+    // (i.e. the library has been configured correctly
+    private function isConfigured() : bool
+    {
+        if (!is_readable($this->settings['sp_key_file'])) {
+            return false;
+        }
+        if (!is_readable($this->settings['sp_cert_file'])) {
+            return false;
+        }
+        $key = file_get_contents($this->settings['sp_key_file']);
+        if (!openssl_get_privatekey($key)) {
+            return false;
+        }
+        $cert = file_get_contents($this->settings['sp_cert_file']);
+        if (!openssl_get_publickey($cert)) {
+            return false;
+        }
+        if (!SignatureUtils::certDNEquals($cert, $this->settings)) {
+            return false;
+        }
+        return true;
+    }
+
+    // Generates with openssl the SP certificates where the settings says they should be
+    // this function should be used with care because it requires write access to the filesystem, and invalidates the metadata
+    private function configure()
+    {
+        $keyCert = SignatureUtils::generateKeyCert($this->settings);
+        $dir = dirname($this->settings['sp_key_file']);
+        if (!is_dir($dir)) {
+            throw new \InvalidArgumentException('The directory you selected for sp_key_file does not exist. Please create ' . $dir);
+        }
+        $dir = dirname($this->settings['sp_cert_file']);
+        if (!is_dir($dir)) {
+            throw new \InvalidArgumentException('The directory you selected for sp_cert_file does not exist. Please create ' . $dir);
+        }
+        file_put_contents($this->settings['sp_key_file'], $keyCert['key']);
+        file_put_contents($this->settings['sp_cert_file'], $keyCert['cert']);
     }
 }
