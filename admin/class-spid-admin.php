@@ -103,13 +103,8 @@ if ( ! class_exists( 'SPID_Admin' ) ) {
 					href="<?php echo esc_url( admin_url( 'admin.php?page=spid_opzioni' ) ); ?>"
 					class="nav-tab
 					<?php
-					if ( ! isset( $_GET['action'] ) || isset( $_GET['action'] ) 
-						&& 'metadata' != $_GET['action'] 
-						&& 'button' != $_GET['action'] 
-						&& 'certificati' != $_GET['action']
-						&& 'import' != $_GET['action'] 
-						&& 'aiuto' != $_GET['action'] ) {
-						echo ' nav-tab-active';}
+					if ( ! isset( $_GET['action'] ) || isset( $_GET['action'] ) && 'metadata' != $_GET['action'] && 'button' != $_GET['action'] && 'certificati' != $_GET['action'] && 'import' != $_GET['action'] && 'aiuto' != $_GET['action'] ) {
+						echo ' nav-tab-active'; }
 					?>
 					">
 					<?php esc_html_e( 'Configurazione del Plugin' ); ?>
@@ -137,7 +132,7 @@ if ( ! class_exists( 'SPID_Admin' ) ) {
 					href="<?php echo esc_url( add_query_arg( array( 'action' => 'certificati' ), admin_url( 'admin.php?page=spid_opzioni' ) ) ); ?>" 
 					class="nav-tab
 					<?php
-					if ( $metadati_Screen ) {
+					if ( $certificati_Screen ) {
 						echo ' nav-tab-active';}
 					?>
 					">
@@ -510,7 +505,7 @@ In quali casi ti puo\' essere utile questo tool:<br>
 		public function sp_org_name_callback() {
 			printf(
 				'<p class="description">Inserisci il nome per esteso del proprio istituto (es. "Istituto Superiore Leonardo da Vinci" o "Comune di Torino").</p>
-				<input type="text" id="sp_org_name" name="spid_metadata[sp_org_name]" value="%s" />',
+				<input type="text" id="sp_org_name" name="spid_metadata[sp_org_name]" value="'.$sp_org_name.'" />',
 				isset( $this->spid_options_general['sp_org_name'] ) ? esc_attr( $this->spid_options_general['sp_org_name'] ) : ''
 			);
 		}
