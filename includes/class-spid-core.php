@@ -76,10 +76,18 @@ class SPID_Core {
 		// after WordPress's basic validation, but before a user is logged in
 		add_filter( 'wp_authenticate_user', array( $this, 'filterSpid' ), 10, 2 );
 
+		// https://codex.wordpress.org/Plugin_API/Action_Reference/wp_logout
+		// triggered when a user logs out using the wp_logout() function
+		add_action( 'wp_logout', array( $this, 'actionLogout' ) );
+
 		$this->define_admin_hooks();
 
 		$this->spid_enqueue_scripts();
 
+	}
+
+	public function actionLogout() {
+		$this->auth->logout(0);
 	}
 
 	public function filterLoginMessage( $message ) {
@@ -124,8 +132,13 @@ class SPID_Core {
 				$returnTo = null;
 				$this->auth->login( $idpName, $assertId, $attrId, $spidLevel, $returnTo );
 			} elseif ( isset( $_GET['slo'] ) ) {
-				// SLO endpoint
-				// TODO
+				// single log out endpoint
+				if ( is_user_logged_in() ) {
+					wp_logout();
+				} else {
+					header('Location: /wp-login.php?loggedout=true');
+					exit("");
+				}
 			} elseif ( ! empty( $_POST['SAMLResponse'] ) ) {
 				// assertion consuming service endpoint
 				if ( ! $this->auth->isAuthenticated() ) {
