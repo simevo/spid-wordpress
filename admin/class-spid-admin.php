@@ -10,8 +10,10 @@
  */
 		/** 
 		Get user attributes 
+		
 
 		defined('WPINC') or die;
+
 		$roles = get_editable_roles();
 		unset($roles['administrator']); // we don't want to create new admins automatically
 		if (array_key_exists('save_options', $_POST)) {
@@ -57,8 +59,7 @@
 		$sp_expirationDate   = get_option('sp_expirationDate', '');
 		$sp_digitalAddress   = get_option('sp_digitalAddress', '');
 		$sp_role             = get_option('sp_role', 'subscriber');
-*/
-
+**/
 
 if ( ! class_exists( 'SPID_Admin' ) ) {
 	class SPID_Admin {
@@ -293,24 +294,24 @@ if ( ! class_exists( 'SPID_Admin' ) ) {
 			 * SPID Button
 			 */
 			register_setting(
-				'spid_button', // Option Group.
-				'spid_button', // Option Name.
+				'sp_spid_button', // Option Group.
+				'sp_spid_button', // Option Name.
 				array( $this, 'sanitize' ) // Sanitize.
 			);
 
 			add_settings_section(
-				'spid_button', // ID.
+				'sp_spid_button', // ID.
 				'Configurazione SPID Button', // Title.
 				array( $this, 'button_section_info' ), // Callback.
 				'spid-setting-button' // Page.
 			);
 
 			add_settings_field(
-				'spid_button', // ID.
+				'sp_spid_button', // ID.
 				'Attiva SPID Button', // Title.
-				array( $this, 'spid_button_callback' ), // Callback.
+				array( $this, 'sp_spid_button_callback' ), // Callback.
 				'spid-setting-button', // Page.
-				'spid_button' // Section.
+				'sp_spid_button' // Section.
 			);
 
 			/**
@@ -445,7 +446,7 @@ In quali casi ti puo\' essere utile questo tool:<br>
 				'<p class="description">Seleziona quale livello di sicurezza intendi utilizzare per il login SPID<br>
 				- Il primo livello permette di accedere ai servizi online attraverso un nome utente e una password scelti dall’utente.</br>
 				- Il secondo livello permette l’accesso attraverso un nome utente e una password scelti dall’utente più la generazione di un codice temporaneo di accesso (autenticazione a due fattori).</p>
-				<select name="spid_general[sp_livello]" id="sp_livello" value="%s"/>
+				<select name="spid_general[sp_livello]" id="sp_livello" value="' . $sp_livello . '"/>
                 <option selected disabled>Scegli...</option>
                 <option value="1">1</option>
 				<option value="2">2</option>
@@ -457,7 +458,7 @@ In quali casi ti puo\' essere utile questo tool:<br>
 		public function sp_role_callback() {
 			printf(
 				'<p class="description">Scegli che ruolo assegnare di default agli utenti che si registrano sul tuo sito WordPress mediante autenticazione SPID. Una volta creato l\'utente sarà possibile per gli amministratori modificare questo dato nella sezione "utenti".</p>
-				<select name="spid_general[sp_role]" id="sp_role" value="%s"/>
+				<select name="spid_general[sp_role]" id="sp_role" value="' . $sp_role . '"/>
                 <option selected disabled>Scegli...</option>
                 <option value="admin">Admin</option>
 				<option value="registered">Registered</option>
@@ -469,7 +470,7 @@ In quali casi ti puo\' essere utile questo tool:<br>
 		public function sp_idp_callback() {
 			printf(
 				'<p class="description">Inserisci l\'ID del IdP di test.</p>
-				<input type="text" id="sp_idp" name="spid_general[sp_idp]" value="%s" />',
+				<input type="text" id="sp_idp" name="spid_general[sp_idp]" value="' . $sp_idp . '" />',
 				isset( $this->spid_options_general['sp_idp'] ) ? esc_attr( $this->spid_options_general['sp_idp'] ) : ''
 			);
 		}
@@ -484,28 +485,28 @@ In quali casi ti puo\' essere utile questo tool:<br>
 		public function user_attributes_callback() {
 			printf(
 				'<p class="description">Seleziona quali dati relativi all\'identità digitale dell\'utente ti interessa acquisire tra quelli disponibili.</p>
-				<label><input type="checkbox" name="sp_name"> Nome</label><br> 
-				<label><input type="checkbox" name="sp_familyName"> Cognome</label><br>
-				<label><input type="checkbox" name="sp_placeOfBirth"> Luogo di nascita</label><br>
-				<label><input type="checkbox" name="sp_placeOfBirth"> Luogo di nascita</label><br>
-				<label><input type="checkbox" name="sp_countyOfBirth"> Paese di nascita</label><br>
-				<label><input type="checkbox" name="sp_dateOfBirth"> Data di nascita</label><br>
-				<label><input type="checkbox" name="sp_gender"> Sesso</label><br>
-				<label><input type="checkbox" name="sp_companyName"> Ragione o denominazione Sociale</label><br>
-				<label><input type="checkbox" name="registeredOffice"> Sede legale</label><br>
-				<label><input type="checkbox" name="sp_fiscalNumber"> Ragione o denominazione Sociale</label><br>
-				<label><input type="checkbox" name="sp_ivaCode"> Partita IVA Sociale</label><br>
-				<label><input type="checkbox" name="sp_idCard"> Documento di identità	</label><br>
-				<label><input type="checkbox" name="sp_mobilePhone"> Ragione o denominazione Sociale</label><br>
-				<label><input type="checkbox" name="sp_address"> Domicilio fisico</label><br>
-				<label><input type="checkbox" name="sp_expirationDate"> Data di scadenza identità</label><br>
-				<label><input type="checkbox" name="sp_digitalAddress"> Domicilio digitale</label><br>'
+				<label><input type="checkbox" name="sp_name" value="' . $sp_name . '"> Nome</label><br> 
+				<label><input type="checkbox" name="sp_familyName" value="' . $sp_familyName . '"> Cognome</label><br>
+				<label><input type="checkbox" name="sp_placeOfBirth" value="' . $sp_placeOfBirth . '"> Luogo di nascita</label><br>
+				<label><input type="checkbox" name="sp_countyOfBirth" value="' . $sp_countyOfBirth . '"> Paese di nascita</label><br>
+				<label><input type="checkbox" name="sp_dateOfBirth" value="' . $sp_dateOfBirth . '"> Data di nascita</label><br>
+				<label><input type="checkbox" name="sp_gender" value="' . $sp_gender . '"> Sesso</label><br>
+				<label><input type="checkbox" name="sp_companyName" value="' . $sp_companyName . '"> Ragione o denominazione Sociale</label><br>
+				<label><input type="checkbox" name="sp_registeredOffice" value="' . $registeredOffice . '"> Sede legale</label><br>
+				<label><input type="checkbox" name="sp_fiscalNumber" value="' . $sp_fiscalNumber . '"> Codice fiscale</label><br>
+				<label><input type="checkbox" name="sp_ivaCode" value="' . $sp_ivaCode . '"> Partita IVA Sociale</label><br>
+				<label><input type="checkbox" name="sp_idCard" value="' . $sp_idCard . '"> Documento di identità	</label><br>
+				<label><input type="checkbox" name="sp_mobilePhone" value="' . $sp_mobilePhone . '"> Ragione o denominazione Sociale</label><br>
+				<label><input type="checkbox" name="sp_address" value="' . $sp_address . '"> Domicilio fisico</label><br>
+				<label><input type="checkbox" name="sp_expirationDate" value="' . $sp_expirationDate . '"> Data di scadenza identità</label><br>
+				<label><input type="checkbox" name="sp_digitalAddress" value="' . $sp_digitalAddress . '"> Domicilio digitale</label><br>'
 			);
 		}
 		public function sp_org_name_callback() {
 			printf(
+
 				'<p class="description">Inserisci il nome per esteso del proprio istituto (es. "Istituto Superiore Leonardo da Vinci" o "Comune di Torino").</p>
-				<input type="text" id="sp_org_name" name="spid_metadata[sp_org_name]" value="'.$sp_org_name.'" />',
+				<input type="text" id="sp_org_name" name="spid_metadata[sp_org_name]" value="' . $sp_org_name . '" />',
 				isset( $this->spid_options_general['sp_org_name'] ) ? esc_attr( $this->spid_options_general['sp_org_name'] ) : ''
 			);
 		}
@@ -513,7 +514,7 @@ In quali casi ti puo\' essere utile questo tool:<br>
 		public function sp_org_display_name_callback() {
 			printf(
 				'<p class="description">Inserisci il nome del proprio ente che si vuole mostare sulla maschera di Login (es. "DaVinci PA").</p>
-				<input type="text" id="sp_org_display_name" name="spid_metadata[sp_org_display_name]" value="%s" />',
+				<input type="text" id="sp_org_display_name" name="spid_metadata[sp_org_display_name]" value="' . $sp_org_display_name . '" />',
 				isset( $this->spid_options_general['sp_org_display_name'] ) ? esc_attr( $this->spid_options_general['sp_org_display_name'] ) : ''
 			);
 		}
@@ -527,17 +528,17 @@ In quali casi ti puo\' essere utile questo tool:<br>
 		public function sp_metadata_url_callback() {
 			printf(
 				'<p class="description">Specifa l\'url all\'endpoint</p>
-				<input type="text" id="sp_metadata_url" name="spid_metadata[sp_metadata_url]" value="%s" disabled/>',
+				<input type="text" id="sp_metadata_url" name="spid_metadata[sp_metadata_url]" value="' . $sp_metadata_url . '" disabled/>',
 				isset( $this->spid_options_general['sp_metadata_url'] ) ? esc_attr( $this->spid_options_general['sp_metadata_url'] ) : ''
 			);
 		}				
 		/**
 		 * Button Settings
 		 */
-		public function spid_button_callback() {
+		public function sp_spid_button_callback() {
 			printf(
-				'<input type="checkbox" id="spid_button" name="activeButton" value="active">',
-				isset( $this->spid_options_general['spid_button'] ) ? esc_attr( $this->spid_options_general['spid_button'] ) : ''
+				'<input type="checkbox" id="sp_spid_button" name="activeButton" value="' . $sp_spid_button . '">',
+				isset( $this->spid_options_general['sp_spid_button'] ) ? esc_attr( $this->spid_options_general['sp_spid_button'] ) : ''
 			);
 		}
 		public function sanitize( $input ) {
@@ -567,14 +568,14 @@ In quali casi ti puo\' essere utile questo tool:<br>
 		public function sp_stateName_callback() {
 			printf(
 				'<p class="description">Es. "Bologna"</p>
-				<input type="text" id="sp_stateName" name="spid_certificati[sp_stateName]" value="%s" />',
+				<input type="text" id="sp_stateName" name="spid_certificati[sp_stateName]" value="' . $sp_stateName . '" />',
 				isset( $this->spid_options_general['sp_stateName'] ) ? esc_attr( $this->spid_options_general['sp_stateName'] ) : ''
 			);
 		}
 		public function sp_localityName_callback() {
 			printf(
 				'<p class="description">Es. "Imola"</p>
-				<input type="text" id="sp_localityName" name="spid_certificati[sp_localityName]" value="%s" />',
+				<input type="text" id="sp_localityName" name="spid_certificati[sp_localityName]"  value="' . $sp_localityName . '" />',
 				isset( $this->spid_options_general['sp_localityName'] ) ? esc_attr( $this->spid_options_general['sp_localityName'] ) : ''
 			);
 		}
