@@ -121,22 +121,21 @@ class SPID_Core {
 				}
 				$attributes = $this->auth->getAttributes();
 
-				if ( empty( $attributes ) ) {
+				if ( empty( $attributes ) || empty( $attributes['spidCode'] ) || empty( $attributes['email'] ) ) {
 					return new WP_Error( 'spid_wordpress_no_attributes', 'No attributes were present in SPID response.' );
 				}
-				$existing_user = get_user_by( 'user_login', $attributes['spidCode'] );
+				$existing_user = get_user_by( 'login', $attributes['spidCode'] );
 				if ( $existing_user ) {
 					do_action( 'spid_wordpress_existing_user_authenticated', $existing_user, $attributes );
 					return $existing_user;
 				}
 				$user_args = array();
-				// assumes that name and familyName attributes are requested to IdP !
-				$user_args['user_login'] = ! empty( $attributes['spidCode'] ) ? $attributes['spidCode'] : '';
+				$user_args['user_login'] = $attributes['spidCode'];
 				$user_args['first_name'] = ! empty( $attributes['name'] ) ? $attributes['name'] : '';
 				$user_args['last_name']  = ! empty( $attributes['familyName'] ) ? $attributes['familyName'] : '';
-				$user_args['user_email'] = ! empty( $attributes['email'] ) ? $attributes['email'] : '';
+				$user_args['user_email'] = $attributes['email'];
 				$user_args['role']       = get_option( 'sp_role', get_option( 'default_role' ) );
-				$user_args['user_pass']  = wp_generate_password(); // ??
+				$user_args['user_pass']  = wp_generate_password();
 
 				$user_args = apply_filters( 'spid_wordpress_insert_user', $user_args, $attributes );
 				// https://developer.wordpress.org/reference/functions/wp_insert_user/
