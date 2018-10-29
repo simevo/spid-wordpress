@@ -12,7 +12,7 @@
 ?>
 <div id='spid-button' aria-live="polite">
 	<noscript>
-		<?php _esc_attr_e( 'To use the SPID Smart Button, please enable javascript.', 'spid-wordpress' ); ?>
+		<?php esc_attr_e( 'To use the SPID Smart Button, please enable javascript.', 'spid-wordpress' ); ?>
 	</noscript>
 </div>
 
