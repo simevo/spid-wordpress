@@ -78,10 +78,6 @@ class SPID_Core {
 			'sso' => $options['sp_sso'],
 			'idp' => $options['sp_idp'],
 		);
-		echo '<div><a class="button" href="' .
-			esc_url( add_query_arg( $query_args, wp_login_url() ) ) .
-			'">Accedi con SPID usando testenv2 come IdP</a></div>';
-
 		$mapping = $this->auth->getIdpList();
 		include_once SPID_WORDPRESS_PATH . 'templates/spid-button.php';
 	}
