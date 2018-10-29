@@ -8,7 +8,9 @@
  * @link     https://github.com/simevo/spid-wordpress
  * @since    1.0.0
  */
-/**
+		/** 
+		Get user attributes 
+
 		defined('WPINC') or die;
 		$roles = get_editable_roles();
 		unset($roles['administrator']); // we don't want to create new admins automatically
@@ -101,7 +103,12 @@ if ( ! class_exists( 'SPID_Admin' ) ) {
 					href="<?php echo esc_url( admin_url( 'admin.php?page=spid_opzioni' ) ); ?>"
 					class="nav-tab
 					<?php
-					if ( ! isset( $_GET['action'] ) || isset( $_GET['action'] ) && 'metadata' != $_GET['action'] && 'button' != $_GET['action'] && 'certificati' != $_GET['action'] && 'import' != $_GET['action'] && 'aiuto' != $_GET['action'] ) {
+					if ( ! isset( $_GET['action'] ) || isset( $_GET['action'] ) 
+						&& 'metadata' != $_GET['action'] 
+						&& 'button' != $_GET['action'] 
+						&& 'certificati' != $_GET['action']
+						&& 'import' != $_GET['action'] 
+						&& 'aiuto' != $_GET['action'] ) {
 						echo ' nav-tab-active';}
 					?>
 					">
@@ -482,7 +489,7 @@ In quali casi ti puo\' essere utile questo tool:<br>
 		public function user_attributes_callback() {
 			printf(
 				'<p class="description">Seleziona quali dati relativi all\'identità digitale dell\'utente ti interessa acquisire tra quelli disponibili.</p>
-				<label><input type="checkbox" name="sp_name"> Nome</label><br>
+				<label><input type="checkbox" name="sp_name"> Nome</label><br> 
 				<label><input type="checkbox" name="sp_familyName"> Cognome</label><br>
 				<label><input type="checkbox" name="sp_placeOfBirth"> Luogo di nascita</label><br>
 				<label><input type="checkbox" name="sp_placeOfBirth"> Luogo di nascita</label><br>
