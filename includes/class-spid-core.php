@@ -95,7 +95,7 @@ class SPID_Core {
 				// Metadata endpoint.
 				header( 'Content-type: text/xml' );
 				$smpmetadata = $this->auth->getSPMetadata();
-				echo esc_attr( $smpmetadata );
+				echo $smpmetadata;
 				die;
 			} elseif ( isset( $_GET['idp'] ) ) {
 				// SSO endpoint
