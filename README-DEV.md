@@ -18,6 +18,25 @@ or [configure PHPCS and WPCS in your preferred IDE](https://github.com/WordPress
 
 TODO
 
+# Development workflow
+
+To develop bugfixes and new features for this plugin you can use either the docker-compose setup from simevo/spid-wordpress-example-form, or a self-standing WP install.
+
+## Docker-compose
+
+The benefit here is that this setup gives you both WP and the test Identity Provider [spid-testenv2](https://github.com/italia/spid-testenv2) preconfigured to talk to each other.
+
+[Follow the guide](https://github.com/simevo/spid-wordpress-example-form#installazione-con-docker-compose) and you'll end up with WordPress here: http://localhost:8099/wp-login.php; the spid-wordpress repo will be cloned from https://github.com/simevo/spid-wordpress inside `spid-wordpress-example-form/spid-wordpress`.
+
+Any change to the content of that directory will be picked up by the WP docker container immediately because the `spid-wordpress` dir from the host is mapped to `/var/www/html/wp-content/plugins/spid-wordpress`inside the container, by the magic of docker-compose: https://github.com/simevo/spid-wordpress-example-form/blob/master/docker-compose.yml#L31-L33
+
+## Self-standing WP install
+
+Use your preferred local / private / public wordpress test machine.
+You'll have to set up and configure the test Identity Provider [spid-testenv2](https://github.com/italia/spid-testenv2) yourself. RTFM !
+
+It is advised to clone https://github.com/simevo/spid-wordpress inside `/var/www/html/wp-content/plugins/spid-wordpress/`.
+
 # Bundling spid-php-lib
 
 This WordPress plugin has a single dependency: the [PHP package for SPID authentication (spid-php-lib)](https://github.com/italia/spid-php-lib).

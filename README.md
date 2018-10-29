@@ -1,101 +1,84 @@
+<img src="https://github.com/italia/spid-graphics/blob/master/spid-logos/spid-logo-b-lb.png" alt="SPID" data-canonical-src="https://github.com/italia/spid-graphics/blob/master/spid-logos/spid-logo-b-lb.png" width="500" height="98" />
+
+[![Join the #spid-wordpress channel](https://img.shields.io/badge/Slack%20channel-%23spid--wordpress-blue.svg?logo=slack)](https://developersitalia.slack.com/messages/C7ESTBB98)
+[![Get invited](https://slack.developers.italia.it/badge.svg)](https://slack.developers.italia.it/)
+[![SPID on forum.italia.it](https://img.shields.io/badge/Forum-SPID-blue.svg)](https://forum.italia.it/c/spid)
+[![Build Status](https://travis-ci.com/simevo/spid-wordpress.svg?branch=master)](https://travis-ci.com/simevo/spid-wordpress)
+
+> ⚠️ **WORK IN PROGRESS** ⚠️
+
 # spid-wordpress
 
 **Plugin WordPress** per l'autenticazione attraverso un Identity Provider **SPID** (Sistema Pubblico di Identità Digitale) basato sulla libreria SPID PHP [italia/spid-php-lib](https://github.com/italia/spid-php-lib).
 
-Compatibile con:
-- Wordpress 4.7.5 - 4.9.7 (TODO)
-- PHP 7.0 e 7.2 (TODO)
-- single-site o multi-site (TODO)
-- installazione WordPress manuale, [composer](https://packagist.org/packages/johnpbloch/wordpress) oppure pacchetto nativo.
+[SPID](https://www.spid.gov.it/), il Sistema Pubblico di Identità Digitale, è la soluzione che permette ai cittadini di accedere a tutti i servizi online della Pubblica Amministrazione con un'unica Identità Digitale (username e password) utilizzabile da computer, tablet e smartphone.
 
-## Getting Started
+Questo plugin integra il login SPID in WordPress, offrendo le seguenti funzionalità:
+- completamente configurabile
+- generazione del metadata del Service Provider (SP)
+- creazione automatica un utente WordPress distinto per ogni utente SPID che accede, e acquisizione dell'indirizzo email dell'utente da SPID
+- possibilità di acquisire altri attributi (codice fiscale, data di nascita ...) se richiesto
+- predisposizione per il testing con l'Identity Provider di test [spid-testenv2](https://github.com/italia/spid-testenv2).
+
+Compatibile con:
+- WordPress 4.9.8
+- PHP 7.0, 7.1 e 7.2
+- Solo WP single-site (no multi-site).
+
+## Per iniziare
 
 Testato su: amd64 Debian 9.5 (stretch, current stable) con PHP 7.0.
 
 ### Installazione e configurazione
 
-Prima di usare questo pacchetto, è necessario:
+Per usare questo plugin, occorre:
 
-1. Installare i prerequisiti:
+1. Un'installazione WordPress funzionante
 
-```sh
-sudo apt install composer make openssl php-curl php-zip php-xml
-```
+2. Installarlo, attivarlo, e configurarlo completamente usando la pagina di impostazioni.
 
-2. Installare le dipendenze con `composer install`
+3. (**OPZIONALE**) Generare chiave (`wp.key`) e certificato (`wp.crt`) del Service Provider (SP) nella directory `{WordPress root}/spid-conf/`, ad esempio:
+    ```sh
+    cd /var/www/html/wp-content/plugins/spid-wordpress
+    mkdir -p spid-conf
+    cd spid-conf
+    openssl req -x509 -nodes -sha256 -days 365 -newkey rsa:2048 -subj "/C=IT/ST=Italy/L=Milan/O=myservice/CN=localhost" -keyout wp.key -out wp.crt
+    chown www-data:www-data wp.key wp.crt
+    ```
+    Questo passo può essere saltato (il plugin è in grado di generarli in automatico) tuttavia in questo caso la directory `{WordPress root}/spid-conf/` deve essere **presente** e **accessibile** in lettura/scrittura all'utente impersonato dal server web (es. `www-data`).
 
-3. Generare chiave e certificato del Service Provider (SP)
+4. Scaricare e verificare i metadata degli Identity Provider (IdP) nella directory `{WordPress root}/spid-conf/idp_metadata/`; un tool per automatizzare questa operazione per gli IdP in produzione è incluso in spid-php-lib, esempio di utilizzo:
+    ```sh
+    cd /var/www/html/wp-content/plugins/spid-wordpress
+    mkdir -p spid-conf/idp_metadata
+    ./spid-php-lib/bin/download_idp_metadata.php spid-conf/idp_metadata
+    ```
 
-4. Scaricare e verificare i metadata degli Identity Provider (IdP) nella directory [idp_metadata/](idp_metadata/); un tool per automatizzare questa operazione per gli IdP in produzione è incluso in spid-php-lib, esempio di utilizzo:
-
-```sh
-./vendor/italia/spid-php-lib/bin/download_idp_metadata.php /srv/spid-wordpress/idp_metadata
-```
-
-5. Scaricare il metadata del SP (Service Provider) da https://wp.example.com/wp-login.php?sso=spid&metadata e registrarlo coll'IdP
+5. Scaricare il metadata del SP (Service Provider) da https://wp.example.com/wp-login.php?sso=spid&metadata e registrarlo coll'IdP.
 
 **NOTA**: durante il test, si raccomanda l'uso dell'Identity Provider di test [spid-testenv2](https://github.com/italia/spid-testenv2).
 
-### Installazione manuale
-
-Installare e configurare wordpress nel modo preferito.
-
-Clonare questo repo in `/var/lib/wordpress/wp-content/plugins/spid-wordpress` quindi completare i passi 1-5.
-
-### Installazione con ansible
-
-Alternativamente alla procedura di installazione manuale riportata sopra, è possible installare un sito WordPress di test con questo plugin installato, tramite lo strumento di configuration management [ansible](https://www.ansible.com/). Tutte le informazioni sono nella directory [ansible/](ansible/).
-
-Il ruolo ansible effettua i passi 1-3, restano a carico dell'utente i passi 4-5 (registrazione metadata IdP con SP e registrazione metadata SP con IdP).
-
-### Installazione con docker-compose
-
-Based on the [official docker wordpress image](https://docs.docker.com/compose/wordpress).
-
-To start up:
-```
-composer install --no-dev
-cd docker
-cp .env.example .env
-make
-docker-compose up --build
-```
-
-Then in a separate shell:
-```sh
-make post
-```
-
-To remove the containers and default network, but preserve the database: `docker-compose down`
-
-To remove all: `docker-compose down --volumes`
-
 ### Uso
 
-Visitare: https://wp.example.com/wp-login.php e cliccare sul bottone SPID (TODO: al momento, sul bottone `Accedi con SPID usando testenv2 come IdP`)
+Visitare: https://wp.example.com/wp-login.php e cliccare sul bottone SPID.
 
 Questo screencast mostra cosa dovrebbe succedere se tutto funziona:
 
 ![img](images/screencast.gif)
 
+### Demo
+
+Un'installazione WordPress preconfigurata usando docker-compose con questo plugin e l'IdP di test è diponibile qui: https://github.com/simevo/spid-wordpress-example-form#installazione-con-docker-compose.
+
+Altri esempi applicativi:
+- https://github.com/simevo/spid-wordpress-example-private
+- https://github.com/simevo/spid-wordpress-example-roles
+
 ## Troubleshooting
 
-Installazione e uso della WordPress cli:
-```sh
-cd /srv/spid-wordpress
-composer require wp-cli/wp-cli
-/srv/spid-wordpress/vendor/bin/wp --path=/usr/share/wordpress/ plugin list
-```
+Per automatizzare la configurazione WordPress di consiglia l'uso della [**wp-cli** (Command-Line Interface for WordPress)](https://wp-cli.org/).
 
-Disattivazione di tutti i plugin via database:
-```sql
-mysql -u wp wp -p
-SHOW tables;
-SHOW columns FROM wp_options;
-SELECT option_name FROM wp_options;
-SELECT * FROM wp_options WHERE option_name='active_plugins';
-UPDATE wp_options SET option_value = '' WHERE option_name = 'active_plugins';
-```
+Per analizzare e debuggare i messaggi **SPID** si rimanda alla [sezione Troubleshooting del README della libreria spid-php-lib](https://github.com/italia/spid-php-lib#troubleshooting).
 
 ## Sviluppo
 
@@ -103,9 +86,9 @@ Per maggiori informazioni su come contribuire allo sviluppo di questo plugin, ve
 
 ## Authors
 
-Paolo Greppi
+Giulio Gatto, Paolo Greppi, Riccardo Mariani e Michael Tieso
 
-## License
+## Licenza
 
 Copyright (c) 2018 simevo s.r.l.
 Licenza: AGPL 3, vedi [LICENSE](LICENSE).
