@@ -451,7 +451,7 @@ if ( ! class_exists( 'SPID_Admin' ) ) {
 		 * Metadata Settings
 		 */
 		public function metadata_callback() {
-			echo 'Attenzione: una volta cambiati uno di questi settaggi si dovrà ridistribuire il metadata del SP a tutti gli IdP, dal _metadata link_.';
+			esc_attr_e( 'Attenzione: una volta cambiati uno di questi settaggi si dovrà ridistribuire il metadata del SP a tutti gli IdP, dal _metadata link_.' );
 		}
 
 		public function user_attributes_callback() {
@@ -534,7 +534,7 @@ if ( ! class_exists( 'SPID_Admin' ) ) {
 			}
 
 			/**	
-			 * Metadata tab
+			 * Sanitize Metadata fields.
 			 */
 			if ( isset( $input['sp_org_name'] ) ) {
 				$new_input['sp_org_name'] = sanitize_text_field( $input['sp_org_name'] );
@@ -549,12 +549,27 @@ if ( ! class_exists( 'SPID_Admin' ) ) {
 			}
 
 			/**	
-			 * Button tab
+			 * Sanitize Button fields
 			 */
 			if ( isset( $input['sp_spid_button'] ) ) {
 				$new_input['sp_spid_button'] = sanitize_text_field( $input['sp_spid_button'] );
 			}
-			
+
+			/**
+			 * Sanitize Certificati fields
+			 */
+			if ( isset( $input['sp_statename'] ) ) {
+				$new_input['sp_statename'] = sanitize_text_field( $input['sp_statename'] );
+			}
+
+			if ( isset( $input['sp_localityname'] ) ) {
+				$new_input['sp_localityname'] = sanitize_text_field( $input['sp_localityname'] );
+			}
+
+			if ( isset( $input['sp_emailaddress'] ) ) {
+				$new_input['sp_emailaddress'] = sanitize_text_field( $input['sp_emailaddress'] );
+			}
+
 			return $new_input;
 		}
 
@@ -562,28 +577,34 @@ if ( ! class_exists( 'SPID_Admin' ) ) {
 		 * Certificati Settings
 		 */
 		public function certificati_callback() {
-			echo 'Attenzione: una volta cambiati uno di questi settaggi si dovrà ridistribuire il metadata del SP a tutti gli IdP, dal _metadata link_.';
+			esc_attr_e( 'Attenzione: una volta cambiati uno di questi settaggi si dovrà ridistribuire il metadata del SP a tutti gli IdP, dal _metadata link_.' );
 		}
 
 		public function sp_statename_callback() {
+			echo '<p class="description">';
+			esc_attr_e( 'Es. "Bologna"' );
+			echo '</p>';
 			printf(
-				'<p class="description">Es. "Bologna"</p>
-				<input type="text" id="sp_stateName" name="spid_certificati[sp_stateName]" value="' . $sp_stateName . '" />',
-				isset( $this->spid_options_general['sp_stateName'] ) ? esc_attr( $this->spid_options_general['sp_stateName'] ) : ''
+				'<input type="text" id="sp_statename" name="spid_certificati[sp_statename]" value="%s" />',
+				isset( $this->spid_options_certificati['sp_statename'] ) ? esc_attr( $this->spid_options_certificati['sp_statename'] ) : ''
 			);
 		}
 		public function sp_localityname_callback() {
+			echo '<p class="description">';
+			esc_attr_e( 'Es. "Imola"' );
+			echo '</p>';
 			printf(
-				'<p class="description">Es. "Imola"</p>
-				<input type="text" id="sp_localityName" name="spid_certificati[sp_localityName]"  value="' . $sp_localityName . '" />',
-				isset( $this->spid_options_general['sp_localityName'] ) ? esc_attr( $this->spid_options_general['sp_localityName'] ) : ''
+				'<input type="text" id="sp_localityname" name="spid_certificati[sp_localityname]"  value="%s" />',
+				isset( $this->spid_options_certificati['sp_localityname'] ) ? esc_attr( $this->spid_options_certificati['sp_localityname'] ) : ''
 			);
 		}
 		public function sp_emailaddress_callback() {
+			echo '<p class="description">';
+			esc_attr_e( 'Es. "email@comune.imola.bo.it"' );
+			echo '</p>';
 			printf(
-				'<p class="description">Es. "email@comune.imola.bo.it"</p>
-				<input type="text" id="sp_emailAddress" name="spid_certificati[sp_emailAddress]" value="%s" />',
-				isset( $this->spid_options_general['sp_emailAddress'] ) ? esc_attr( $this->spid_options_general['sp_emailAddress'] ) : ''
+				'<input type="text" id="sp_emailaddress" name="spid_certificati[sp_emailaddress]" value="%s" />',
+				isset( $this->spid_options_certificati['sp_emailaddress'] ) ? esc_attr( $this->spid_options_certificati['sp_emailaddress'] ) : ''
 			);
 		}						
 	}
