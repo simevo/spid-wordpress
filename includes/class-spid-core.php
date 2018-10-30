@@ -50,7 +50,7 @@ class SPID_Core {
 			'sp_assertionconsumerservice'  => [
 				$base . '/wp-login.php?sso=spid',
 			],
-			'sp_singlelogoutservice'       => [ [ $base . '/wp-login.php?sso=spid&slo', '' ] ],
+			'sp_singlelogoutservice'       => [ [ $base . '/wp-login.php?sso=spid&amp;slo', '' ] ],
 			'sp_org_name'                  => $this->options['sp_org_name'] ?: "myservice",
 			'sp_org_display_name'          => $this->options['sp_org_display_name'] ?: "My Service",
 			'idp_metadata_folder'          => "$home/idp_metadata/",
