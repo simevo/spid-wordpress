@@ -459,6 +459,11 @@ if ( ! class_exists( 'SPID_Admin' ) ) {
 		public function user_attributes_callback() {
 			printf(
 				'<p class="description">Seleziona quali dati relativi all\'identità digitale dell\'utente ti interessa acquisire tra quelli disponibili.</p>
+
+				<div class="notice notice-error">
+					<p>Selezionando uno o più attributi utente, oltre agli attributi strettamente necessari al funzionamento del plugin (codice identificativo SPID e indirizzo di posta elettronica), aumentano i rischi e la complessità della gestione di questi dati "personali" dal punto di vista della <strong>GDPR</strong>.</p>
+				</div>
+
 				<label><input type="checkbox" name="sp_name" value=""> Nome</label><br> 
 				<label><input type="checkbox" name="sp_familyname" value=""> Cognome</label><br>
 				<label><input type="checkbox" name="sp_placeofbirth" value=""> Luogo di nascita</label><br>

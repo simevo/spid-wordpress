@@ -80,15 +80,33 @@ class SPID_Core {
 		// triggered when a user logs out using the wp_logout() function
 		add_action( 'wp_logout', array( $this, 'actionLogout' ) );
 
+		// https://codex.wordpress.org/Plugin_API/Action_Reference/admin_notices
+		add_action( 'admin_notices', array( $this, 'actionGdprNotice' ) );
+
 		$this->define_admin_hooks();
 
 		$this->spid_enqueue_scripts();
 
 	}
 
+<<<<<<< HEAD
 	public function actionLogout() {
 		header('Location: /wp-login.php?sso=spid&slo');
 		exit("");
+=======
+	public function actionGdprNotice() {
+		?>
+		<div class="notice notice-warning is-dismissible">
+			<p>Quando il plugin <strong>SPID WordPress</strong> è attivo, in base alle <a href="/admin.php?page=spid_opzioni&action=metadata">impostazioni sugli attributi utente</a>, esso può salvare "dati personali" degli utenti SPID nel database WordPress.</p>
+			<p>Il plugin acquisisce il "valido consenso" ai sensi della <strong>GDPR</strong> (Regolamento generale sulla protezione dei dati, in inglese General Data Protection Regulation), tuttavia <strong>restano in carico al gestore del Service Provider</strong>:
+			  la sicurezza dell'installazione WordPress,
+				la gestione delle richieste da parte degli utenti di accesso e cancellazione dei dati,
+				la notifica delle violazioni dei dati
+				e la pubblicazione dell'informativa per gli utenti su fini e modalità del trattamento dei dati personali.
+			</p>
+		</div>
+		<?php
+>>>>>>> add admin notices for GDPR, fixes #64
 	}
 
 	public function filterLoginMessage( $message ) {
