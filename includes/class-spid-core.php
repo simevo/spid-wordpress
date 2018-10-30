@@ -50,7 +50,7 @@ class SPID_Core {
 			'sp_assertionconsumerservice'  => [
 				$base . '/wp-login.php?sso=spid',
 			],
-			'sp_singlelogoutservice'       => [ [ $base . '/wp-login.php?sso=spid&amp;slo', '' ] ],
+			'sp_singlelogoutservice'       => [ [ $base . '/wp-login.php?sso=spid&slo', '' ] ],
 			'sp_org_name'                  => $this->options['sp_org_name'] ?: "myservice",
 			'sp_org_display_name'          => $this->options['sp_org_display_name'] ?: "My Service",
 			'idp_metadata_folder'          => "$home/idp_metadata/",
@@ -87,7 +87,8 @@ class SPID_Core {
 	}
 
 	public function actionLogout() {
-		$this->auth->logout(0);
+		header('Location: /wp-login.php?sso=spid&slo');
+		exit("");
 	}
 
 	public function filterLoginMessage( $message ) {
@@ -133,12 +134,13 @@ class SPID_Core {
 				$this->auth->login( $idpName, $assertId, $attrId, $spidLevel, $returnTo );
 			} elseif ( isset( $_GET['slo'] ) ) {
 				// single log out endpoint
-				if ( is_user_logged_in() ) {
-					wp_logout();
+				if($this->auth->isAuthenticated()){
+					$this->auth->logout(0);
 				} else {
-					header('Location: /wp-login.php?loggedout=true');
-					exit("");
+					//echo "already logged out from SPID";
 				}
+				
+				
 			} elseif ( ! empty( $_POST['SAMLResponse'] ) ) {
 				// assertion consuming service endpoint
 				if ( ! $this->auth->isAuthenticated() ) {
