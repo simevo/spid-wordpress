@@ -137,10 +137,9 @@ class SPID_Core {
 				if($this->auth->isAuthenticated()){
 					$this->auth->logout(0);
 				} else {
-					//echo "already logged out from SPID";
+					header('Location: /wp-login.php?loggedout=true');
+					exit("");
 				}
-				
-				
 			} elseif ( ! empty( $_POST['SAMLResponse'] ) ) {
 				// assertion consuming service endpoint
 				if ( ! $this->auth->isAuthenticated() ) {
