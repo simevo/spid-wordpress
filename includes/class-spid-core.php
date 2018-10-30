@@ -129,13 +129,12 @@ class SPID_Core {
 			} elseif ( ! empty( $_POST['SAMLResponse'] ) ) {
 				// assertion consuming service endpoint
 				if ( ! $this->auth->isAuthenticated() ) {
-					// TODO error handling
-					error_log( 'not authenticated' );
+					return new WP_Error( 'spid_wordpress_not_authenticated', 'Qualcosa non ha funzionato nel login SPID.' );
 				}
 				$attributes = $this->auth->getAttributes();
 
 				if ( empty( $attributes ) || empty( $attributes['spidCode'] ) || empty( $attributes['email'] ) ) {
-					return new WP_Error( 'spid_wordpress_no_attributes', 'No attributes were present in SPID response.' );
+					return new WP_Error( 'spid_wordpress_no_attributes', 'Non ho ricevuto i dati necessari da SPID.' );
 				}
 				$existing_user = get_user_by( 'login', $attributes['spidCode'] );
 				if ( $existing_user ) {
@@ -160,7 +159,7 @@ class SPID_Core {
 				add_user_meta ( $user_id, 'spid_user', true, true );
 
 			} else {
-				return new WP_Error( 'spid_wrong_endpoint', 'Wrong endpoint' );
+				return new WP_Error( 'spid_wrong_endpoint', 'Qualcosa di strano sta succedendo.' );
 			}
 		} else {
 			// Ignore.
