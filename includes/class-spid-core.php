@@ -72,6 +72,10 @@ class SPID_Core {
 		// After wp_authenticate_username_password runs.
 		add_filter( 'authenticate', array( $this, 'filterAuthenticate' ), 21, 3 );
 
+		// https://codex.wordpress.org/Plugin_API/Filter_Reference/wp_authenticate_user
+		// after WordPress's basic validation, but before a user is logged in
+		add_filter( 'wp_authenticate_user', array( $this, 'filterSpid' ), 10, 2 );
+
 		$this->define_admin_hooks();
 
 		$this->spid_enqueue_scripts();
@@ -87,6 +91,15 @@ class SPID_Core {
 		);
 		$mapping = $this->auth->getIdpList();
 		include_once SPID_WORDPRESS_PATH . 'templates/spid-button.php';
+	}
+
+	public function filterSpid( $user, $password ) {
+		if ( ! isset( $_GET['sso'] ) || ! ( $_GET['sso'] == 'spid' ) || ! isset( $_GET['idp'] ) ) {
+			if ( $user->get( 'spid_user' ) ) {
+				return new WP_Error( 'spid_wordpress_spid_login_required', "L'utente SPID può fare accesso solo tramite SPID." );
+			}
+		}
+		return $user;
 	}
 
 	public function filterAuthenticate( $user, $username, $password ) {
@@ -144,6 +157,7 @@ class SPID_Core {
 					return $user_id;
 				}
 				$user = get_user_by( 'id', $user_id );
+				add_user_meta ( $user_id, 'spid_user', true, true );
 
 			} else {
 				return new WP_Error( 'spid_wrong_endpoint', 'Wrong endpoint' );
