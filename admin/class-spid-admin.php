@@ -428,15 +428,17 @@ if ( ! class_exists( 'SPID_Admin' ) ) {
 		}
 
 		public function sp_role_callback() {
-			printf(
-				'<p class="description">Scegli che ruolo assegnare di default agli utenti che si registrano sul tuo sito WordPress mediante autenticazione SPID. Una volta creato l\'utente sarà possibile per gli amministratori modificare questo dato nella sezione "utenti".</p>
-				<select name="spid_general[sp_role]" id="sp_role" value="%s"/>
-                <option selected disabled>Scegli...</option>
-                <option value="admin">Admin</option>
-				<option value="registered">Registered</option>
-                </select>',
-				isset( $this->spid_options_general['sp_role'] ) ? esc_attr( $this->spid_options_general['sp_role'] ) : ''
-			);
+			$roles = get_editable_roles();
+			unset( $roles['administrator'] ); // we don't want to create new admins automatically
+			$role = isset( $this->spid_options_general['sp_role'] ) ? esc_attr( $this->spid_options_general['sp_role'] ) : '';
+?>
+			<p class="description">Scegli che ruolo assegnare di default agli utenti che si registrano sul tuo sito WordPress mediante autenticazione SPID. Una volta creato l\'utente sarà possibile per gli amministratori modificare questo dato nella sezione "utenti".</p>
+			<select name="spid_general[sp_role]" id="sp_role"/>
+<?php foreach($roles as $role_name => $role_info): ?>
+				<option <?php selected( $role, $role_name ); ?>><?php echo $role_info['name']; ?></option>
+<?php endforeach; ?>
+			</select>
+<?php
 		}
 
 		public function sp_idp_callback() {
