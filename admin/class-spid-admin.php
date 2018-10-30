@@ -100,8 +100,8 @@ if ( ! class_exists( 'SPID_Admin' ) ) {
 					<?php esc_html_e( 'Certificati' ); ?>
 					</a>
 					<a 
-						href="<?php echo esc_url( add_query_arg( array( 'action' => 'import' ), admin_url( 'admin.php?page=spid_opzioni' ) ) ); ?>" 
-						class="nav-tab
+						href="#" 
+						class="nav-tab disabled
 						<?php
 						if ( $import_screen ) {
 							echo ' nav-tab-active';}
