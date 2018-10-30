@@ -506,7 +506,7 @@ if ( ! class_exists( 'SPID_Admin' ) ) {
 		}
 		public function sp_metadata_url_callback() {
 			printf(
-				'<p class="description">Specifa l\'url all\'endpoint</p>
+				'<p class="description">Specifica il <i>permalink</i> per l\'url del metadata del SP</p>
 				<input type="text" id="sp_metadata_url" name="spid_metadata[sp_metadata_url]" value="%s" disabled/>',
 				isset( $this->spid_options_metadata['sp_metadata_url'] ) ? esc_attr( $this->spid_options_metadata['sp_metadata_url'] ) : ''
 			);
