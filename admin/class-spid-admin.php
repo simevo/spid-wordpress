@@ -7,9 +7,14 @@
  * @license  GNU Affero General Public License v3.0
  * @link     https://github.com/simevo/spid-wordpress
  * @since    1.0.0
+ * 
  */
 
 if ( ! class_exists( 'SPID_Admin' ) ) {
+
+	/**	
+	 * Admin screen
+	 */
 	class SPID_Admin {
 
 		private $spid_options_general;
@@ -165,8 +170,8 @@ if ( ! class_exists( 'SPID_Admin' ) ) {
 				'spid-setting-admin' // Page.
 			);
 			add_settings_field(
-				'sp_list', // ID.
-				'SPID Available IdP (on hold)', // Title.
+				'idp_list', // ID.
+				'SPID Available IdP', // Title.
 				array( $this, 'idp_list_callback' ), // Callback.
 				'spid-setting-admin', // Page.
 				'spid_settings_section' // Section.
@@ -180,14 +185,14 @@ if ( ! class_exists( 'SPID_Admin' ) ) {
 			);
 			add_settings_field(
 				'sp_role', // ID.
-				'Role on registration with SPID', // Title.
+				'Ruolo nuovi registrati con SPID', // Title.
 				array( $this, 'sp_role_callback' ), // Callback.
 				'spid-setting-admin', // Page.
 				'spid_settings_section' // Section.
 			);
 			add_settings_field(
 				'sp_idp', // ID.
-				'Entity ID of the test IdP', // Title.
+				'Inserisci l\'ID del IdP di test', // Title.
 				array( $this, 'sp_idp_callback' ), // Callback.
 				'spid-setting-admin', // Page.
 				'spid_settings_section' // Section.
@@ -216,28 +221,28 @@ if ( ! class_exists( 'SPID_Admin' ) ) {
 			);
 			add_settings_field(
 				'sp_org_name', // ID.
-				'Organization Name', // Title.
+				'Nome dell\'organizzazione', // Title.
 				array( $this, 'sp_org_name_callback' ), // Callback.
 				'spid-setting-metadata', // Page.
 				'spid_metadata_setting' // Section.
 			);
 			add_settings_field(
 				'sp_org_display_name', // ID.
-				'Organization Display Name', // Title.
+				'Nome visualizzato organizzazione', // Title.
 				array( $this, 'sp_org_display_name_callback' ), // Callback.
 				'spid-setting-metadata', // Page.
 				'spid_metadata_setting' // Section.
 			);
 			add_settings_field(
 				'sp_sso', // ID.
-				'SSO (on hold)', // Title.
+				'SSO', // Title.
 				array( $this, 'sp_sso_callback' ), // Callback.
 				'spid-setting-metadata', // Page.
 				'spid_metadata_setting' // Section.
 			);
 			add_settings_field(
 				'sp_metadata_url', // ID.
-				'Percorso al metadata (on hold)', // Title.
+				'Percorso al metadata', // Title.
 				array( $this, 'sp_metadata_url_callback' ), // Callback.
 				'spid-setting-metadata', // Page.
 				'spid_metadata_setting' // Section.
@@ -280,21 +285,21 @@ if ( ! class_exists( 'SPID_Admin' ) ) {
 				'spid-setting-certificati' // Page.
 			);
 			add_settings_field(
-				'sp_stateName', // ID.
+				'sp_statename', // ID.
 				'Provincia (nome per esteso)', // Title.
 				array( $this, 'sp_statename_callback' ), // Callback.
 				'spid-setting-certificati', // Page.
 				'spid_certificati_setting' // Section.
 			);
 			add_settings_field(
-				'sp_localityName', // ID.
+				'sp_localitnName', // ID.
 				'Città (nome per esteso)', // Title.
 				array( $this, 'sp_localityname_callback' ), // Callback.
 				'spid-setting-certificati', // Page.
 				'spid_certificati_setting' // Section.
 			);
 			add_settings_field(
-				'sp_emailAddress', // ID.
+				'sp_emailaddress', // ID.
 				'Email dell\'ente o del referente tecnico', // Title.
 				array( $this, 'sp_emailaddress_callback' ), // Callback.
 				'spid-setting-certificati', // Page.
@@ -348,27 +353,35 @@ if ( ! class_exists( 'SPID_Admin' ) ) {
 
 		/**
 		 * Description of each tab.
-		 *
-		 * @return print description
 		 */
 		public function general_section_info() {
-			echo '<p>Configura il plug-in e salva le impostazioni.<br>
-			Questi parametri non modificano in nessun modo il metadata (link) quindi puoi configurare e salvare le impostazioni liberamente e non sarà necessaro ridistribuire il metadata ai vari Identity Provider.</p>';
+			echo '<p>';
+			esc_attr_e( 'Configura il plug-in e salva le impostazioni.' );
+			echo '</br>';
+			esc_attr_e( 'Questi parametri non modificano in nessun modo il metadata (link) quindi puoi configurare e salvare le impostazioni liberamente e non sarà necessaro ridistribuire il metadata ai vari Identity Provider.' );
 		}
 
 		public function metadata_section_info() {
-			echo 'Attenzione: una volta cambiati uno di questi settaggi si dovrà ridistribuire il metadata del SP a tutti gli IdP, dal _metadata link_';
+			echo '<p>';
+			esc_attr_e( 'Attenzione: una volta cambiati uno di questi settaggi si dovrà ridistribuire il metadata del SP a tutti gli IdP, dal _metadata link' );
+			echo '</p>';
 		}
 
 		public function button_section_info() {
-			echo '<p>Configurazione dello SPID Button</p>';
+			echo '<p>';
+			esc_attr_e( 'Configurazione dello SPID Button' );
+			echo '</p>';
 		}
+
 		public function certificati_section_info() {
-			echo '<p>In questa tab puoi modificare i dati dei certificati...</p>';
+			echo '<p>';
+			esc_attr_e( 'In questa tab puoi modificare i dati dei certificati.' );
+			echo '</p>';
 		}
+
 		public function import_section_info() {
 			echo '<p>';
-				esc_attr_e( 'In questa sezione potrai importare o esportare l\'intera configurazione, salvare o ripristinare precedenti configurazioni. In quali casi ti puo\' essere utile questo tool:' );
+			esc_attr_e( 'In questa sezione potrai importare o esportare l\'intera configurazione, salvare o ripristinare precedenti configurazioni. In quali casi ti puo\' essere utile questo tool:' );
 			echo '</p>';
 			echo '<ul>';
 				echo '<li>';
@@ -392,11 +405,11 @@ if ( ! class_exists( 'SPID_Admin' ) ) {
 		public function idp_list_callback() {
 			printf(
 				'<p class="description">Seleziona quali Identity Provider utilizzare tra quelli disponibili.</p>
-				<label><input type="checkbox" name="IdP_list[]" value="Idp 1"> Idp 1</label><br>
-				<label><input type="checkbox" name="IdP_list[]" value="Idp 2"> Idp 2</label><br>
-				<label><input type="checkbox" name="IdP_list[]" value="Idp 3"> Idp 3</label><br>
-				<label><input type="checkbox" name="IdP_list[]" value="Idp 4"> Idp 4</label>',
-				isset( $this->spid_options_general['IdP_list'] ) ? esc_attr( $this->spid_options_general['IdP_list'] ) : ''
+				<label><input type="checkbox" name="idp_list[]" value="Idp 1"> Idp 1</label><br>
+				<label><input type="checkbox" name="idp_list[]" value="Idp 2"> Idp 2</label><br>
+				<label><input type="checkbox" name="idp_list[]" value="Idp 3"> Idp 3</label><br>
+				<label><input type="checkbox" name="idp_list[]" value="Idp 4"> Idp 4</label>',
+				isset( $this->spid_options_general['idp_list'] ) ? esc_attr( $this->spid_options_general['idp_list'] ) : ''
 			);
 		}
 
@@ -404,8 +417,8 @@ if ( ! class_exists( 'SPID_Admin' ) ) {
 			printf(
 				'<p class="description">Seleziona quale livello di sicurezza intendi utilizzare per il login SPID<br>
 				- Il primo livello permette di accedere ai servizi online attraverso un nome utente e una password scelti dall’utente.</br>
-				- Il secondo livello permette l’accesso attraverso un nome utente e una password scelti dall’utente più la generazione di un codice temporaneo di accesso (autenticazione a due fattori).</p>
-				<select name="spid_general[sp_livello]" id="sp_livello" value="' . $sp_livello . '"/>
+				- Il secondo livello permette l’accesso attraverso un nome utente e una password scelti dall’utente più la geerazione di un codice temporaneo di accesso (autenticazione a due fattori).</p>
+				<select name="spid_general[sp_livello]" id="sp_livello" value="%s"/>
                 <option selected disabled>Scegli...</option>
                 <option value="1">1</option>
 				<option value="2">2</option>
@@ -417,7 +430,7 @@ if ( ! class_exists( 'SPID_Admin' ) ) {
 		public function sp_role_callback() {
 			printf(
 				'<p class="description">Scegli che ruolo assegnare di default agli utenti che si registrano sul tuo sito WordPress mediante autenticazione SPID. Una volta creato l\'utente sarà possibile per gli amministratori modificare questo dato nella sezione "utenti".</p>
-				<select name="spid_general[sp_role]" id="sp_role" value="' . $sp_role . '"/>
+				<select name="spid_general[sp_role]" id="sp_role" value="%s"/>
                 <option selected disabled>Scegli...</option>
                 <option value="admin">Admin</option>
 				<option value="registered">Registered</option>
@@ -429,11 +442,10 @@ if ( ! class_exists( 'SPID_Admin' ) ) {
 		public function sp_idp_callback() {
 			printf(
 				'<p class="description">Inserisci l\'ID del IdP di test.</p>
-				<input type="text" id="sp_idp" name="spid_general[sp_idp]" value="' . $sp_idp . '" />',
+				<input type="text" id="sp_idp" name="spid_general[sp_idp]" value="%s" />',
 				isset( $this->spid_options_general['sp_idp'] ) ? esc_attr( $this->spid_options_general['sp_idp'] ) : ''
 			);
 		}
-
 
 		/**
 		 * Metadata Settings
@@ -445,52 +457,51 @@ if ( ! class_exists( 'SPID_Admin' ) ) {
 		public function user_attributes_callback() {
 			printf(
 				'<p class="description">Seleziona quali dati relativi all\'identità digitale dell\'utente ti interessa acquisire tra quelli disponibili.</p>
-				<label><input type="checkbox" name="sp_name" value="' . $sp_name . '"> Nome</label><br> 
-				<label><input type="checkbox" name="sp_familyName" value="' . $sp_familyName . '"> Cognome</label><br>
-				<label><input type="checkbox" name="sp_placeOfBirth" value="' . $sp_placeOfBirth . '"> Luogo di nascita</label><br>
-				<label><input type="checkbox" name="sp_countyOfBirth" value="' . $sp_countyOfBirth . '"> Paese di nascita</label><br>
-				<label><input type="checkbox" name="sp_dateOfBirth" value="' . $sp_dateOfBirth . '"> Data di nascita</label><br>
-				<label><input type="checkbox" name="sp_gender" value="' . $sp_gender . '"> Sesso</label><br>
-				<label><input type="checkbox" name="sp_companyName" value="' . $sp_companyName . '"> Ragione o denominazione Sociale</label><br>
-				<label><input type="checkbox" name="sp_registeredOffice" value="' . $registeredOffice . '"> Sede legale</label><br>
-				<label><input type="checkbox" name="sp_fiscalNumber" value="' . $sp_fiscalNumber . '"> Codice fiscale</label><br>
-				<label><input type="checkbox" name="sp_ivaCode" value="' . $sp_ivaCode . '"> Partita IVA Sociale</label><br>
-				<label><input type="checkbox" name="sp_idCard" value="' . $sp_idCard . '"> Documento di identità	</label><br>
-				<label><input type="checkbox" name="sp_mobilePhone" value="' . $sp_mobilePhone . '"> Ragione o denominazione Sociale</label><br>
-				<label><input type="checkbox" name="sp_address" value="' . $sp_address . '"> Domicilio fisico</label><br>
-				<label><input type="checkbox" name="sp_expirationDate" value="' . $sp_expirationDate . '"> Data di scadenza identità</label><br>
-				<label><input type="checkbox" name="sp_digitalAddress" value="' . $sp_digitalAddress . '"> Domicilio digitale</label><br>'
+				<label><input type="checkbox" name="sp_name" value=""> Nome</label><br> 
+				<label><input type="checkbox" name="sp_familyname" value=""> Cognome</label><br>
+				<label><input type="checkbox" name="sp_placeofbirth" value=""> Luogo di nascita</label><br>
+				<label><input type="checkbox" name="sp_countyofbirth" value=""> Paese di nascita</label><br>
+				<label><input type="checkbox" name="sp_dateofbirth" value=""> Data di nascita</label><br>
+				<label><input type="checkbox" name="sp_gender" value=""> Sesso</label><br>
+				<label><input type="checkbox" name="sp_companyname" value=""> Ragione o denominazione Sociale</label><br>
+				<label><input type="checkbox" name="sp_registeredOffice" value=""> Sede legale</label><br>
+				<label><input type="checkbox" name="sp_fiscalnumber" value=""> Codice fiscale</label><br>
+				<label><input type="checkbox" name="sp_ivacode" value=""> Partita IVA Sociale</label><br>
+				<label><input type="checkbox" name="sp_idcard" value=""> Documento di identità	</label><br>
+				<label><input type="checkbox" name="sp_mobilephone" value=""> Ragione o denominazione Sociale</label><br>
+				<label><input type="checkbox" name="sp_address" value=""> Domicilio fisico</label><br>
+				<label><input type="checkbox" name="sp_expirationdate" value=""> Data di scadenza identità</label><br>
+				<label><input type="checkbox" name="sp_digitaladdress" value=""> Domicilio digitale</label><br>'
 			);
 		}
 
 		public function sp_org_name_callback() {
 			printf(
-
 				'<p class="description">Inserisci il nome per esteso del proprio istituto (es. "Istituto Superiore Leonardo da Vinci" o "Comune di Torino").</p>
-				<input type="text" id="sp_org_name" name="spid_metadata[sp_org_name]" value="' . $sp_org_name . '" />',
-				isset( $this->spid_options_general['sp_org_name'] ) ? esc_attr( $this->spid_options_general['sp_org_name'] ) : ''
+				<input type="text" id="sp_org_name" name="spid_metadata[sp_org_name]" value="%s" />',
+				isset( $this->spid_options_metadata['sp_org_name'] ) ? esc_attr( $this->spid_options_metadata['sp_org_name'] ) : ''
 			);
 		}
 
 		public function sp_org_display_name_callback() {
 			printf(
 				'<p class="description">Inserisci il nome del proprio ente che si vuole mostare sulla maschera di Login (es. "DaVinci PA").</p>
-				<input type="text" id="sp_org_display_name" name="spid_metadata[sp_org_display_name]" value="' . $sp_org_display_name . '" />',
-				isset( $this->spid_options_general['sp_org_display_name'] ) ? esc_attr( $this->spid_options_general['sp_org_display_name'] ) : ''
+				<input type="text" id="sp_org_display_name" name="spid_metadata[sp_org_display_name]" value="%s" />',
+				isset( $this->spid_options_metadata['sp_org_display_name'] ) ? esc_attr( $this->spid_options_metadata['sp_org_display_name'] ) : ''
 			);
 		}
 		public function sp_sso_callback() {
 			printf(
 				'<p class="description">Se il tuo sito offre più sistemi di Single Sign On puoi specificare quale utilizzare (di default questo campo è "spid").</p>
-				<input type="text" id="sp_sso" name="spid_metadata[sp_sso]" value="spid" />',
-				isset( $this->spid_options_general['sp_sso'] ) ? esc_attr( $this->spid_options_general['sp_sso'] ) : ''
+				<input type="text" id="sp_sso" name="spid_metadata[sp_sso]" value="%s" />',
+				isset( $this->spid_options_metadata['sp_sso'] ) ? esc_attr( $this->spid_options_metadata['sp_sso'] ) : ''
 			);
 		}
 		public function sp_metadata_url_callback() {
 			printf(
 				'<p class="description">Specifa l\'url all\'endpoint</p>
-				<input type="text" id="sp_metadata_url" name="spid_metadata[sp_metadata_url]" value="' . $sp_metadata_url . '" disabled/>',
-				isset( $this->spid_options_general['sp_metadata_url'] ) ? esc_attr( $this->spid_options_general['sp_metadata_url'] ) : ''
+				<input type="text" id="sp_metadata_url" name="spid_metadata[sp_metadata_url]" value="%s" disabled/>',
+				isset( $this->spid_options_metadata['sp_metadata_url'] ) ? esc_attr( $this->spid_options_metadata['sp_metadata_url'] ) : ''
 			);
 		}				
 		/**
@@ -498,8 +509,8 @@ if ( ! class_exists( 'SPID_Admin' ) ) {
 		 */
 		public function sp_spid_button_callback() {
 			printf(
-				'<input type="checkbox" id="sp_spid_button" name="activeButton" value="' . $sp_spid_button . '">',
-				isset( $this->spid_options_general['sp_spid_button'] ) ? esc_attr( $this->spid_options_general['sp_spid_button'] ) : ''
+				'<input type="checkbox" id="sp_spid_button" name="activebutton" value="%s">',
+				isset( $this->spid_options_button['sp_spid_button'] ) ? esc_attr( $this->spid_options_button['sp_spid_button'] ) : ''
 			);
 		}
 
@@ -518,6 +529,32 @@ if ( ! class_exists( 'SPID_Admin' ) ) {
 				$new_input['sp_idp'] = sanitize_text_field( $input['sp_idp'] );
 			}
 
+			if ( isset( $input['idp_list'] ) ) {
+				$new_input['idp_list'] = sanitize_text_field( $input['idp_list'] );
+			}
+
+			/**	
+			 * Metadata tab
+			 */
+			if ( isset( $input['sp_org_name'] ) ) {
+				$new_input['sp_org_name'] = sanitize_text_field( $input['sp_org_name'] );
+			}
+
+			if ( isset( $input['sp_sso'] ) ) {
+				$new_input['sp_sso'] = sanitize_text_field( $input['sp_sso'] );
+			}
+
+			if ( isset( $input['sp_org_display_name'] ) ) {
+				$new_input['sp_org_display_name'] = sanitize_text_field( $input['sp_org_display_name'] );
+			}
+
+			/**	
+			 * Button tab
+			 */
+			if ( isset( $input['sp_spid_button'] ) ) {
+				$new_input['sp_spid_button'] = sanitize_text_field( $input['sp_spid_button'] );
+			}
+			
 			return $new_input;
 		}
 
