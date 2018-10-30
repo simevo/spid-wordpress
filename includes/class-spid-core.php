@@ -89,11 +89,11 @@ class SPID_Core {
 
 	}
 
-<<<<<<< HEAD
 	public function actionLogout() {
 		header('Location: /wp-login.php?sso=spid&slo');
 		exit("");
-=======
+	}
+
 	public function actionGdprNotice() {
 		?>
 		<div class="notice notice-warning is-dismissible">
@@ -106,7 +106,6 @@ class SPID_Core {
 			</p>
 		</div>
 		<?php
->>>>>>> add admin notices for GDPR, fixes #64
 	}
 
 	public function filterLoginMessage( $message ) {
