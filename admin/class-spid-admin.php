@@ -192,7 +192,7 @@ if ( ! class_exists( 'SPID_Admin' ) ) {
 			);
 			add_settings_field(
 				'sp_idp', // ID.
-				'Inserisci l\'ID del IdP di test', // Title.
+				'Inserisci l\'entity ID dell\'IdP di test', // Title.
 				array( $this, 'sp_idp_callback' ), // Callback.
 				'spid-setting-admin', // Page.
 				'spid_settings_section' // Section.
@@ -221,7 +221,7 @@ if ( ! class_exists( 'SPID_Admin' ) ) {
 			);
 			add_settings_field(
 				'sp_org_name', // ID.
-				'Nome dell\'organizzazione', // Title.
+				'Inserisci il nome per esteso del proprio ente', // Title.
 				array( $this, 'sp_org_name_callback' ), // Callback.
 				'spid-setting-metadata', // Page.
 				'spid_metadata_setting' // Section.
@@ -441,7 +441,7 @@ if ( ! class_exists( 'SPID_Admin' ) ) {
 
 		public function sp_idp_callback() {
 			printf(
-				'<p class="description">Inserisci l\'ID del IdP di test.</p>
+				'<p class="description">Inserisci l\'entity ID dell\'IdP di test (es. https://testenv2.example.com) oppure lascia vuoto se l\'IdP di test deve rimanere disattivato</p>
 				<input type="text" id="sp_idp" name="spid_general[sp_idp]" value="%s" />',
 				isset( $this->spid_options_general['sp_idp'] ) ? esc_attr( $this->spid_options_general['sp_idp'] ) : ''
 			);
