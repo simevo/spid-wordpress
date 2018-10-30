@@ -363,7 +363,10 @@ if ( ! class_exists( 'SPID_Admin' ) ) {
 
 		public function metadata_section_info() {
 			echo '<p>';
-			esc_attr_e( 'Attenzione: una volta cambiati uno di questi settaggi si dovrà ridistribuire il metadata del SP a tutti gli IdP, dal _metadata link' );
+			esc_attr_e( 'Attenzione: una volta cambiati uno di questi settaggi si dovrà ridistribuire il metadata del Service Provider a tutti gli Identity Provider !' );
+			echo '</p>';
+			echo '<p>';
+			echo 'Il metadata del Service Provider è disponibile a <a target="_blank" href="/wp-login.php?sso=spid&metadata">questo link</a>.';
 			echo '</p>';
 		}
 
