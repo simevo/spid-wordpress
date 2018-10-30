@@ -1,5 +1,5 @@
 === SPID WordPress ===
-Contributors: vskylabv
+Contributors: vskylabv, simevo
 Donate link: https://github.com/simevo/spid-wordpress
 Tags: spid, italy
 Requires at least: 4.9
@@ -11,7 +11,9 @@ Autenticazione attraverso un Identity Provider SPID (Sistema Pubblico di Identit
 
 == Description ==
 
-This is the long description.  No limit, and you can use Markdown (as well as in the following sections).
+Plugin WordPress per l'autenticazione attraverso un Identity Provider SPID (Sistema Pubblico di Identità Digitale) basato sulla libreria SPID PHP italia/spid-php-lib.
+
+SPID, il Sistema Pubblico di Identità Digitale, è la soluzione che permette ai cittadini di accedere a tutti i servizi online della Pubblica Amministrazione con un'unica Identità Digitale (username e password) utilizzabile da computer, tablet e smartphone.
 
 == Installation ==
 
@@ -40,5 +42,5 @@ An answer to that question.
 
 == Changelog ==
 
-= 1.0 =
-* Release
+= 0.1 =
+* Initial release

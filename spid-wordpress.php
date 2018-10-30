@@ -4,7 +4,7 @@
  * Plugin Name:       SPID WordPress
  * Plugin URI:        https://github.com/simevo/spid-wordpress
  * Description:       Autenticazione attraverso un Identity Provider SPID (Sistema Pubblico di Identità Digitale)
- * Version:           1.0.0
+ * Version:           0.1.0
  * Author:            Paolo Greppi simevo s.r.l.
  * Author URI:        https://simevo.com
  * License:           AGPL-3.0
@@ -16,10 +16,10 @@
  *
  * @category Description
  * @package  SPID_WordPress
- * @author   Paolo Greppi simevo s.r.l. <email@emailgoeshere.com>
+ * @author   Paolo Greppi simevo s.r.l. <paolo.greppi@libpf.com>
  * @license  GNU Affero General Public License v3.0
  * @link     https://github.com/simevo/spid-wordpress
- * @since    1.0.0
+ * @since    0.1.0
  */
 
 // If this file is called directly, abort.
@@ -38,7 +38,7 @@ add_action( 'plugins_loaded', 'spid_wordpress_textdomain' );
 /**
  * Global constants
  */
-define( 'SPID_WORDPRESS_VERSION', '1.0.0' );
+define( 'SPID_WORDPRESS_VERSION', '0.1.0' );
 define( 'SPID_WORDPRESS_URL', plugin_dir_url( __FILE__ ) );
 define( 'SPID_WORDPRESS_PATH', dirname( __FILE__ ) . '/' );
 define( 'SPID_WORDPRESS_INC', SPID_WORDPRESS_PATH . 'includes/' );

@@ -3,10 +3,10 @@
  * Summary goes here.
  *
  * @package  SPID_WordPress
- * @author   Paolo Greppi simevo s.r.l. <email@emailgoeshere.com>
+ * @author   Paolo Greppi simevo s.r.l. <paolo.greppi@libpf.com>
  * @license  GNU Affero General Public License v3.0
  * @link     https://github.com/simevo/spid-wordpress
- * @since    1.0.0
+ * @since    0.1.0
  * 
  */
 
