@@ -68,11 +68,12 @@ Questo screencast mostra cosa dovrebbe succedere se tutto funziona:
 
 ### Demo
 
-Un'installazione WordPress preconfigurata usando docker-compose con questo plugin e l'IdP di test è diponibile qui: https://github.com/simevo/spid-wordpress-example-form#installazione-con-docker-compose.
+Un'installazione WordPress preconfigurata usando docker-compose con questo plugin e l'IdP di test è diponibile qui: https://github.com/simevo/spid-wordpress-example.
 
 Altri esempi applicativi:
-- https://github.com/simevo/spid-wordpress-example-private
-- https://github.com/simevo/spid-wordpress-example-roles
+- https://github.com/simevo/spid-wordpress-example-forms: Esempio di sito wordpress con login SPID e forms precompilati
+- https://github.com/simevo/spid-wordpress-example-private: Esempio di sito wordpress con login SPID e pagine riservate al singolo utente SPID
+- https://github.com/simevo/spid-wordpress-example-roles: Esempio di sito wordpress con login SPID e pagine visibili e/o modificabili per gruppi di utenti SPID
 
 ## Troubleshooting
 
