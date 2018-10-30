@@ -171,7 +171,7 @@ if ( ! class_exists( 'SPID_Admin' ) ) {
 			);
 			add_settings_field(
 				'idp_list', // ID.
-				'SPID Available IdP', // Title.
+				'<span class="disabled">SPID Available IdP</a>', // Title.
 				array( $this, 'idp_list_callback' ), // Callback.
 				'spid-setting-admin', // Page.
 				'spid_settings_section' // Section.
@@ -242,7 +242,7 @@ if ( ! class_exists( 'SPID_Admin' ) ) {
 			);
 			add_settings_field(
 				'sp_metadata_url', // ID.
-				'Percorso al metadata', // Title.
+				'<span class="disabled">Percorso al metadata</span>', // Title.
 				array( $this, 'sp_metadata_url_callback' ), // Callback.
 				'spid-setting-metadata', // Page.
 				'spid_metadata_setting' // Section.
@@ -405,10 +405,10 @@ if ( ! class_exists( 'SPID_Admin' ) ) {
 		public function idp_list_callback() {
 			printf(
 				'<p class="description">Seleziona quali Identity Provider utilizzare tra quelli disponibili.</p>
-				<label><input type="checkbox" name="idp_list[]" value="Idp 1"> Idp 1</label><br>
-				<label><input type="checkbox" name="idp_list[]" value="Idp 2"> Idp 2</label><br>
-				<label><input type="checkbox" name="idp_list[]" value="Idp 3"> Idp 3</label><br>
-				<label><input type="checkbox" name="idp_list[]" value="Idp 4"> Idp 4</label>',
+				<label><input type="checkbox" name="idp_list[]" value="Idp 1" disabled> Idp 1</label><br>
+				<label><input type="checkbox" name="idp_list[]" value="Idp 2" disabled> Idp 2</label><br>
+				<label><input type="checkbox" name="idp_list[]" value="Idp 3" disabled> Idp 3</label><br>
+				<label><input type="checkbox" name="idp_list[]" value="Idp 4" disabled> Idp 4</label>',
 				isset( $this->spid_options_general['idp_list'] ) ? esc_attr( $this->spid_options_general['idp_list'] ) : ''
 			);
 		}

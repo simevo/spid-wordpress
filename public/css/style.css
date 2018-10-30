@@ -6,5 +6,6 @@ li.toplevel_page_spid_opzioni img {
 	height: 24px;
 	padding: 5px 0 !important;
 }
+.disabled { color: grey; }
 .nav-tab-wrapper a.disabled { color: grey; background: #e5e5e5; cursor: default;}
 .nav-tab-wrapper a.disabled a:hover { border-color: transparent; background: #e5e5e5;}
