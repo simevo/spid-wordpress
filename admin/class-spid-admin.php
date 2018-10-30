@@ -465,20 +465,20 @@ if ( ! class_exists( 'SPID_Admin' ) ) {
 				</div>
 
 				<label><input type="checkbox" name="sp_name" value=""> Nome</label><br> 
-				<label><input type="checkbox" name="sp_familyname" value=""> Cognome</label><br>
-				<label><input type="checkbox" name="sp_placeofbirth" value=""> Luogo di nascita</label><br>
-				<label><input type="checkbox" name="sp_countyofbirth" value=""> Paese di nascita</label><br>
-				<label><input type="checkbox" name="sp_dateofbirth" value=""> Data di nascita</label><br>
+				<label><input type="checkbox" name="sp_familyName" value=""> Cognome</label><br>
+				<label><input type="checkbox" name="sp_placeOfBirth" value=""> Luogo di nascita</label><br>
+				<label><input type="checkbox" name="sp_countyOfBirth" value=""> Paese di nascita</label><br>
+				<label><input type="checkbox" name="sp_dateOfBirth" value=""> Data di nascita</label><br>
 				<label><input type="checkbox" name="sp_gender" value=""> Sesso</label><br>
-				<label><input type="checkbox" name="sp_companyname" value=""> Ragione o denominazione Sociale</label><br>
+				<label><input type="checkbox" name="sp_companyName" value=""> Ragione o denominazione Sociale</label><br>
 				<label><input type="checkbox" name="sp_registeredOffice" value=""> Sede legale</label><br>
-				<label><input type="checkbox" name="sp_fiscalnumber" value=""> Codice fiscale</label><br>
-				<label><input type="checkbox" name="sp_ivacode" value=""> Partita IVA Sociale</label><br>
-				<label><input type="checkbox" name="sp_idcard" value=""> Documento di identità	</label><br>
-				<label><input type="checkbox" name="sp_mobilephone" value=""> Ragione o denominazione Sociale</label><br>
+				<label><input type="checkbox" name="sp_fiscalNumber" value=""> Codice fiscale</label><br>
+				<label><input type="checkbox" name="sp_ivaCode" value=""> Partita IVA Sociale</label><br>
+				<label><input type="checkbox" name="sp_idCard" value=""> Documento di identità	</label><br>
+				<label><input type="checkbox" name="sp_mobilePhone" value=""> Ragione o denominazione Sociale</label><br>
 				<label><input type="checkbox" name="sp_address" value=""> Domicilio fisico</label><br>
-				<label><input type="checkbox" name="sp_expirationdate" value=""> Data di scadenza identità</label><br>
-				<label><input type="checkbox" name="sp_digitaladdress" value=""> Domicilio digitale</label><br>'
+				<label><input type="checkbox" name="sp_expirationDate" value=""> Data di scadenza identità</label><br>
+				<label><input type="checkbox" name="sp_digitalAddress" value=""> Domicilio digitale</label><br>'
 			);
 		}
 
