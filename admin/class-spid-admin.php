@@ -519,7 +519,7 @@ if ( ! class_exists( 'SPID_Admin' ) ) {
 		 */
 		public function sp_spid_button_callback() {
 			printf(
-				'<input type="checkbox" id="sp_spid_button" name="activebutton" value="%s">',
+				'<input disabled type="checkbox" id="sp_spid_button" name="activebutton" value="%s">',
 				isset( $this->spid_options_button['sp_spid_button'] ) ? esc_attr( $this->spid_options_button['sp_spid_button'] ) : ''
 			);
 		}
