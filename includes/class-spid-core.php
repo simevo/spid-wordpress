@@ -158,6 +158,11 @@ class SPID_Core {
 				$user = get_user_by( 'id', $user_id );
 				add_user_meta ( $user_id, 'spid_user', true, true );
 
+				foreach ( $attributes as $key => $value ) {
+					if ( ! in_array( $key, ['spidCode', 'name', 'familyName', 'email'] ) ) {
+						add_user_meta ( $user_id, "spid_$key", $value, true );
+					}
+				}
 			} else {
 				return new WP_Error( 'spid_wrong_endpoint', 'Qualcosa di strano sta succedendo.' );
 			}
