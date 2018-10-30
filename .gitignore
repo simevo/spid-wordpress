@@ -10,15 +10,3 @@ composer.phar
 composer.lock
 /vendor/
 /wpcs/
-
-# Docker Related
-docker/spid-testenv2/users.json
-docker/spid-testenv2/config.yaml
-docker/spid-testenv2/idp.key
-docker/spid-testenv2/idp.crt
-docker/spid-testenv2/sp_metadata.xml
-docker/.env
-docker/wp.key
-docker/wp.crt
-docker/config.php
-docker/idp_metadata/*.xml
