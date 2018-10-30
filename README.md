@@ -25,6 +25,20 @@ Compatibile con:
 - PHP 7.0, 7.1 e 7.2
 - Solo WP single-site (no multi-site).
 
+**Attenzione alla GDPR!**
+
+> Quando il plugin è attivo, in base alle impostazioni, esso può salvare certi *dati personali* degli utenti SPID nel database WordPress.
+>
+> Si tratta degli attributi utente da richiedere a SPID: due sono indispensabili al funzionamento del plugin (codice identificativo SPID e indirizzo di posta elettronica), gli altri (es. il codice fiscale, la data di nascita, il sesso etc.) possono essere impostati nella sezione "Metadata" di SPID Opzioni.
+>
+> Più attributi SPID si richiedono più aumentano i rischi e la complessità della gestione di questi *dati personali* dal punto di vista della GDPR (Regolamento generale sulla protezione dei dati, in inglese General Data Protection Regulation).
+>
+> Il plugin acquisisce il *valido consenso* ai sensi della GDPR, tuttavia restano in carico al Service Provider:
+> - la sicurezza dell'installazione WordPress
+> - la gestione delle richieste da parte degli utenti di accesso e cancellazione dei dati
+> - la notifica delle violazioni dei dati
+> - e la pubblicazione dell'informativa per gli utenti su fini e modalità del trattamento dei dati personali.
+
 ## Per iniziare
 
 Testato su: amd64 Debian 9.5 (stretch, current stable) con PHP 7.0.
