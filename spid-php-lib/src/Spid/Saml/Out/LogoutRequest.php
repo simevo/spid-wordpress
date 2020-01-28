@@ -19,8 +19,12 @@ class LogoutRequest extends Base implements RequestInterface
 <samlp:LogoutRequest xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol"
     xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion"
 ID="$id" IssueInstant="$issueInstant" Version="2.0" Destination="$idpEntityId">
-    <saml:Issuer NameQualifier="$entityId" Format="urn:oasis:names:tc:SAML:2.0:nameid-format:entity">$entityId</saml:Issuer>
-    <saml:NameID NameQualifier="$idpEntityId" Format="urn:oasis:names:tc:SAML:2.0:nameid-format:transient">$idpEntityId</saml:NameID>
+    <saml:Issuer
+        NameQualifier="$entityId"
+        Format="urn:oasis:names:tc:SAML:2.0:nameid-format:entity">$entityId</saml:Issuer>
+    <saml:NameID
+        NameQualifier="$idpEntityId"
+        Format="urn:oasis:names:tc:SAML:2.0:nameid-format:transient">$idpEntityId</saml:NameID>
     <samlp:SessionIndex>$index</samlp:SessionIndex>
 </samlp:LogoutRequest>
 XML;
@@ -29,7 +33,7 @@ XML;
 
     public function redirectUrl($redirectTo = null) : string
     {
-        $location = parent::getBindingLocation(Settings::BINDING_POST, 'SLO');
+        $location = parent::getBindingLocation(Settings::BINDING_REDIRECT, 'SLO');
         if (is_null($this->xml)) {
             $this->generateXml();
         }

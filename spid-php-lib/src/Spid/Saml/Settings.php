@@ -14,12 +14,13 @@ class Settings
         'sp_entityid' => self::REQUIRED,
         'sp_key_file' => self::REQUIRED,
         'sp_cert_file' => self::REQUIRED,
+        'sp_comparison' => self::NOT_REQUIRED,
         'sp_assertionconsumerservice' => self::REQUIRED,
         'sp_singlelogoutservice' => self::REQUIRED,
         'sp_attributeconsumingservice' => self::NOT_REQUIRED,
         'sp_org_name' => self::NOT_REQUIRED,
         'sp_org_display_name' => self::NOT_REQUIRED,
-        'sp_key_cert_values' => [ 
+        'sp_key_cert_values' => [
             self::NOT_REQUIRED => [
                 'countryName' => self::REQUIRED,
                 'stateOrProvinceName' => self::REQUIRED,
@@ -28,7 +29,8 @@ class Settings
                 'emailAddress' => self::REQUIRED
             ]
         ],
-        'idp_metadata_folder' => self::REQUIRED
+        'idp_metadata_folder' => self::REQUIRED,
+        'accepted_clock_skew_seconds' => self::NOT_REQUIRED
     ];
 
     private static $validAttributeFields = [
@@ -66,10 +68,7 @@ class Settings
                 $missingSettings[$k] = 1;
             } else {
                 foreach ($childSettings as $key => $value) {
-                    if (
-                        $value == self::REQUIRED &&
-                        !array_key_exists($key, $settings[$k])
-                    ) {
+                    if ($value == self::REQUIRED && !array_key_exists($key, $settings[$k])) {
                         $missingSettings[$key] = 1;
                     }
                 }
@@ -84,7 +83,7 @@ class Settings
 
         $invalidFields = array_diff_key($settings, self::$validSettings);
         // Check for settings that have child values
-        array_walk(self::$validSettings, function($v, $k) use (&$invalidFields) {
+        array_walk(self::$validSettings, function ($v, $k) use (&$invalidFields) {
             // Child values found, check if settings array is set for that key
             if (is_array($v) && isset($settings[$k])) {
                 // $v has at most 2 keys, self::REQUIRED and self::NOT_REQUIRED
@@ -143,7 +142,9 @@ class Settings
                     throw new \InvalidArgumentException('sp_attributeconsumingservice elements should be an arrays');
                 }
                 if (count($acs) == 0) {
-                    throw new \InvalidArgumentException('sp_attributeconsumingservice elements should contain at least one element');
+                    throw new \InvalidArgumentException(
+                        'sp_attributeconsumingservice elements should contain at least one element'
+                    );
                 }
                 array_walk($acs, function ($field) {
                     if (!in_array($field, self::$validAttributeFields)) {
@@ -161,8 +162,10 @@ class Settings
         }
         array_walk($settings['sp_assertionconsumerservice'], function ($acs) use ($host) {
             if (strpos($acs, $host) === false) {
-                throw new \InvalidArgumentException('sp_assertionconsumerservice elements Location domain should be ' . $host .
-                    ', got ' .  parse_url($acs, PHP_URL_HOST) . ' instead');
+                throw new \InvalidArgumentException(
+                    'sp_assertionconsumerservice elements Location domain should be ' . $host . ', got ' .
+                    parse_url($acs, PHP_URL_HOST) . ' instead'
+                );
             }
         });
 
@@ -177,22 +180,28 @@ class Settings
                 throw new \InvalidArgumentException('sp_singlelogoutservice elements should be arrays');
             }
             if (count($slo) != 2) {
-                throw new \InvalidArgumentException('sp_singlelogoutservice array elements should contain exactly 2 elements,\
-                    in order SLO Location and Binding');
+                throw new \InvalidArgumentException(
+                    'sp_singlelogoutservice array elements should contain exactly 2 elements, in order SLO Location ' .
+                    'and Binding'
+                );
             }
             if (!is_string($slo[0]) || !is_string($slo[1])) {
-                throw new \InvalidArgumentException('sp_singlelogoutservice array elements should contain 2 string values,\
-                    in order SLO Location and Binding');
+                throw new \InvalidArgumentException(
+                    'sp_singlelogoutservice array elements should contain 2 string values, in order SLO Location ' .
+                    'and Binding'
+                );
             }
             if (strcasecmp($slo[1], "POST") != 0 &&
                 strcasecmp($slo[1], "REDIRECT") != 0 &&
                 strcasecmp($slo[1], "") != 0) {
-                throw new \InvalidArgumentException('sp_singlelogoutservice elements Binding value should be one of\
-                    "POST", "REDIRECT", or "" (empty string, defaults to POST)');
+                throw new \InvalidArgumentException('sp_singlelogoutservice elements Binding value should be one of '.
+                    '"POST", "REDIRECT", or "" (empty string, defaults to POST)');
             }
             if (strpos($slo[0], $host) === false) {
-                throw new \InvalidArgumentException('sp_singlelogoutservice elements Location domain should be ' . $host .
-                    ', got ' .  parse_url($slo[0], PHP_URL_HOST) . 'instead');
+                throw new \InvalidArgumentException(
+                    'sp_singlelogoutservice elements Location domain should be ' . $host .
+                    ', got ' .  parse_url($slo[0], PHP_URL_HOST) . 'instead'
+                );
             }
         });
         if (isset($settings['sp_key_cert_values'])) {
@@ -200,15 +209,41 @@ class Settings
                 throw new \Exception('sp_key_cert_values should be an array');
             }
             if (count($settings['sp_key_cert_values']) != 5) {
-                throw new \Exception('sp_key_cert_values should contain 5 values: countryName, stateOrProvinceName, localityName, commonName, emailAddress');
+                throw new \Exception(
+                    'sp_key_cert_values should contain 5 values: countryName, stateOrProvinceName, localityName, ' .
+                    'commonName, emailAddress'
+                );
             }
             foreach ($settings['sp_key_cert_values'] as $key => $value) {
                 if (!is_string($value)) {
-                    throw new \Exception('sp_key_cert_values values should be strings. Valued provided for key ' . $key . ' is not a string');
+                    throw new \Exception(
+                        'sp_key_cert_values values should be strings. Valued provided for key ' . $key .
+                        ' is not a string'
+                    );
                 }
             }
             if (strlen($settings['sp_key_cert_values']['countryName']) != 2) {
                 throw new \Exception('sp_key_cert_values countryName should be a 2 characters country code');
+            }
+        }
+        if (isset($settings['accepted_clock_skew_seconds'])) {
+            if (!is_numeric($settings['accepted_clock_skew_seconds'])) {
+                throw new \InvalidArgumentException('accepted_clock_skew_seconds should be a number');
+            }
+            if ($settings['accepted_clock_skew_seconds'] < 0) {
+                throw new \InvalidArgumentException('accepted_clock_skew_seconds should be at least 0 seconds');
+            }
+            if ($settings['accepted_clock_skew_seconds'] > 300) {
+                throw new \InvalidArgumentException('accepted_clock_skew_seconds should be at most 300 seconds');
+            }
+        }
+        if (isset($settings['sp_comparison'])) {
+            if (strcasecmp($settings['sp_comparison'], "exact") != 0 &&
+                strcasecmp($settings['sp_comparison'], "minimum") != 0 &&
+                strcasecmp($settings['sp_comparison'], "better") != 0 &&
+                strcasecmp($settings['sp_comparison'], "maximum") != 0) {
+                throw new \InvalidArgumentException('sp_comparison value should be one of:' .
+                    '"exact", "minimum", "better" or "maximum"');
             }
         }
     }

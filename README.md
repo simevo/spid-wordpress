@@ -22,7 +22,7 @@ Questo plugin integra il login SPID in WordPress, offrendo le seguenti funzional
 
 Compatibile con:
 - WordPress 4.9.8
-- PHP 7.0, 7.1 e 7.2
+- PHP 7.2, 7.3 e 7.4
 - Solo WP single-site (no multi-site).
 
 **Attenzione alla GDPR!**
@@ -41,7 +41,7 @@ Compatibile con:
 
 ## Per iniziare
 
-Testato su: amd64 Debian 9.5 (stretch, current stable) con PHP 7.0.
+Testato su: amd64 Debian 10 (buster, current stable) con PHP 7.3.
 
 ### Installazione e configurazione
 
@@ -105,5 +105,5 @@ Giulio Gatto, Paolo Greppi, Riccardo Mariani e Michael Tieso
 
 ## Licenza
 
-Copyright (c) 2018 simevo s.r.l.
+Copyright (c) 2018-2020 simevo s.r.l.
 Licenza: AGPL 3, vedi [LICENSE](LICENSE).
